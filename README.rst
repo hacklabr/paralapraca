@@ -1,3 +1,6 @@
+.. image:: https://badge.waffle.io/hacklabr/paralapraca.png?label=ready&title=Ready 
+ :target: https://waffle.io/hacklabr/paralapraca
+ :alt: 'Stories in Ready'
 =============================
 Paralapracá
 =============================
