@@ -45,6 +45,11 @@
             }
         },
 
+        // Removing loading spinner
+        setup: function (editor) {
+            $('.tinymce-loading').hide();
+        },
+
         // Image upload
         // enable title field in the Image dialog
         image_title: false,
