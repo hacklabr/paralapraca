@@ -20,6 +20,9 @@
 .widget-topbar {
     &.breadcrumb {
         .line {
+            .forum-header-link {
+                @include link-hover($orange,$orange,transparent,$orange);
+            }
             .new-topic {
                 margin-right: 10px;
             }
