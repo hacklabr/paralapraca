@@ -94,6 +94,10 @@
                         </div>
                         <div class="form-group">
                             <label for="thread-text">Texto do tópico</label>
+                            <div class="tinymce-loading">
+                                <div class="fa fa-spinner fa-pulse fa-4x"></div>
+                                <p>Carregando formulário...</p>
+                            </div>
                             <textarea ui-tinymce
                                       ng-model="topic.content"
                                       placeholder="Escreva aqui sua resposta" required></textarea>
@@ -216,6 +220,10 @@
                                 </div>
                                 <!-- Edição de um comentário -->
                                 <form class="comments-form" ng-if="comment.updating" ng-init="changed_comment = comment">
+                                    <div class="tinymce-loading">
+                                        <div class="fa fa-spinner fa-pulse fa-4x"></div>
+                                        <p>Carregando formulário...</p>
+                                    </div>
                                     <textarea ui-tinymce
                                               ng-model="changed_comment.text"
                                               placeholder="Escreva aqui o seu comentário"></textarea>
@@ -268,6 +276,10 @@
                                     </div>
                                     <!-- Edição de resposta a um comentário -->
                                     <form class="comments-form" ng-if="reply.updating" ng-init="changed_reply = reply">
+                                        <div class="tinymce-loading">
+                                            <div class="fa fa-spinner fa-pulse fa-4x"></div>
+                                            <p>Carregando formulário...</p>
+                                        </div>
                                         <textarea ui-tinymce
                                                   ng-model="changed_reply.text"
                                                   placeholder="Escreva aqui o seu comentário"></textarea>
@@ -305,6 +317,10 @@
                             <!-- Criar nova resposta a comentário -->
                             <div id="new-answer-{{comment.id}}" class="info">
                                 <form class="comments-form" ng-if="comment.show_comment_input" ng-init="reply = new_comment()">
+                                    <div class="tinymce-loading">
+                                        <div class="fa fa-spinner fa-pulse fa-4x"></div>
+                                        <p>Carregando formulário...</p>
+                                    </div>
                                     <textarea ui-tinymce
                                               ng-model="reply.text"
                                               placeholder="Escreva aqui o seu comentário"></textarea>
