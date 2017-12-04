@@ -162,14 +162,14 @@ wrapper-course-lesson
 
         <fieldset>
             <legend class="page-header">
-                <h2><i class="fa fa-angle-double-right"></i> {% trans "User Groups" %}</h2>
+                <h2><i class="fa fa-angle-double-right"></i> {% trans "Grupos do Usuário" %}</h2>
             </legend>
             {% with errors=form.groups.errors %}
-              <label class="col-xs-12 col-sm-3 col-lg-2 control-label">{% trans "Username" %}</label>
-                <div class="col-xs-12 col-sm-9 col-lg-10">
-                    {{ form.groups }}
-                    {% for error in errors %}<small>{{error}}</small>{% endfor %}
-                </div>
+              <label class="col-xs-12 col-sm-3 col-lg-2 control-label">{% trans "Grupos" %}</label>
+              <div class="col-xs-12 col-sm-9 col-lg-10">
+                {{ form.groups }}
+                {% for error in errors %}<small>{{error}}</small>{% endfor %}
+              </div>
             {% endwith %}
         </fieldset>
 

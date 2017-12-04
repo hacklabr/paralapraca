@@ -25,7 +25,7 @@ wrapper-course-lesson
     <div ng-hide="user_profile.$resolved">
         <p><i class="loading fa fa-refresh fa-spin"></i></p>
     </div>
-    <div ng-show="user_profile" ng-if="user_profile">
+    <section ng-show="user_profile" ng-if="user_profile" class="profile-row">
         <div class="page-header">
             <h2><i class="fa fa-angle-double-right"></i> {% trans "Profile" %}</h2>
         </div>
@@ -61,14 +61,16 @@ wrapper-course-lesson
             {% endverbatim %}
         </div>
 
-    </div>
+    </section>
 
-    <div class="profile-certificates">
+    <section class="profile-certificates row-profile">
 
         <div ng-if="current_user.is_superuser && user_profile.classes.length > 0">
             {% verbatim %}
             <div class="page-header profile-classes">
                 <h2>Turmas</h2>
+            </div>
+            <div>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -88,11 +90,9 @@ wrapper-course-lesson
         </div>
 
         <div ng-if="valid_certificates">
-
             <div class="page-header">
                 <h2><i class="fa fa-angle-double-right"></i>Cursos finalizados</h2>
             </div>
-
             <div class="widget">
                 {%verbatim%}
                 <div class="courses line two-column fifty-fifty">
@@ -116,6 +116,6 @@ wrapper-course-lesson
                 {%endverbatim%}
             </div>
         </div>
-    </div>
+    </section>
 </div>
 {% endblock %}

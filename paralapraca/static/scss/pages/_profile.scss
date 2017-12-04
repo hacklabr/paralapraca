@@ -1,6 +1,17 @@
 // Profile's pages
 // --------------------------------------------------
 
+.profile-row {
+    &:before, &:after{
+        content: " ";
+        display: table;
+    }
+
+    &:after {
+        clear: both;
+    }
+}
+
 .profile-picture {
     background-position: center;
     background-size: cover;
