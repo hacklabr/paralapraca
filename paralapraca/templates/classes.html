@@ -21,6 +21,7 @@ wrapper-course-lesson
 <script type="text/javascript" src="{% static 'js/directives/waiting-screen.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/edit-class/app.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/edit-class/controllers.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/edit-class/services.js' %}"></script>
 <script type="text/javascript" src="{% static 'checklist-model/checklist-model.js' %}"></script>
 <script type="text/javascript" src="{% static 'angular-ui-select/dist/select.js' %}"></script>
 {% endcompress %}
@@ -40,7 +41,7 @@ wrapper-course-lesson
     </div>
 </div>
 
-<div class="course course-classes">
+<div class="course course-classes" ng-controller="ClassesListController">
     {% include "_course-header-inline.html"  with course=course %}
     <section class="classes-content page container-fluid">
     	<header class="page-header">
@@ -53,6 +54,16 @@ wrapper-course-lesson
                 </div>
             </div>
         </header>
+        <form class="add-users">
+            <div class="form-row">
+                <label for="select-contract">Selecionar contrato: </label>
+                <div class="autocomplete">
+                    <select id="select-contract" class="form-control" ng-model="classe.contract" ng-options="contract.name for contract in contracts track by contract.id">
+                        <option value="">Todos os contratos</option>
+                    </select>
+                </div>
+            </div>
+        </form>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -63,26 +74,20 @@ wrapper-course-lesson
                 </tr>
             </thead>
             <tbody>
-                {% for class in object_list %}
-                <tr>
-                    <td><a href="{% url 'class' pk=class.id %}">{{ class.name }}</a></td>
-                    <td>{% for assistant in class.assistants.all %}
-                            {{ assistant }}
-                            <br>
-                        {% endfor %}
-                        </td>
-                    <td>{{ class.students.count }}</td>
+                {% verbatim %}
+                <tr ng-repeat="klass in classes">
+                    <td><a ng-href="/class/{{klass.id}}/">{{ klass.name }}</a></td>
+                    <td>
+                        <span ng-repeat="assistant in klass.assistants">
+                            {{ assistant.name }}<br/>
+                        </span>
+                    </td>
+                    <td>{{ klass.students.length }}</td>
                     <td class="actions">
-                        <form method="post" action="{% url 'class-delete' pk=class.id %}">
-                            <a href="{% url 'class' pk=class.id %}" class="btn btn-sm btn-success edit">editar</a>
-                            {% csrf_token %}
-                            <!--{% if class.course.default_class.id != class.id %}
-                                <button type="submit" class="btn btn-sm btn-danger delete">deletar</button>
-                            {% endif %}-->
-                        </form>
+                        <a ng-href="/class/{{klass.id}}/" class="btn btn-sm btn-success edit">editar</a>
                     </td>
                 </tr>
-                {% endfor %}
+                {% endverbatim %}
             </tbody>
         </table>
     </section>
