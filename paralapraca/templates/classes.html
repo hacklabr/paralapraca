@@ -58,7 +58,7 @@ wrapper-course-lesson
             <div class="form-row">
                 <label for="select-contract">Selecionar contrato: </label>
                 <div class="autocomplete">
-                    <select id="select-contract" class="form-control" ng-model="classe.contract" ng-options="contract.name for contract in contracts track by contract.id">
+                    <select id="select-contract" class="form-control" ng-model="filters.contract" ng-options="contract.name for contract in contracts track by contract.id">
                         <option value="">Todos os contratos</option>
                     </select>
                 </div>
@@ -75,7 +75,7 @@ wrapper-course-lesson
             </thead>
             <tbody>
                 {% verbatim %}
-                <tr ng-repeat="klass in classes">
+                <tr ng-repeat="klass in classes.filtered">
                     <td><a ng-href="/class/{{klass.id}}/">{{ klass.name }}</a></td>
                     <td>
                         <span ng-repeat="assistant in klass.assistants">
