@@ -64,7 +64,7 @@ wrapper-course-lesson
                 </div>
             </div>
         </form>
-        <table class="table table-striped">
+        <table class="table table-striped" ng-show="classes.filtered.length > 0">
             <thead>
                 <tr>
                     <th class="classname">{% trans "Class name" %}</th>
@@ -90,6 +90,7 @@ wrapper-course-lesson
                 {% endverbatim %}
             </tbody>
         </table>
+        <p ng-hide="classes.filtered.length > 0">Nenhuma turma encontrada.</p>
     </section>
 </div>
 {% endblock %}
