@@ -14,9 +14,9 @@ router.register(r'summary', views.SummaryViewSet, base_name='summary')
 router.register(r'users-by-group', views.UsersByGroupViewSet, base_name='users-by-group')
 router.register(r'users-by-class', views.UsersByClassViewSet, base_name='users-by-class')
 
-plpc_router = routers.SimpleRouter(trailing_slash=False)
 router.register(r'group', views.ContractGroupViewSet, base_name='group')
 router.register(r'group_admin', views.ContractGroupAdminViewSet, base_name='group_admin')
+router.register(r'course_classes', views.ContractClassViewSet, base_name='course_classes')
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name="base.html")),

@@ -4,6 +4,7 @@ from discussion.serializers import BaseTopicSerializer, BaseCommentSerializer, T
 from accounts.models import TimtecUser
 from accounts.serializers import GroupSerializer, GroupAdminSerializer
 from core.models import Class, Course
+from core.serializers import ClassSerializer as CoreClassSerializer
 from django.contrib.auth.models import Group
 
 
@@ -169,21 +170,24 @@ class SimpleContractSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
-class ContractGroupSerializer(GroupSerializer):
-    contract = serializers.SerializerMethodField()
+class ContractBaseSerializerMixin(serializers.ModelSerializer):
+    contract = serializers.SerializerMethodField(read_only=False, )
+
+    def get_contract(self, obj):
+        return SimpleContractSerializer(obj.contract.first(),).data
+
+
+class ContractGroupSerializer(ContractBaseSerializerMixin, GroupSerializer):
 
     class Meta(GroupSerializer.Meta):
         fields = ('id', 'name', 'contract')
 
-    def get_contract(self, obj):
-        return SimpleContractSerializer(obj.contract.first(),).data
 
+class ContractGroupAdminSerializer(ContractBaseSerializerMixin, GroupAdminSerializer):
 
-class ContractGroupAdminSerializer(GroupAdminSerializer):
-    contract = serializers.SerializerMethodField()
-
-    class Meta(GroupSerializer.Meta):
+    class Meta(GroupAdminSerializer.Meta):
         fields = ('id', 'name', 'users', 'contract')
 
-    def get_contract(self, obj):
-        return SimpleContractSerializer(obj.contract.first(),).data
+
+class ContractClassSerializer(ContractBaseSerializerMixin, CoreClassSerializer):
+    pass
