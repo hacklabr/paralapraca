@@ -194,4 +194,17 @@ class ContractGroupAdminSerializer(ContractBaseSerializerMixin, GroupAdminSerial
 
 
 class ContractClassSerializer(ContractBaseSerializerMixin, CoreClassSerializer):
-    pass
+    def update(self, instance, validated_data):
+        updated = super(ContractClassSerializer, self).update(instance, validated_data)
+        current = updated.contract.first()
+        contract = self.context['request'].data.get('contract', None)
+
+        if contract:
+            if current and (contract['id'] != current.id):
+                c = Contract.objects.get(pk=contract['id'])
+                updated.contract.clear()
+                updated.contract.add(c)
+        else:
+            updated.contract.clear()
+
+        return updated
