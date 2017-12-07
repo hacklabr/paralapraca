@@ -160,7 +160,9 @@ wrapper-course-lesson
             <div class="form-row">
                 <label for="select-contract">Selecionar contrato: </label>
                 <div class="autocomplete">
-                    <select id="select-contract" class="form-control" ng-model="classe.contract" ng-options="contract.name for contract in contracts track by contract.id"></select>
+                    <select id="select-contract" class="form-control" ng-model="classe.contract" ng-options="contract.name for contract in contracts track by contract.id">
+                        <option value="">Nenhum contrato</option>
+                    </select>
                 </div>
             </div>
             <div class="form-row">
