@@ -174,7 +174,11 @@ class ContractBaseSerializerMixin(serializers.ModelSerializer):
     contract = serializers.SerializerMethodField(read_only=False, )
 
     def get_contract(self, obj):
-        return SimpleContractSerializer(obj.contract.first(),).data
+        contract = obj.contract.first()
+        if contract:
+            return SimpleContractSerializer(obj.contract.first(),).data
+        else:
+            return None
 
 
 class ContractGroupSerializer(ContractBaseSerializerMixin, GroupSerializer):
