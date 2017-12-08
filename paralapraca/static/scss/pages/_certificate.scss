@@ -94,6 +94,14 @@
                 font-size: 22px;
             }
         }
+        .certificate-template {
+            margin-left: 100px;
+            margin-right: 100px;
+            textarea {
+                border: 0;
+                width: 100%;
+            }
+        }
     }
     footer {
         font-size: $font-size-small;
@@ -191,7 +199,7 @@
 }
 .certificate-admin {
     counter-reset: steps-counter;
-    .institute-logo {
+    .certificate-logo {
         max-width: 150px;
         input {
             margin-top: 10px;
@@ -219,9 +227,10 @@
         }
     }
     .institute,
-    .institute-logo,
+    .certificate-logo,
     .name-coordinator,
     .role-coordinator,
+    .certificate-template,
     .certificate-signature {
         &:before {
             background-color: $brand-warning;
@@ -250,9 +259,10 @@
         }
     }
     .institute,
-    .institute-logo,
+    .certificate-logo,
     .name-coordinator,
     .role-coordinator,
+    .certificate-template,
     .certificate-signature {
         counter-increment: steps-counter;
         position: relative;

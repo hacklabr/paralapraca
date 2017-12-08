@@ -74,25 +74,32 @@ ng-app="certification"
             {% block certificate-options %}
             <div role="tabpanel" class="tab-pane active edit-certificates" id="edit-certificate">
                 <div class="alert alert-info" role="alert">
-                    Edite os elementos numerados de <strong>1 a 4</strong> com as informações que serão exibidas no certificado final do curso.
+                    Edite os elementos numerados de <strong>1 a 7</strong> com as informações que serão exibidas no certificado final do curso.
                 </div>
                 <div class="certificate-container certificate-admin">
                     <div class="certificate-logos">
-                        <img src="/static/img/logo-avante.png" alt="AVANTE" class="avante">
-                        <img src="/static/img/site-logo-orange.svg" alt="{{ site.name }}" class="paralapraca">
-                        <div class="institute-logo">
-                            {% verbatim %}
-                            <img id="cert-logo" alt="Logo Instituto" preview-image ng-model="images.cert_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
-                            {% endverbatim %}
+                        {% verbatim %}
+                        <div class="certificate-logo">
+                            <img id="cert-logo" alt="Logo primário" preview-image ng-model="images.base_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
+                            <file ng-model="images.base_logo" name="logo"></file>
+                        </div>
+                        <div class="certificate-logo">
+                            <img id="cert-logo" alt="Logo terciário" preview-image ng-model="images.site_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
+                            <file ng-model="images.site_logo" name="logo"></file>
+                        </div>
+                        <div class="certificate-logo">
+                            <img id="cert-logo" alt="Logo secundário" preview-image ng-model="images.cert_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
                             <file ng-model="images.cert_logo" name="logo"></file>
                         </div>
+                        {% endverbatim %}
                     </div>
                     <div class="certificate-title">Certificado</div>
                     <div class="certificate-info">
-                      <p>Certificamos que</p>
-                      <p class="student">________________</p>
-                      <p>concluiu o <strong>______________________</strong>,</p>
-                      <p>em <strong>___________________</strong> no ambiente virtual de aprendizagem do <strong>Programa Paralapracá</strong>,</p> <p>perfazendo o total de 40 horas.</p>
+                        <p>Certificamos que</p>
+                        <p class="student">________________</p>
+                        <div class="certificate-template">
+                            <textarea class="editable-text" rows="3" placeholder="concluiu o módulo {nome_curso} no ambiente virtual de aprendizagem Programa Paralapracá, perfazendo o total de {carga_horaria} horas."></textarea>
+                        </div>
                     </div>
                     <footer>{{ object.course_student.user.get_full_name }}
                       <div class="credits-section">
@@ -124,21 +131,25 @@ ng-app="certification"
                 </div>
                 <div class="certificate-container certificate-admin receipt-admin receipt">
                   <div class="certificate-logos">
-                      <img src="/static/img/logo-avante.png" alt="AVANTE" class="avante">
-                      <div class="institute-logo">
                         {% verbatim %}
-                          <img id="base-logo" alt="Logo Instituto" preview-image ng-model="images.base_logo" ng-src="{{ ct.base_logo_url }}" class="img-responsive" />
+                        <div class="certificate-logo">
+                            <img id="cert-logo" alt="Logo primário" preview-image ng-model="images.base_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
+                            <file ng-model="images.base_logo" name="logo"></file>
+                        </div>
+                        <div class="certificate-logo">
+                            <img id="base-logo" alt="Logo secundário" preview-image ng-model="images.cert_logo" ng-src="{{ ct.base_logo_url }}" class="img-responsive" />
+                            <file ng-model="images.cert_logo" name="logo"></file>
+                        </div>
                         {% endverbatim %}
-                        <file ng-model="images.base_logo" name="logo"></file>
-                      </div>
                   </div>
                   <div class="certificate-title">Declaração</div>
                   <div class="certificate-info">
                       {% block receipt-options-student %}
                           <p class="student">________________</p>
                       {%   endblock %}
-                      <p>concluiu o <em>{{ course.name }}</em> </p>
-                      <p>com carga horária estimada em 40 horas em ________.</p>
+                      <div class="certificate-template">
+                            <textarea class="editable-text" rows="3" placeholder="concluiu o módulo {nome_curso} com carga horária estimada de {carga_horaria} horas em {data_conclusao}."></textarea>
+                        </div>
                   </div>
                   <footer>
                       <div class="credits-section">
