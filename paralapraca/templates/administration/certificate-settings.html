@@ -80,15 +80,15 @@ ng-app="certification"
                     <div class="certificate-logos">
                         {% verbatim %}
                         <div class="certificate-logo">
-                            <img id="cert-logo" alt="Logo primário" preview-image ng-model="images.base_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
+                            <img id="base-logo" alt="Logo" preview-image ng-model="images.base_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
                             <file ng-model="images.base_logo" name="logo"></file>
                         </div>
                         <div class="certificate-logo">
-                            <img id="cert-logo" alt="Logo terciário" preview-image ng-model="images.site_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
+                            <img id="site-logo" alt="Logo" preview-image ng-model="images.site_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
                             <file ng-model="images.site_logo" name="logo"></file>
                         </div>
                         <div class="certificate-logo">
-                            <img id="cert-logo" alt="Logo secundário" preview-image ng-model="images.cert_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
+                            <img id="cert-logo" alt="Logo" preview-image ng-model="images.cert_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
                             <file ng-model="images.cert_logo" name="logo"></file>
                         </div>
                         {% endverbatim %}
@@ -133,11 +133,15 @@ ng-app="certification"
                   <div class="certificate-logos">
                         {% verbatim %}
                         <div class="certificate-logo">
-                            <img id="cert-logo" alt="Logo primário" preview-image ng-model="images.base_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
+                            <img id="base-logo" alt="Logo" preview-image ng-model="images.base_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
                             <file ng-model="images.base_logo" name="logo"></file>
                         </div>
                         <div class="certificate-logo">
-                            <img id="base-logo" alt="Logo secundário" preview-image ng-model="images.cert_logo" ng-src="{{ ct.base_logo_url }}" class="img-responsive" />
+                            <img id="site-logo" alt="Logo" preview-image ng-model="images.site_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
+                            <file ng-model="images.site_logo" name="logo"></file>
+                        </div>
+                        <div class="certificate-logo">
+                            <img id="cert-logo" alt="Logo" preview-image ng-model="images.cert_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
                             <file ng-model="images.cert_logo" name="logo"></file>
                         </div>
                         {% endverbatim %}
