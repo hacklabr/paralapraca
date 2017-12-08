@@ -98,7 +98,7 @@ ng-app="certification"
                         <p>Certificamos que</p>
                         <p class="student">________________</p>
                         <div class="certificate-template">
-                            <textarea class="editable-text" rows="3" placeholder="concluiu o módulo {nome_curso} no ambiente virtual de aprendizagem Programa Paralapracá, perfazendo o total de {carga_horaria} horas."></textarea>
+                            <textarea class="editable-text" rows="3" ng-model="ct.certificate_text" placeholder="concluiu o módulo {nome_curso} no ambiente virtual de aprendizagem Programa Paralapracá, perfazendo o total de {carga_horaria} horas."></textarea>
                         </div>
                     </div>
                     <footer>{{ object.course_student.user.get_full_name }}
@@ -148,7 +148,7 @@ ng-app="certification"
                           <p class="student">________________</p>
                       {%   endblock %}
                       <div class="certificate-template">
-                            <textarea class="editable-text" rows="3" placeholder="concluiu o módulo {nome_curso} com carga horária estimada de {carga_horaria} horas em {data_conclusao}."></textarea>
+                            <textarea class="editable-text" rows="3" ng-model="ct.receipt_text" placeholder="concluiu o módulo {nome_curso} com carga horária estimada de {carga_horaria} horas em {data_conclusao}."></textarea>
                         </div>
                   </div>
                   <footer>
