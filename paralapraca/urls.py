@@ -26,5 +26,4 @@ urlpatterns = [
     url(r'^contract-edit.html$', TemplateView.as_view(template_name="contract-edit.html")),
     url(r'^contract-detail.html$', TemplateView.as_view(template_name="contract-detail.html")),
     url(r'^contracts-list.html$', TemplateView.as_view(template_name="contracts-list.html")),
-    url(r'^certificates-list.html$', TemplateView.as_view(template_name="administration/certificates-list.html")),
 ]

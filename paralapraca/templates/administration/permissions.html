@@ -5,10 +5,6 @@
 
 {% block js %}
     {{ block.super }}
-    {% compress css %}
-        <link rel="stylesheet" type="text/css" href="{% static 'angular-ui-select/dist/select.css' %}">
-    {% endcompress %}
-
     {% compress js %}
         <!-- plpc-header -->
         <script type="text/javascript" src="{% static 'js/header-app.js' %}"></script>
@@ -19,11 +15,9 @@
         <!-- Course Permissions -->
         <script type="text/javascript" src="{% static 'js/course-permissions/app.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/course-permissions/controllers.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/course-permissions/services.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/factories/timtec-models.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/directives/fixedBar.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/directives/alertPopup.js' %}"></script>
-        <script type="text/javascript" src="{% static 'angular-ui-select/dist/select.js' %}"></script>
     {% endcompress %}
 {% endblock %}
 
@@ -96,17 +90,6 @@ ng-app="course-permissions"
                 </tr>
             </tbody>
         </table>
-        <header class="page-header">
-            <h3>Grupos de acesso</h3>
-        </header>
-        {% verbatim %}
-        <ui-select multiple theme="bootstrap" class="form-control" ng-model="permission_groups" ng-show="!modal.all_students && !modal.specify_students" close-on-select="false">
-            <ui-select-match placeholder="Escolha um ou mais grupos">{{ group_label($item) }}</ui-select-match>
-            <ui-select-choices repeat="group.id as group in groups | filter: {name: $select.search}" group-by="contract_name">
-                <div ng-bind-html="get_as_safe_html((group.name | highlight: $select.search))"></div>
-            </ui-select-choices>
-        </ui-select>
-        {% endverbatim %}
     </section>
     <!-- modal add user -->
     <script type="text/ng-template" id="newProfessorModal.html">
