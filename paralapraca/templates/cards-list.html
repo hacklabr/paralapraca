@@ -40,9 +40,9 @@
             <div class="form-group col-xs-12 col-md-6 col-lg-3">
                 <label>Quais práticas deseja filtrar?</label>
                 <select ng-model ="card_filter.status" class="form-control">
-                    <option value="">Todas as práticas publicadas</option>
+                    <option value="">Todas as práticas</option>
                     <option value="2">Práticas validadas</option>
-                    <option value="3">Práticas independentes</option>
+                    <option value="3">Práticas postadas</option>
                 </select>
             </div>
             <div class="form-group col-xs-12 col-md-6 col-lg-3">
@@ -78,7 +78,7 @@
         <div class="results-info">
             <div class="results-info-tags">
                 <a class="tag active" ng-click="card_filter.status = '';" ng-show="card_filter.status == '2'">Práticas validadas</a>
-                <a class="tag active" ng-click="card_filter.status = ''" ng-show="card_filter.status == '3'">Práticas independentes</a>
+                <a class="tag active" ng-click="card_filter.status = ''" ng-show="card_filter.status == '3'">Práticas postadas</a>
                 <a class="tag active" ng-click="card_filter.audience = ''" ng-hide="card_filter.audience == ''">{{ card_filter.audience }}</a>
                 <a class="tag active" ng-click="card_filter.axis = ''" ng-hide="card_filter.axis == ''">{{ card_filter.axis }}</a>
                 <a class="tag active" ng-repeat="tag in card_filter.tags" ng-click="remove_tag($index)">#{{ tag.name }}</a>
@@ -92,6 +92,7 @@
                 <header class="col-xs-12">
                     <h3 class="subtitle pull-left">
                         Práticas validadas
+                        <i class="fa fa-info-circle hint-tooltip"><span>Práticas documentadas e compartilhadas pelas/os participantes da plataforma ou especialistas da área e chanceladas pela equipe do Programa.</span></i>
                         <span class="practices-count"><ng-pluralize count="cards.certified.length" when="{'0': 'nenhuma prática', '1': '1 prática', 'other': '{{ cards.certified.length }} práticas'}"></ng-pluralize></span>
                     </h3>
                     <nav class="cards-pagination pull-left" ng-show="cards.certified.length > 3">
@@ -142,7 +143,8 @@
             <div class="row">
                 <header class="col-xs-12">
                     <h3 class="subtitle pull-left">
-                        Práticas independentes
+                        Práticas postadas
+                        <i class="fa fa-info-circle hint-tooltip"><span>Práticas documentadas e compartilhadas pelas/os participantes da plataforma.</span></i>
                         <span class="practices-count"><ng-pluralize count="cards.community.length" when="{'0': 'nenhuma prática', '1': '1 prática', 'other': '{{ cards.community.length }} práticas'}"></ng-pluralize></span>                    </h3>
                     <nav class="cards-pagination pull-left" ng-show="cards.community.length > 3">
                         <ul>

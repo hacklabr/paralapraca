@@ -843,3 +843,26 @@
         }
     }
 }
+
+.hint-tooltip {
+    color: $blue;
+    margin-left: 5px;
+    span {
+        display: none;
+    }
+    &:hover, &:active {
+        span {
+            background-color: $blue;
+            border-radius: 5px;
+            color: white;
+            display: block;
+            font-family: $font-family-sans-serif;
+            left: 0;
+            line-height: 150%;
+            margin-top: 10px;
+            padding: 10px;
+            position: absolute;
+            z-index: 20;
+        }
+    }
+}

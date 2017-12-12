@@ -52,9 +52,11 @@
             </div>
 
             <p class="tipo-pratica col-sm-12">
-                <span ng-show="card.is_certified">Sua prática foi certificada pela Avante.</span>
-                <span ng-show="!card.is_certified">Sua prática é independente.</span>
-                <span ng-show="card.certifiable"><br/><input type="checkbox" ng-model="card.is_certified" ng-checked="card.is_certified"> Certificar prática</span>
+                <span ng-show="card.is_certified && !editing_mode">Sua prática será validada.</span>
+                <span ng-show="!card.is_certified && !editing_mode">Sua prática será postada.</span>
+                <span ng-show="card.is_certified && editing_mode">Sua prática foi validada.</span>
+                <span ng-show="!card.is_certified && editing_mode">Sua prática foi postada.</span>
+                <span ng-show="card.certifiable"><br/><input type="checkbox" ng-model="card.is_certified" ng-checked="card.is_certified"> Validar prática</span>
             </p>
         </header>
 
