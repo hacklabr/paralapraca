@@ -71,8 +71,8 @@
                                     </ui-select-choices>
                                 </ui-select>
                                 {% endverbatim %}
-                                <label><input type="radio" ng-model="modal.selected_mode" ng-value="modal.modes.SOME_STUDENTS"> Especificar usuários individualmente</label>
-                                <div class="autocomplete" ng-show="modal.selected_mode == modal.modes.SOME_STUDENTS">
+                                <p><label><input type="radio" ng-model="modal.selected_mode" ng-value="modal.modes.SOME_STUDENTS"> Especificar usuários individualmente</label></p>
+                                <p class="autocomplete" ng-show="modal.selected_mode == modal.modes.SOME_STUDENTS">
                                     <input type="text" id="search-user" class="form-control" ng-model="asyncSelected"
                                                     placeholder="Digite o nome ou email do usuário..."
                                                     uib-typeahead="user as user.formated_name for user in getUsers($viewValue)"
@@ -81,7 +81,7 @@
                                                     typeahead-min-length="2"
                                                     typeahead-wait-ms="500">
                                     <i ng-show="loadingLocations" class="loading fa fa-refresh fa-spin"></i>
-                                </div>
+                                </p>
                                 <table class="table table-list" ng-show="modal.selected_mode == modal.modes.SOME_STUDENTS && recipient_list.length">
                                     <tr>
                                         <th class="fullname">Nome completo</th>
