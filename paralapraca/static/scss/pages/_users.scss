@@ -60,6 +60,20 @@
             }
         }
     }
+    .btn.see-profile {
+        @extend %icon-see-more;
+        padding: 3px 9px;
+        background-color: white;
+        color: $gray;
+        &:before {
+            font-size: $font-size-large;
+            margin-right: 0;
+        }
+        &:hover {
+            background-color: $gray;
+            color: white;
+        }
+    }
 }
 
 .groups-list {

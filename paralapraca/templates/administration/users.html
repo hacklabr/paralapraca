@@ -109,11 +109,11 @@ ng-app="users-admin"
                         <thead>
                             <tr>
                                 <th class="username-email">Nome e e-mail de usuário</th>
-                                <th class="fullname">Nome completo</th>
                                 <th class="groups">Grupos</th>
                                 <th class="role">Administrator</th>
                                 <th class="active">Ativo</th>
-                                <th class="actions">Ações</th>
+                                <th class="actions">Ver perfil</th>
+                                <th class="actions">Remover</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -124,9 +124,8 @@ ng-app="users-admin"
                                         <a href="/profile/{{user.username}}"><img ng-src="{{ user.picture }}" alt="{{ user.name }}"></a>
                                     </div>
                                     <b>{{ user.name }}</b><br>
-                                    (<a href="/profile/{{user.username}}">{{ user.email }}</a>)
+                                    ({{ user.email }})
                                 </td>
-                                <td>{{ user.name }} {{ user.get_full_name }}</td>
                                 <td>
                                     <b ng-repeat="(key, group) in user.groups">{{  key>0 ? ", " : "" }}{{group.name}}</b>
                                 </td>
@@ -135,6 +134,9 @@ ng-app="users-admin"
                                 </td>
                                 <td class="text-center">
                                     <input type="checkbox" ng-model="user.is_active" ng-change="update_user(user)">
+                                </td>
+                                <td class="textcenter">
+                                    <a class="btn see-profile btn-inverse" href="/profile/{{user.username}}"></a>
                                 </td>
                                 <td class="textcenter">
                                     <button class="btn btn-danger btn-inverse trash js-delete" ng-click="delete_user(user, $index)"></button>
