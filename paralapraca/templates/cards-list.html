@@ -14,11 +14,11 @@
 
     <section class="cards-search">
         <div class="row">
-            <div class="col-xs-12 col-md-6 col-lg-7">
+            <div class="col-xs-12 col-md-9">
                 <form ng-submit="get_cards()">
                     <fieldset class="clearfix search-container">
-                        <legend class="sr-only">Busca por palavra-chave</legend>
-                        <input type="text" placeholder="Insira aqui uma palavra-chave"  class="form-control search-input" ng-model="keyword">
+                        <legend class="sr-only">Busca por palavras-chave</legend>
+                        <input type="text" placeholder="Buscar"  class="form-control search-input" ng-model="keyword">
                         <button type="submit" class="search-button">
                             <span class="sr-only">buscar</span>
                         </button>
@@ -28,10 +28,10 @@
                     </span>-->
                 </form>
             </div>
-            <div class="col-xs-6 col-md-3 col-lg-3">
+            <div class="col-xs-6 col-md-1">
                 <div class="open-filters-options" ng-class="{opened: show_filter_options, closed: !show_filter_options}" ng-click="show_filter_options = !show_filter_options"></div>
             </div>
-            <div class="col-xs-6 col-md-3 col-lg-2">
+            <div class="col-xs-6 col-md-2">
                 <span class="btn btn-sm btn-default delete clean-filters pull-right" ng-show="show_filter_options" ng-click="clean_filters()">limpar filtros</span>
             </div>
         </div>
@@ -92,7 +92,7 @@
                 <header class="col-xs-12">
                     <h3 class="subtitle pull-left">
                         Práticas validadas
-                        <i class="fa fa-info-circle hint-tooltip"><span>Práticas documentadas e compartilhadas pelas/os participantes da plataforma ou especialistas da área e chanceladas pela equipe do Programa.</span></i>
+                        <i class="fa fa-info-circle hint-tooltip"><span class="hint-text">Práticas documentadas e compartilhadas pelas/os participantes da plataforma ou especialistas da área e chanceladas pela equipe do Programa.</span></i>
                         <span class="practices-count"><ng-pluralize count="cards.certified.length" when="{'0': 'nenhuma prática', '1': '1 prática', 'other': '{{ cards.certified.length }} práticas'}"></ng-pluralize></span>
                     </h3>
                     <nav class="cards-pagination pull-left" ng-show="cards.certified.length > 3">
@@ -144,7 +144,7 @@
                 <header class="col-xs-12">
                     <h3 class="subtitle pull-left">
                         Práticas postadas
-                        <i class="fa fa-info-circle hint-tooltip"><span>Práticas documentadas e compartilhadas pelas/os participantes da plataforma.</span></i>
+                        <i class="fa fa-info-circle hint-tooltip"><span class="hint-text">Práticas documentadas e compartilhadas pelas/os participantes da plataforma.</span></i>
                         <span class="practices-count"><ng-pluralize count="cards.community.length" when="{'0': 'nenhuma prática', '1': '1 prática', 'other': '{{ cards.community.length }} práticas'}"></ng-pluralize></span>                    </h3>
                     <nav class="cards-pagination pull-left" ng-show="cards.community.length > 3">
                         <ul>

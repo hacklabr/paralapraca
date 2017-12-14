@@ -68,15 +68,9 @@
         }
         &.closed {
             @include icon(before, chevron-down);
-            &:after {
-                content: 'abrir filtros de busca';
-            }
         }
         &.opened {
             @include icon(before, chevron-up);
-            &:after {
-                content: 'fechar filtros de busca';
-            }
         }
     }
     .cards-filters-options {
@@ -116,6 +110,7 @@
         }
     }
     .results-info-tags {
+        margin-top: 10px;
         .tag {
             @include icon(after, times);
             border-color: $gray;
@@ -408,6 +403,9 @@
             }
         }
     }
+    .hint-text {
+        background-color: $purple;
+    }
 }
 
 .praticas-independentes {
@@ -463,6 +461,9 @@
                 background-color: darken($orange,10%);
             }
         }
+    }
+    .hint-text {
+        background-color: $orange;
     }
 }
 
@@ -845,14 +846,12 @@
 }
 
 .hint-tooltip {
-    color: $blue;
     margin-left: 5px;
     span {
         display: none;
     }
     &:hover, &:active {
         span {
-            background-color: $blue;
             border-radius: 5px;
             color: white;
             display: block;
