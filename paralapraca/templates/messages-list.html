@@ -61,17 +61,18 @@
                         </div>
                         <div class="form-group row">
                             <div class="students col-lg-12">
-                                <p><label><input type="checkbox" ng-model="modal.all_students"> Enviar para todos os alunos da plataforma</label></p>
+                                <p><label><input type="radio" ng-model="modal.selected_mode" ng-value="modal.modes.ALL_STUDENTS"> Enviar para todos os alunos da plataforma</label></p>
                                 {% verbatim %}
-                                <ui-select multiple theme="bootstrap" class="form-control" ng-model="groups.checked" ng-show="!modal.all_students && !modal.specify_students" close-on-select="false">
+                                <p><label><input type="radio" ng-model="modal.selected_mode" ng-value="modal.modes.SOME_GROUPS"> Especificar grupos</label></p>
+                                <ui-select multiple theme="bootstrap" class="form-control" ng-model="groups.checked" ng-show="modal.selected_mode == modal.modes.SOME_GROUPS"  close-on-select="false">
                                     <ui-select-match placeholder="Escolha um ou mais grupos">{{ group_label($item) }}</ui-select-match>
                                     <ui-select-choices repeat="group.id as group in groups | filter: {name: $select.search}" group-by="contract_name">
                                         <div ng-bind-html="get_as_safe_html((group.name | highlight: $select.search))"></div>
                                     </ui-select-choices>
                                 </ui-select>
                                 {% endverbatim %}
-                                <label ng-show="!modal.all_students"><input type="checkbox" ng-model="modal.specify_students"> Especificar usuários individualmente</label>
-                                <div class="autocomplete" ng-show="modal.specify_students && !modal.all_students">
+                                <label><input type="radio" ng-model="modal.selected_mode" ng-value="modal.modes.SOME_STUDENTS"> Especificar usuários individualmente</label>
+                                <div class="autocomplete" ng-show="modal.selected_mode == modal.modes.SOME_STUDENTS">
                                     <input type="text" id="search-user" class="form-control" ng-model="asyncSelected"
                                                     placeholder="Digite o nome ou email do usuário..."
                                                     uib-typeahead="user as user.formated_name for user in getUsers($viewValue)"
@@ -81,7 +82,7 @@
                                                     typeahead-wait-ms="500">
                                     <i ng-show="loadingLocations" class="loading fa fa-refresh fa-spin"></i>
                                 </div>
-                                <table class="table table-list" ng-show="!modal.all_students && recipient_list.length">
+                                <table class="table table-list" ng-show="modal.selected_mode == modal.modes.SOME_STUDENTS && recipient_list.length">
                                     <tr>
                                         <th class="fullname">Nome completo</th>
                                         <th class="email">Email</th>
