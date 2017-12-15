@@ -20,9 +20,7 @@
         <!--<li><a href="#" class="repositories">{% trans "Repository" %}</a></li>-->
         <li><a href="{% url 'discussion:forum-home' %}" class="forum">Fóruns</a></li>
         <!--<li><a href="#" class="help">{% trans "Help" %}</a></li>-->
-        {% if user.is_superuser %}
-            <li><a href="/cards" class="cards">Assim se faz</a></li>
-        {% endif %}
+        <li><a href="/cards" class="cards">Assim se faz</a></li>
         <li>
             {% verbatim %}
             <a class="chat" href="/paralapraca/chat">
@@ -31,7 +29,7 @@
             </a>
             {% endverbatim %}
         </li>
-        
+
         {% if user.is_superuser %}
         <li class="submenu">
             <a class="admin"
