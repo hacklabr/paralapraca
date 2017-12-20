@@ -28,10 +28,10 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Opções</a>
                             <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="course-tools">
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'messages' course.slug %}">Avisos</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'reports' course.slug %}">{% trans 'Reports' %}</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'classes' course.slug %}">{%  trans 'Classes' %}</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'reports' course.slug %}">Relatórios</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'classes' course.slug %}">Turmas</a></li>
                                 {% if user.is_superuser or user|is_course_coordinator:course %}
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'administration.edit_course' course.id %}">{%  trans 'Edit course' %}</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'administration.edit_course' course.id %}">Editar módulo</a></li>
                                 <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'course-evaluations' course.slug %}">{%  trans 'Evaluations' %}</a></li>-->
                                 {% endif %}
                             </ul>
