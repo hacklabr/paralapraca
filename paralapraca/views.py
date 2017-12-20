@@ -13,6 +13,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from paralapraca.models import AnswerNotification, UnreadNotification, Contract
 from core.models import Course, CourseStudent, Class
+from core.views import ClassViewSet
 from accounts.models import TimtecUser
 from accounts.views import GroupViewSet, GroupAdminViewSet
 from paralapraca.serializers import (AnswerNotificationSerializer,
@@ -23,7 +24,7 @@ from discussion.models import Comment, CommentLike, Topic, TopicLike
 from rest_pandas import PandasViewSet
 from rest_pandas.renderers import PandasCSVRenderer, PandasJSONRenderer
 import pandas as pd
-from serializers import ContractGroupAdminSerializer
+from serializers import ContractGroupAdminSerializer, ContractClassSerializer
 
 ROCKET_CHAT = {
     'address': 'http://chat.paralapraca.org.br',
@@ -253,11 +254,38 @@ class ContractGroupViewSet(GroupViewSet):
     """
     Override group viewset add contracts.
     """
-    serializer_class = ContractGroupSerializer
+    def get_serializer_class(self):
+        return ContractGroupSerializer
 
 
 class ContractGroupAdminViewSet(GroupAdminViewSet):
     """
     Override group viewset add contracts.
     """
-    serializer_class = ContractGroupAdminSerializer
+    def get_serializer_class(self):
+        return ContractGroupAdminSerializer
+
+
+class ContractClassViewSet(ClassViewSet):
+    """
+    Override group viewset add contracts.
+    """
+
+    def get_queryset(self):
+        queryset = super(ContractClassViewSet, self).get_queryset()
+
+        contract_id = self.request.query_params.get('contract')
+        if contract_id:
+            print contract_id
+            try:
+                contracts = [Contract.objects.get(pk=contract_id), ]
+            except Contract.DoesNotExist:
+                return  Class.objects.none()
+
+            print contracts
+            queryset.filter(contract__in=contracts)
+
+        return queryset
+
+    def get_serializer_class(self):
+        return ContractClassSerializer

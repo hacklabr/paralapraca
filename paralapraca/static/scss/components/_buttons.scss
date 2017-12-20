@@ -151,6 +151,9 @@
     &.save {
         @extend %icon-checked;
     }
+    &.cancel {
+        @extend %icon-ban;
+    }
     &.search {
         @extend %icon-search;
     }

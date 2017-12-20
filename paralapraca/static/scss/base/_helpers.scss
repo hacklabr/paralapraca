@@ -3,7 +3,7 @@
 // generic and multi-purpose classes and placeholders
 
 //== Icon's placeholders
-// 
+//
 %icon {
     &-add {
         @include icon(before, add);
@@ -22,6 +22,9 @@
     }
     &-backward {
         @include icon(before, backward);
+    }
+    &-ban {
+        @include icon(before, ban)
     }
     &-briefcase {
         @include icon(before, briefcase);
