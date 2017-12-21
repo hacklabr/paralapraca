@@ -59,22 +59,22 @@ wrapper-course-lesson
     <section class="course-content container-fluid">
 
         <div class="add-content" ng-init="section='video'">
+            <div class="secondary-header">
+                <div class="editable-text">
+                    <input type="text" ng-model="lesson.desc" placeholder="{% trans 'Lesson description' %}">
+                </div>
+            </div>
             <div class="secondary-header row">
                 <div class="col-sm-2 col-md-1">
-                    <div class="unit">Unidade:</div>
+                    <div class="unit">{% trans 'Unit' %}:</div>
                 </div>
                 <div class="col-sm-7 col-md-9">
                     <div class="editable-text">
-                        <input type="text" ng-model="currentUnit.title" placeholder="Nome da unidade">
+                        <input type="text" ng-model="currentUnit.title" placeholder="{% trans 'Lesson description' %}">
                     </div>
                 </div>
                 <div class="col-sm-3 col-md-2">
-                    <button class="btn btn-sm btn-danger btn-inverse delete" ng-click="removeCurrentUnit()" title="Apagar esta unidade">Apagar esta unidade</button>
-                </div>
-            </div>
-            <div class="secondary-header">
-                <div class="editable-text">
-                    <input type="text" ng-model="lesson.desc" placeholder="Descrição da unidade">
+                    <button class="btn btn-sm btn-danger btn-inverse delete" ng-click="removeCurrentUnit()" title="{% trans 'Delete this unit' %}">{% trans 'Delete this unit' %}</button>
                 </div>
             </div>
 
