@@ -380,10 +380,24 @@ class CourseCertificationDetailView(DetailView):
             raise Http404
 
         if certificate:
-            print certificate
             context['cert_template'] = CertificateData.objects\
                 .get(certificate_template__course=certificate.course_student.course,
                      type=certificate.type, contract=contract)
+            # Interpolate data into text string
+            # {Nome} : certificate.student (name)
+            # {CPF} : certificate.student.cpf)
+            # {MODULO} : certificate.course.name)
+            # {CONTRATO} : context['cert_template'].contract.name)
+            # {NUM_UNIDADES} : str(certificate.course_total_units))
+            # {TURMA} : certificate.course_student.get_current_class().name)
+
+            context['cert_template'].text = context['cert_template'].text\
+                .replace('{NOME}', certificate.student.get_full_name())\
+                .replace('{CPF}', certificate.student.cpf)\
+                .replace('{MODULO}', certificate.course.name)\
+                .replace('{CONTRATO}', context['cert_template'].contract.name) \
+                .replace('{NUM_UNIDADES}', str(certificate.course_total_units))\
+                .replace('{TURMA}', certificate.course_student.get_current_class().name)\
 
         url_name = resolve(self.request.path_info).url_name
 
