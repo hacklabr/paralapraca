@@ -2,8 +2,8 @@
 from django.conf.urls import url, include
 from django.views.generic import TemplateView
 from rest_framework import routers
-from rest_framework.urlpatterns import format_suffix_patterns
 
+from views import CertificateDataViewSet, CertificateImageDataViewSet, CertificateDataAdminView
 from . import views
 
 router = routers.SimpleRouter(trailing_slash=False)
@@ -17,6 +17,8 @@ router.register(r'users-by-class', views.UsersByClassViewSet, base_name='users-b
 router.register(r'group', views.ContractGroupViewSet, base_name='group')
 router.register(r'group_admin', views.ContractGroupAdminViewSet, base_name='group_admin')
 router.register(r'course_classes', views.ContractClassViewSet, base_name='course_classes')
+router.register(r'certificate_template', CertificateDataViewSet, base_name='certificate_template')
+router.register(r'certificate_template_images', CertificateImageDataViewSet, base_name='certificate_template_images')
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name="base.html")),
@@ -27,4 +29,7 @@ urlpatterns = [
     url(r'^contract-detail.html$', TemplateView.as_view(template_name="contract-detail.html")),
     url(r'^contracts-list.html$', TemplateView.as_view(template_name="contracts-list.html")),
     url(r'^certificates-list.html$', TemplateView.as_view(template_name="administration/certificates-list.html")),
+
+    url(r'^admin/certificates$', CertificateDataAdminView.as_view(template_name="administration/certificate-data.html"), name='administration.certificates'),
+    url(r'^admin/certificate_settings/(?P<pk>[1-9][0-9]*)/$', CertificateDataAdminView.as_view(template_name="certificate-settings.html"), name="certificate_settings"),
 ]
