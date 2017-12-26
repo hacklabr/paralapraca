@@ -3,20 +3,20 @@ import json
 
 from braces.views import LoginRequiredMixin, _access
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView
 from django.core.exceptions import PermissionDenied
 
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from core.models import Course, CourseStudent, Class
+from core.models import Course, CourseStudent, Class, CertificateTemplate, CourseCertification
 from core.views import ClassViewSet
 from core.permissions import IsProfessorCoordinatorOrAdminPermissionOrReadOnly
-from core.serializers import CertificateTemplateImageSerializer
+from core.serializers import CertificateTemplateImageSerializer, CourseCertificationSerializer
 
 from accounts.models import TimtecUser
 from accounts.views import GroupViewSet, GroupAdminViewSet
@@ -313,6 +313,7 @@ class CertificateDataAdminView(AdminMixin, TemplateView, _access.AccessMixin):
 
         return response
 
+
 class CertificateDataMixin(viewsets.ModelViewSet):
      def get_queryset(self):
         queryset = CertificateData.objects.all()
@@ -360,3 +361,65 @@ class CertificateImageDataViewSet(CertificateDataMixin, viewsets.ModelViewSet):
         else:
             s = CertificateDataSerializer(obj)
             return Response(s.data, status=status.HTTP_200_OK)
+
+
+class CourseCertificationDetailView(DetailView):
+    model = CourseCertification
+    template_name = 'certificate.html'
+    slug_field = "link_hash"
+    serializer_class = CourseCertificationSerializer
+
+    def render_to_response(self, context, **response_kwargs):
+        from django.core.urlresolvers import resolve
+
+        certificate = context.get('object')
+        contract = certificate.course_student\
+            .get_current_class().contract.first()
+
+        if not certificate.course_student.can_emmit_receipt():
+            raise Http404
+
+        if certificate:
+            print certificate
+            context['cert_template'] = CertificateData.objects\
+                .get(certificate_template__course=certificate.course_student.course,
+                     type=certificate.type, contract=contract)
+
+        url_name = resolve(self.request.path_info).url_name
+
+        if url_name == 'certificate-download':
+            from selenium import webdriver
+            from signal import SIGTERM
+            from time import gmtime, strftime
+            from timtec.settings import MEDIA_ROOT, CERTIFICATE_SIZE, PHANTOMJS_PATH
+            from PIL import Image
+            import os
+
+            today = strftime("%d%b%Y", gmtime())
+
+            width, height = CERTIFICATE_SIZE
+            url = self.request.build_absolute_uri().split('download')[0] + 'print/'
+            png_path = os.path.join(MEDIA_ROOT, certificate.link_hash + '.png')
+            pdf_filename = certificate.link_hash + today + '.pdf'
+            pdf_path = os.path.join(MEDIA_ROOT, pdf_filename)
+
+            driver = webdriver.PhantomJS(executable_path=PHANTOMJS_PATH)
+            driver.set_window_size(width, height)
+            driver.get(url)
+            driver.save_screenshot(filename=png_path)
+
+            driver.service.process.send_signal(SIGTERM)
+            driver.quit()
+            Image.open(png_path).convert("RGB").save(pdf_path, format='PDF', quality=100, dpi=(300, 300))
+
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename=%s' % pdf_filename
+
+            certi = open(pdf_path)
+            response.write(certi.read())
+            certi.close()
+
+            return response
+        else:
+            return super(CourseCertificationDetailView, self)\
+                .render_to_response(context, **response_kwargs)

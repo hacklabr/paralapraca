@@ -32,4 +32,8 @@ urlpatterns = [
 
     url(r'^admin/certificates$', CertificateDataAdminView.as_view(template_name="administration/certificate-data.html"), name='administration.certificates'),
     url(r'^admin/certificate_settings/(?P<pk>[1-9][0-9]*)/$', CertificateDataAdminView.as_view(template_name="certificate-settings.html"), name="certificate_settings"),
+
+    url(r'^certificate/(?P<slug>[-a-zA-Z0-9_]+)/$', views.CourseCertificationDetailView.as_view(), name='certificate'),
+    url(r'^certificate/(?P<slug>[-a-zA-Z0-9_]+)/print/$', views.CourseCertificationDetailView.as_view(template_name="certificate_print.html"), name='certificate-print'),
+
 ]
