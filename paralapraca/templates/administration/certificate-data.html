@@ -5,6 +5,7 @@
 
 {% block js %}
     {{ block.super }}
+    <script type="text/javascript" src="{% static 'tinymce-dist/tinymce.js' %}"></script>
     {% compress js %}
     <!-- Core -->
     <script type="text/javascript" src="{% static 'js/core/app.js' %}" charset="utf-8"></script>
@@ -26,6 +27,7 @@
     <script type="text/javascript" src="{% static 'js/directives/file.js' %}" charset="utf-8"></script>
     <script type="text/javascript" src="{% static 'js/directives/previewImage.js' %}" charset="utf-8"></script>
     <script type="text/javascript" src="{% static 'js/factories/timtec-models.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'angular-ui-tinymce/src/tinymce.js' %}"></script>
     {% endcompress %}
 {% endblock %}
 
@@ -40,6 +42,66 @@ ng-app="certification"
 {% block content %}
 <!-- CERTIFICATES -->
 <section class="course courses-admin" ng-controller="CertificateDataAdminController">
+    {% if user.is_superuser %}
+    <script type="text/ng-template" id="generate_templates_modal.html">
+         <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="class-modal-label">Gerar templates de Certificado/Recibo</h4>
+            </div>
+            <form role="form" novalidate>
+              <div class="modal-body">
+                <div class="form-group">
+                    {% verbatim %}
+                    <select ng-model="form_filters.contract" class="form-control"
+                        ng-options="c.id as c.name for c in contracts">
+                      <option value="">Todos os Contratos</option>
+                    </select>
+                    {% endverbatim %}
+                </div>
+
+                <div class="form-group">
+                    {% verbatim %}
+                    <select ng-model="form_filters.course" class="form-control"
+                        ng-options="c.id as c.name for c in courses">
+                      <option value="">Todos os Módulos</option>
+                    </select>
+                    {% endverbatim %}
+                </div>
+
+                <div class="courses-list">
+                  <div class="line" ng-repeat="certificate in (filteredList = (certificateFormList | filter:form_filters.check))">
+                    <div class="header">
+                        <h5>
+                            {% verbatim %}
+                            <span>{{ certificate.certificate_template.course_name + ' (' + certificate.contract.name + ')' }}</span>
+                            {% endverbatim %}
+                            <span class="label label-warning" ng-if="certificate.type =='receipt'">{% trans 'Receipt' %}</span>
+                            <span class="label label-success" ng-if="certificate.type == 'certificate'">{% trans 'Certificate' %}</span>
+                        </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="cancel()">{% trans 'Cancel' %}</button>
+                <button type="submit"
+                        ng-click="generate_templates()"
+                        ng-disabled="(!form_filters.has_data) || (certificateFormList | filter:form_filters.check).length >= 2"
+                        class="btn btn-primary">
+                  Gerar templates
+                </button>
+              </div>
+            </form>
+        </div>
+    </script>
+    <div class="actions-menu" fixed-bar>
+        <div class="container-fluid">
+            <a class="btn btn-sm btn-primary btn-inverse add" ng-click="generate_templates_modal()">
+              Gerar templates
+            </a>
+        </div>
+    </div>
+    {% endif %}
     <div class="courses-content page container-fluid">
         <header class="page-header">
             <h3>{% trans 'Templates de Certificado e Recibos' %}</h3>
@@ -51,17 +113,19 @@ ng-app="certification"
             <div class="form-inline">
                 <!-- ROW -->
                 <div class="row">
-                    <div class="filter-checkbox col-md-3 col-sm-12">
+                    <div class="filter-checkbox col-md-2 col-sm-4">
                         <div class="checkbox">
-                            <label><input ng-model="filters.all" type="checkbox"> {% trans 'All' %}</label>
-                            <label><input ng-model="filters.receipt" type="checkbox"> {% trans 'Receipt' %}</label>
-                            <label><input ng-model="filters.certificate" type="checkbox"> {% trans 'Certificate' %}</label>
+                            <select ng-model="filters.type" class="form-control">
+                              <option value="all">&nbsp;</option>
+                              <option value="receipt">{% trans 'Receipt' %}</option>
+                              <option value="certificate">{% trans 'Certificate' %}</option>
+                            </select>
                         </div>
                     </div>
                     <div class="filter-keyword col-md-3 col-sm-4">
                         <input type="text" ng-model="filters.textsearch" placeholder="{% trans 'Keyword' %}" class="form-control">
                     </div>
-                    <div class="filter-ordering col-md-3 col-sm-4">
+                    <div class="filter-ordering col-md-2 col-sm-4">
                         {% verbatim %}
                         <select ng-model="filters.contract" class="form-control"
                             ng-options="c.id as c.name for c in contracts">
@@ -69,8 +133,25 @@ ng-app="certification"
                         </select>
                         {% endverbatim %}
                     </div>
-                    <div class="filter-reverse col-md-3 col-sm-4">
-                        <button class="btn btn-sm btn-primary" ng-class="{active:reverse}" ng-click="reverse=!reverse"><i class="fa fa-refresh" aria-hidden="true"></i> Inverter ordem da lista</button>
+                    <div class="filter-ordering col-md-3 col-sm-4">
+                        {% verbatim %}
+                        <select ng-model="filters.course" class="form-control"
+                            ng-options="c.id as c.name for c in courses">
+                          <option value="">Todos os Módulos</option>
+                        </select>
+                        {% endverbatim %}
+                    </div>
+                    <div class="filter-reverse col-md-2 col-sm-2">
+                        <div class="pull-right">
+                            <button class="btn btn-sm btn-danger" ng-show="!filters.is_clear" ng-click="filters.clear()">
+                              <i class="fa fa-times"></i>
+                              Limpar
+                            </button>
+                            <button class="btn btn-sm btn-primary" ng-class="{active:reverse}" ng-click="reverse=!reverse">
+                              <!--Inverter-->
+                              <i class="fa fa-sort-amount-asc" ng-class="{'fa-sort-amount-desc':reverse}" ></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <!-- END ROW -->

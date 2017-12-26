@@ -6,6 +6,7 @@
 
 {% block js %}
     {{ block.super }}
+    <script type="text/javascript" src="{% static 'tinymce-dist/tinymce.js' %}"></script>
 
     {% compress js %}
     <!-- Core -->
@@ -28,7 +29,7 @@
     <script type="text/javascript" src="{% static 'js/directives/file.js' %}" charset="utf-8"></script>
     <script type="text/javascript" src="{% static 'js/directives/previewImage.js' %}" charset="utf-8"></script>
     <script type="text/javascript" src="{% static 'js/factories/timtec-models.js' %}" charset="utf-8"></script>
-
+    <script type="text/javascript" src="{% static 'angular-ui-tinymce/src/tinymce.js' %}"></script>
     <!-- PDF generation dependencies -->
     <script type="text/javascript" src="{% static 'bluebird/js/browser/bluebird.min.js' %}" charset="utf-8"></script>
     <script type="text/javascript" src="{% static 'html2canvas/build/html2canvas.min.js' %}" charset="utf-8"></script>

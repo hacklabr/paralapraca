@@ -304,8 +304,8 @@ class CertificateDataAdminView(AdminMixin, TemplateView, _access.AccessMixin):
 
     def dispatch(self, request, *args, **kwargs):
 
-        response = super(CertificateDataAdminView, self).dispatch(
-            request, *args, **kwargs)
+        response = super(CertificateDataAdminView, self)\
+            .dispatch(request, *args, **kwargs)
 
         if not (request.user.is_superuser or self.object.get_professor_role(request.user) == 'coordinator'):
             if self.raise_exception:  # *and* if an exception was desired
@@ -331,6 +331,38 @@ class CertificateDataMixin(viewsets.ModelViewSet):
 class CertificateDataViewSet(LoginRequiredMixin, CertificateDataMixin, viewsets.ModelViewSet):
     model = CertificateData
     serializer_class = CertificateDataSerializer
+
+    def create(self, request, *args, **kwargs):
+        generate =  request.data.get('generate', False)
+        if generate:
+            data = request.data
+            current = CertificateData.objects.filter(certificate_template__course__id=data.get('course', None),
+                                                     contract__id=data.get('contract', None))
+
+            if len(current) >= 2:
+                return Response({'error' : 'Os templates já existem'}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                course = Course.objects.get(pk=data.get('course', None))
+                contract = Contract.objects.get(pk=data.get('contract', None))
+                if len(current) > 0:
+                    ct = CertificateTemplate(course=course)
+                    ct.save()
+                    t = CertificateData.TYPES[0]
+                    if 'receipt' == current[0].type:
+                        t = CertificateData.TYPES[1]
+                    cd = CertificateData(type=t[0], contract=contract, certificate_template=ct)
+                    cd.save()
+                    return Response({'message' : 'Os templates foram criados com sucesso'})
+                else:
+                    for t in CertificateData.TYPES:
+                        ct = CertificateTemplate(course=course)
+                        ct.save()
+                        cd = CertificateData(type=t[0], contract=contract, certificate_template=ct)
+                        cd.save()
+
+                    return Response({'message' : 'Os templates foram criados com sucesso'})
+        else:
+            super(CertificateDataViewSet, self).create(request, *args, **kwargs)
 
 
 class CertificateImageDataViewSet(CertificateDataMixin, viewsets.ModelViewSet):
