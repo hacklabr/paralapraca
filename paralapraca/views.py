@@ -1,30 +1,40 @@
 # -*- coding: utf-8 -*-
 import json
 
+from braces.views import LoginRequiredMixin, _access
 from django.conf import settings
-from django.shortcuts import render
-from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic.base import TemplateView, View
+from django.views.generic import TemplateView
+from django.core.exceptions import PermissionDenied
+
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from paralapraca.models import AnswerNotification, UnreadNotification, Contract
+
 from core.models import Course, CourseStudent, Class
 from core.views import ClassViewSet
+from core.permissions import IsProfessorCoordinatorOrAdminPermissionOrReadOnly
+from core.serializers import CertificateTemplateImageSerializer
+
 from accounts.models import TimtecUser
 from accounts.views import GroupViewSet, GroupAdminViewSet
+
 from paralapraca.serializers import (AnswerNotificationSerializer,
     UnreadNotificationSerializer, UserInDetailSerializer,
     UsersByClassSerializer, ContractSerializer, ContractGroupSerializer)
-from accounts.serializers import GroupSerializer
+from paralapraca.models import (AnswerNotification, UnreadNotification,
+                                Contract, CertificateData)
+from paralapraca.serializers import ContractGroupAdminSerializer, ContractClassSerializer, \
+    CertificateDataSerializer, CertificateImageDataSerializer
+
 from discussion.models import Comment, CommentLike, Topic, TopicLike
 from rest_pandas import PandasViewSet
 from rest_pandas.renderers import PandasCSVRenderer, PandasJSONRenderer
 import pandas as pd
-from serializers import ContractGroupAdminSerializer, ContractClassSerializer
+
+from administration.views import AdminMixin
 
 ROCKET_CHAT = {
     'address': 'http://chat.paralapraca.org.br',
@@ -276,16 +286,77 @@ class ContractClassViewSet(ClassViewSet):
 
         contract_id = self.request.query_params.get('contract')
         if contract_id:
-            print contract_id
             try:
                 contracts = [Contract.objects.get(pk=contract_id), ]
             except Contract.DoesNotExist:
                 return  Class.objects.none()
 
-            print contracts
             queryset.filter(contract__in=contracts)
 
         return queryset
 
     def get_serializer_class(self):
         return ContractClassSerializer
+
+
+class CertificateDataAdminView(AdminMixin, TemplateView, _access.AccessMixin):
+    raise_exception = True
+
+    def dispatch(self, request, *args, **kwargs):
+
+        response = super(CertificateDataAdminView, self).dispatch(
+            request, *args, **kwargs)
+
+        if not (request.user.is_superuser or self.object.get_professor_role(request.user) == 'coordinator'):
+            if self.raise_exception:  # *and* if an exception was desired
+                raise PermissionDenied  # return a forbidden response.
+
+        return response
+
+class CertificateDataMixin(viewsets.ModelViewSet):
+     def get_queryset(self):
+        queryset = CertificateData.objects.all()
+        course = self.request.query_params.get('course', None)
+        if course:
+            queryset = queryset.filter(certificate_template__course=course)
+
+        contract = self.request.query_params.get('contract', None)
+        if contract:
+            queryset = queryset.filter(contract=contract)
+
+        return queryset
+
+
+class CertificateDataViewSet(LoginRequiredMixin, CertificateDataMixin, viewsets.ModelViewSet):
+    model = CertificateData
+    serializer_class = CertificateDataSerializer
+
+
+class CertificateImageDataViewSet(CertificateDataMixin, viewsets.ModelViewSet):
+    queryset = CertificateData.objects.all()
+    model = CertificateData
+    permission_classes = (IsProfessorCoordinatorOrAdminPermissionOrReadOnly, )
+
+    def post(self, request, **kwargs):
+        obj = self.get_object()
+        errors = []
+
+        ct_serializer = CertificateTemplateImageSerializer(
+            obj.certificate_template, request.FILES)
+        if ct_serializer.is_valid():
+            ct_serializer.save()
+        else:
+            errors += ct_serializer.errors
+
+        serializer = CertificateImageDataSerializer(obj, request.FILES)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            errors += serializer.errors
+
+        if len(errors) > 0:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+        else:
+            s = CertificateDataSerializer(obj)
+            return Response(s.data, status=status.HTTP_200_OK)

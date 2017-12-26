@@ -1,11 +1,14 @@
 from rest_framework import serializers
+from rest_framework import status
+from rest_framework.response import Response
+
+from models import CertificateData
 from paralapraca.models import AnswerNotification, UnreadNotification, Contract
 from discussion.serializers import BaseTopicSerializer, BaseCommentSerializer, TopicLikeSerializer, CommentLikeSerializer
 from accounts.models import TimtecUser
 from accounts.serializers import GroupSerializer, GroupAdminSerializer
-from core.models import Class, Course
-from core.serializers import ClassSerializer as CoreClassSerializer
-from django.contrib.auth.models import Group
+from core.models import Class, Course, CertificateTemplate
+from core.serializers import ClassSerializer as CoreClassSerializer, CertificateTemplateSerializer
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -207,3 +210,43 @@ class ContractClassSerializer(ContractBaseSerializerMixin, CoreClassSerializer):
             updated.contract.clear()
 
         return updated
+
+
+class CertificateTemplateSerializer(serializers.ModelSerializer):
+    course_name = serializers.SerializerMethodField(read_only=True,)
+    course = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = CertificateTemplate
+        fields = ('id', 'course', 'course_name', 'organization_name',
+                  'base_logo_url', 'cert_logo_url', 'role', 'name',
+                  'signature_url', )
+
+    def get_course_name(self, obj):
+        return obj.course.name
+
+
+class CertificateDataSerializer(serializers.ModelSerializer):
+    contract = SimpleContractSerializer(read_only=True)
+    certificate_template = CertificateTemplateSerializer()
+
+    class Meta:
+        model = CertificateData
+        fields = ('id', 'text', 'type', 'site_logo_url', 'contract',
+                  'certificate_template')
+
+    def update(self, instance, validated_data):
+        ct = dict(validated_data.pop('certificate_template'))
+        cts = CertificateTemplateSerializer(instance=instance.certificate_template, data=ct)
+        if cts.is_valid():
+            cts.save()
+        else:
+            return Response(cts.errors, status=status.HTTP_400_BAD_REQUEST)
+        return super(CertificateDataSerializer, self).update(instance, validated_data)
+
+
+class CertificateImageDataSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CertificateData
+        fields = ('site_logo',)

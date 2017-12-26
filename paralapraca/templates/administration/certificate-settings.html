@@ -41,145 +41,75 @@ ng-app="certification"
 
 <section class="course certificate" ng-controller="CertificateTemplateCtrl">
 
-    <!-- ACTIONS -->
-    <div class="actions-menu" fixed-bar>
-        <div class="container-fluid">
-          <div class="row">
-            {% include 'administration/_alert.html' %}
-            <div class="actions-buttons pull-right">
-                <!--<button class="btn btn-danger">{% trans 'Cancel' %} | <i class="fa fa-times"></i></button>-->
-                <button class="btn btn-sm btn-primary btn-inverse save" ng-click="saveTemplate()">{% trans 'Save' %}</button>
+  <!-- ACTIONS -->
+  <div class="actions-menu" fixed-bar>
+    <div class="container-fluid">
+      <div class="row">
+        {% include 'administration/_alert.html' %}
+        <a href="{% url 'paralapraca:administration.certificates' %}" class="btn btn-sm btn-danger cancel">{% trans 'Cancelar' %} </a>
+        <div class="actions-buttons pull-right">
+          <button class="btn btn-sm btn-primary btn-inverse save" ng-click="saveTemplate()">{% trans 'Save' %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END ACTIONS -->
+
+  <section class="certificate-content page container-fluid">
+      {% verbatim %}
+      <header class="page-header">
+        <h3>{{ page_title }}</h3>
+      </header>
+      <div class="tab-pane active edit-certificates" id="edit-certificate">
+        <div class="alert alert-info" role="alert" ng-bind-html="message"></div>
+        <div class="certificate-container certificate-admin" ng-class="{'receipt-admin receipt' : ct.type == 'receipt'}">
+          <div class="certificate-logos">
+            <div class="certificate-logo">
+              <img id="base-logo" alt="Logo" preview-image ng-model="images.base_logo" ng-src="{{ ct.certificate_template.base_logo_url }}" class="img-responsive" />
+              <file ng-model="images.base_logo" name="logo"></file>
+            </div>
+            <div class="certificate-logo">
+              <img id="site-logo" alt="Logo" preview-image ng-model="images.site_logo" ng-src="{{ ct.site_logo_url }}" class="img-responsive" />
+              <file ng-model="images.site_logo" name="logo"></file>
+            </div>
+            <div class="certificate-logo">
+              <img id="cert-logo" alt="Logo" preview-image ng-model="images.cert_logo" ng-src="{{ ct.certificate_template.cert_logo_url }}" class="img-responsive" />
+              <file ng-model="images.cert_logo" name="logo"></file>
             </div>
           </div>
-        </div>
-    </div>
-    <!-- END ACTIONS -->
-
-    {% include "_admin_header_inline.html" with course=course %}
-
-    <section class="certificate-content page container-fluid">
-        <header class="page-header">
-            <h3>{% trans "Certificate Settings" %}</h3>
-        </header>
-
-        <!-- Nav tabs -->
-            {% block certificate-settings-tab %}
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#edit-certificate" aria-controls="edit-certificate" role="tab" data-toggle="tab">{% trans 'Edit certificate' %}</a></li>
-                    <li role="presentation"><a href="#edit-receipt" aria-controls="edit-receipt" role="tab" data-toggle="tab">{% trans 'Edit receipt text' %}</a></li>
-                </ul>
-            {% endblock %}
-        <!-- Tab panes -->
-        <div class="tab-content">
-            {% block certificate-options %}
-            <div role="tabpanel" class="tab-pane active edit-certificates" id="edit-certificate">
-                <div class="alert alert-info" role="alert">
-                    Edite os elementos numerados de <strong>1 a 7</strong> com as informações que serão exibidas no certificado final do curso.
-                </div>
-                <div class="certificate-container certificate-admin">
-                    <div class="certificate-logos">
-                        {% verbatim %}
-                        <div class="certificate-logo">
-                            <img id="base-logo" alt="Logo" preview-image ng-model="images.base_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
-                            <file ng-model="images.base_logo" name="logo"></file>
-                        </div>
-                        <div class="certificate-logo">
-                            <img id="site-logo" alt="Logo" preview-image ng-model="images.site_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
-                            <file ng-model="images.site_logo" name="logo"></file>
-                        </div>
-                        <div class="certificate-logo">
-                            <img id="cert-logo" alt="Logo" preview-image ng-model="images.cert_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
-                            <file ng-model="images.cert_logo" name="logo"></file>
-                        </div>
-                        {% endverbatim %}
-                    </div>
-                    <div class="certificate-title">Certificado</div>
-                    <div class="certificate-info">
-                        <p>Certificamos que</p>
-                        <p class="student">________________</p>
-                        <div class="certificate-template">
-                            <textarea class="editable-text" rows="3" ng-model="ct.certificate_text" placeholder="concluiu o módulo {nome_curso} no ambiente virtual de aprendizagem Programa Paralapracá, perfazendo o total de {carga_horaria} horas."></textarea>
-                        </div>
-                    </div>
-                    <footer>{{ object.course_student.user.get_full_name }}
-                      <div class="credits-section">
-                          <p><b>Realizado em:</b> {{ site.domain }}</p>
-                          <p><b>URL de validação:</b> <a href="">{{ site.domain }}/(código)</a></p>
-                      </div>
-                      <div class="coordinator-section">
-                          {% verbatim %}
-                          <div class="certificate-signature">
-                              <img id="sig-logo" alt="Assinatura" preview-image ng-model="images.signature" ng-src="{{ ct.signature_url }}" class="img-responsive" />
-                              <file ng-model="images.signature" name="logo"></file>
-                          </div>
-                          {% endverbatim %}
-                          <div class="editable editable-text name-coordinator">
-                              <input type="text" ng-model="ct.name" placeholder="Digite o nome" />
-                          </div>
-                          <div class="editable editable-text role-coordinator">
-                              <input type="text" ng-model="ct.role" placeholder="Digite o cargo" />
-                          </div>
-                      </div>
-                    </footer>
-                </div>
+          <div class="certificate-title">{{ document_title }}</div>
+          <div class="certificate-info">
+            <p>Certificamos que</p>
+            <p class="student">________________</p>
+            <div class="certificate-template">
+              <textarea class="editable-text" rows="3" ng-model="ct.text" placeholder="concluiu o módulo {nome_curso} no ambiente virtual de aprendizagem Programa Paralapracá, perfazendo o total de {carga_horaria} horas."></textarea>
             </div>
-            {% endblock %}
-            {% block receipt-options %}
-            <div role="tabpanel" class="{% block receipt-options-addclass %}{% endblock %} tab-pane edit-certificates" id="edit-receipt">
-                <div class="alert alert-info" role="alert">
-                    Edite as opções do atestado que será emitido automaticamente após a conclusão do curso. <br> Este atestado <strong>não possui</strong> a mesma validade do certificado.
-                </div>
-                <div class="certificate-container certificate-admin receipt-admin receipt">
-                  <div class="certificate-logos">
-                        {% verbatim %}
-                        <div class="certificate-logo">
-                            <img id="base-logo" alt="Logo" preview-image ng-model="images.base_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
-                            <file ng-model="images.base_logo" name="logo"></file>
-                        </div>
-                        <div class="certificate-logo">
-                            <img id="site-logo" alt="Logo" preview-image ng-model="images.site_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
-                            <file ng-model="images.site_logo" name="logo"></file>
-                        </div>
-                        <div class="certificate-logo">
-                            <img id="cert-logo" alt="Logo" preview-image ng-model="images.cert_logo" ng-src="{{ ct.cert_logo_url }}" class="img-responsive" />
-                            <file ng-model="images.cert_logo" name="logo"></file>
-                        </div>
-                        {% endverbatim %}
-                  </div>
-                  <div class="certificate-title">Declaração</div>
-                  <div class="certificate-info">
-                      {% block receipt-options-student %}
-                          <p class="student">________________</p>
-                      {%   endblock %}
-                      <div class="certificate-template">
-                            <textarea class="editable-text" rows="3" ng-model="ct.receipt_text" placeholder="concluiu o módulo {nome_curso} com carga horária estimada de {carga_horaria} horas em {data_conclusao}."></textarea>
-                        </div>
-                  </div>
-                  <footer>
-                      <div class="credits-section">
-                          <p><b>Realizado em:</b> {{ site.domain }}</p>
-                          <p><b>URL de validação:</b> <a href="">{{ site.domain }}/(código)</a></p>
-                      </div>
-                      <div class="coordinator-section">
-                          {% verbatim %}
-                          <div class="certificate-signature">
-                              <img id="sig-logo" alt="Assinatura" preview-image ng-model="images.signature" ng-src="{{ ct.signature_url }}" class="img-responsive" />
-                              <file ng-model="images.signature" name="logo"></file>
-                          </div>
-                          {% endverbatim %}
-                          <p class="editable editable-text name-coordinator">
-                            <input type="text" ng-model="ct.name" placeholder="Digite o nome">
-                          </p>
-                          <p class="editable editable-text role-coordinator">
-                            <input type="text" ng-model="ct.role" placeholder="Digite o cargo">
-                          </p>
-                      </div>
-                  </footer>
-                </div>
-            </div>
-            {% endblock %}
-        </div>
+          </div>
+          <footer>
 
-    </section>
+            {% endverbatim %}
+            <div class="credits-section">
+              <p><b>Realizado em:</b> {{ site.domain }}</p>
+              <p><b>URL de validação:</b> <a href="">{{ site.domain }}/(código)</a></p>
+            </div>
+            {% verbatim %}
+            <div class="coordinator-section">
+              <div class="certificate-signature">
+                <img id="signature" alt="Assinatura"
+                     preview-image ng-model="images.signature" ng-src="{{ ct.certificate_template.signature_url }}" class="img-responsive" />
+                <file ng-model="images.signature" name="logo"></file>
+              </div>
+              <div class="editable editable-text name-coordinator">
+                <input type="text" ng-model="ct.certificate_template.name" placeholder="Digite o nome" />
+              </div>
+              <div class="editable editable-text role-coordinator">
+                <input type="text" ng-model="ct.certificate_template.role" placeholder="Digite o cargo" />
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+      {% endverbatim %}
+  </section>
 </section>
 {% endblock %}
