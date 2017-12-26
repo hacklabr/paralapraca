@@ -1,22 +1,18 @@
 <div class="container-fluid">
     <div class="certificate-container">
         <div class="certificate-logos">
-            <img src="{{ cert_template.base_logo_url }}" alt="AVANTE" class="avante">
-            <img src="/static/img/site-logo-orange.svg" alt="{{ cert_template.site_logo_url }}" class="paralapraca">
-            <div class="institute-logo">
-                <img alt="Logo Instituto" src="{{ cert_template.cert_logo_url }}">
+            <img src="{{ cert_template.certificate_template.base_logo_url }}" alt="" class="avante">
+            <img src="{{ cert_template.site_logo_url }}" alt="{{ cert_template.site_logo_url }}" class="paralapraca">
+            <div class="certificate-logo">
+                <img alt="" src="{{ cert_template.certificate_template.cert_logo_url }}">
             </div>
         </div>
         <div class="certificate-title">Certificado</div>
         <div class="certificate-info">
             <p>Certificamos, para os devidos fins, que</p>
             <p class="student">{{ object.course_student.user.get_full_name }}</p>
-            <p>inscrita no cadastro de pessoa física sob o número {{ object.course_student.user.cpf }}</p>
-            <p>concluiu o <strong>{{ object.course_student.course.name }}</strong>,</p>
-            <p>com carga horária total de 40 horas, no</p>
-            <p>Ambiente Virtual de Aprendizagem do Programa Paralapracá.</p>
 
-            <!-- <strong>{{ cert_template.organization_name }}</strong> -->
+            {{ cert_template.text | safe }}
         </div>
         <footer>
             <div class="credits-section">
@@ -25,13 +21,13 @@
                 <p><b>URL de validação:</b> <a href="{% url 'certificate' object.link_hash %}">ava.paralapraca.org.br{% url 'certificate' object.link_hash %}</a></p>
             </div>
             <div class="coordinator-section">
-                {% if cert_template.signature_url %}
+                {% if cert_template.certificate_template.signature_url %}
                 <div class="certificate-signature">
-                    <img alt="Signature" src="{{ cert_template.signature_url }}">
+                    <img alt="Signature" src="{{ cert_template.certificate_template.signature_url }}">
                 </div>
                 {% endif %}
-                <p class="name-coordinator">{{ cert_template.name }}</p>
-                <p class="role-coordinator">{{ cert_template.role }}</p>
+                <p class="name-coordinator">{{ cert_template.certificate_template.name }}</p>
+                <p class="role-coordinator">{{ cert_template.certificate_template.role }}</p>
             </div>
         </footer>
     </div>
