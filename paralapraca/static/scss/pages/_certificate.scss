@@ -13,6 +13,7 @@
         color: #000;
     }
 }
+
 .certificate-container {
     background-color: #fcf6ef;
     margin: 0 auto;
@@ -198,7 +199,14 @@
     }
 }
 .certificate-admin {
+    height: 704px;
     counter-reset: steps-counter;
+
+    @media screen and (min-width: $screen-sm-min) {
+        background-image: url('../img/bg-certificate-clean-edit.png');
+        background-size: 100%;
+    }
+
     .certificate-logo {
         max-width: 150px;
         input {

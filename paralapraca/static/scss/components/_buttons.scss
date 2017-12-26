@@ -163,6 +163,9 @@
             vertical-align: top;
         }
     }
+    &.preview {
+        @extend %icon-see-more;
+    }
     &.see-stats {
         @extend %icon-stats;
         &:before {
