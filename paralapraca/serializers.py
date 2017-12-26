@@ -229,11 +229,27 @@ class CertificateTemplateSerializer(serializers.ModelSerializer):
 class CertificateDataSerializer(serializers.ModelSerializer):
     contract = SimpleContractSerializer(read_only=True)
     certificate_template = CertificateTemplateSerializer()
+    associate = serializers.SerializerMethodField()
 
     class Meta:
         model = CertificateData
         fields = ('id', 'text', 'type', 'site_logo_url', 'contract',
-                  'certificate_template')
+                  'certificate_template', 'associate')
+
+    def get_associate(self, obj):
+        type = 'receipt'
+        course = obj.certificate_template.course.id
+        contract = obj.contract.id
+        if obj.type == 'receipt':
+            type = 'certificate'
+        a = CertificateData.objects\
+                .filter(type=type,
+                        certificate_template__course__id = course,
+                        contract__id=contract)
+        if len(a) > 0:
+            return a[0].id
+        else:
+            return None
 
     def update(self, instance, validated_data):
         ct = dict(validated_data.pop('certificate_template'))
