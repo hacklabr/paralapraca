@@ -342,6 +342,15 @@ class CertificateImageDataViewSet(CertificateDataMixin, viewsets.ModelViewSet):
         obj = self.get_object()
         errors = []
 
+        clear_logos = (
+            ('base_logo', request.data.get('base_logo_clear', None)),
+            ('signature', request.data.get('signature_clear', None)),
+            ('cert_logo', request.data.get('cert_logo_clear', None)),
+        )
+        for cl in clear_logos:
+            if(cl[1]):
+                setattr(obj.certificate_template, cl[0], None)
+
         ct_serializer = CertificateTemplateImageSerializer(
             obj.certificate_template, request.FILES)
         if ct_serializer.is_valid():
@@ -349,6 +358,9 @@ class CertificateImageDataViewSet(CertificateDataMixin, viewsets.ModelViewSet):
         else:
             errors += ct_serializer.errors
 
+        cl = ('site_logo', request.data.get('site_logo_clear', None))
+        if(cl[1]):
+            setattr(obj, cl[0], None)
         serializer = CertificateImageDataSerializer(obj, request.FILES)
         if serializer.is_valid():
             serializer.save()
