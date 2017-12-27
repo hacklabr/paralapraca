@@ -96,17 +96,37 @@ ng-app="certification"
       {% verbatim %}
       <header class="page-header">
         <h3>{{ page_title }}</h3>
-        <p class="lead">{{ ct.certificate_template.course_name }} no contrato: {{ ct.contract.name }}
-          <a href="/paralapraca/admin/certificate_settings/{{ ct.associate }}"
-             ng-hide="preview"
-             class="small alert-link">
-            Clique aqui para configurar o template de {{ ct.type == 'receipt' ? 'Certificado' : 'Recibo' }}
-          </a>
+        <p class="lead">
+          {{ ct.certificate_template.course_name }} no contrato: {{ ct.contract.name }}
+          <span ng-hide="preview">
+              <a href="/paralapraca/admin/certificate_settings/{{ ct.associate }}"
+                 class="btn btn-sm btn-primary action-button">
+                <i class="fa fa-cog"></i>
+                Configurar {{ ct.type == 'receipt' ? 'Certificado' : 'Recibo' }}
+              </a>
+              <span class="btn btn-sm btn-primary action-button" ng-click="help = !help">
+                <i class="fa fa-question-circle hint-tooltip"></i>
+                ajuda
+              </span>
+          </span>
         </p>
       </header>
 
       <div class="edit-certificates" ng-hide="preview">
-        <div class="alert alert-info" role="alert" ng-bind-html="message"></div>
+        <div class="alert alert-info" role="alert" ng-class="{hide: !help}" style="">
+          <p ng-bind-html="message"></p>
+          <p class="certificate-help">
+            Para editar o texto do template, use o editor abaixo e suas funcionalidades.
+            No texto, você poderá colocar os seguinte indicadores, que serão substituídos de acordo com a descrição:
+          <ul>
+            <li>{CPF} : CPF do usuário</li>
+            <li>{MODULO}: Nome do módulo do certificado</li>
+            <li>{CONTRATO} : Nome do contrato</li>
+            <li>{NUM_UNIDADES} : Número de unidades do módulo</li>
+            <li>{TURMA} : Turma na qual foi concluido o módulo</li>
+          </ul>
+          </p>
+        </div>
         <div class="certificate-container certificate-admin" ng-class="{'receipt-admin receipt' : ct.type == 'receipt'}">
           <div class="certificate-logos">
             <div class="certificate-logo">
@@ -126,7 +146,7 @@ ng-app="certification"
           <div class="certificate-title">{{ document_title }}</div>
           <div class="certificate-info">
             <p>{{ ct.type == 'receipt' ? 'Declaramos' : 'Certificamos' }}, para os devidos fins, que</p>
-            <p class="student">________________</p>
+            <p class="student">____________________________________</p>
             <div class="certificate-template">
               <textarea ui-tinymce class="editable-text" rows="3" ng-model="ct.text" required
                         placeholder="concluiu o módulo {nome_curso} no ambiente virtual de aprendizagem Programa Paralapracá, perfazendo o total de {carga_horaria} horas."></textarea>
@@ -156,8 +176,6 @@ ng-app="certification"
           </footer>
         </div>
       </div>
-      {% endverbatim %}
-      {% verbatim %}
 
       <div class="certificate-container" ng-class="{'receipt' : ct.type == 'receipt'}" ng-hide="!preview">
         <div class="certificate-logos">
