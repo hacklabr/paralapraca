@@ -114,18 +114,30 @@ ng-app="certification"
 
       <div class="edit-certificates" ng-hide="preview">
         <div class="alert alert-info" role="alert" ng-class="{hide: !help}" style="">
-          <p ng-bind-html="message"></p>
-          <p class="certificate-help">
-            Para editar o texto do template, use o editor abaixo e suas funcionalidades.
-            No texto, você poderá colocar os seguinte indicadores, que serão substituídos de acordo com a descrição:
           <ul>
-            <li>{CPF} : CPF do usuário</li>
-            <li>{MODULO}: Nome do módulo do certificado</li>
-            <li>{CONTRATO} : Nome do contrato</li>
-            <li>{NUM_UNIDADES} : Número de unidades do módulo</li>
-            <li>{TURMA} : Turma na qual foi concluido o módulo</li>
+            <li>Nunca se esqueça de <strong>Salvar</strong> qualquer alteração que venha fazer. Antes de salvar
+              é possível e recomendável visualizar as alterações feitas
+            </li>
+            <li class="certificate-help">
+              Para editar o texto do template, use o editor abaixo e suas funcionalidades.
+              No texto, você poderá colocar os seguinte indicadores, que serão substituídos de acordo com a descrição:
+              <ul>
+                <li>{CPF} : CPF do usuário</li>
+                <li>{MODULO}: Nome do módulo do certificado</li>
+                <li>{CONTRATO} : Nome do contrato</li>
+                <li>{NUM_UNIDADES} : Número de unidades do módulo</li>
+                <li>{TURMA} : Turma na qual foi concluido o módulo</li>
+              </ul>
+            </li>
+            <li>
+              Para excluir uma imagem do template, basta que dê dois cliques na mesma
+            </li>
+            <li>
+              Ao clicar em cancelar, você voltará para a página de listagem de certificados. Lembre-se sempre de
+              <strong>Salvar</strong> qualquer alteração que tenha feito e queira manter
+            </li>
+            <li ng-bind-html="message"></li>
           </ul>
-          </p>
         </div>
         <div class="certificate-container certificate-admin" ng-class="{'receipt-admin receipt' : ct.type == 'receipt'}">
           <div class="certificate-logos">
@@ -180,7 +192,7 @@ ng-app="certification"
       <div class="certificate-container" ng-class="{'receipt' : ct.type == 'receipt'}" ng-hide="!preview">
         <div class="certificate-logos">
             <img id="base-logo-preview" src="{{ ct.certificate_template.base_logo_url }}" alt="" class="avante">
-            <img id="site-logo-preview" src="{{ ct.site_logo_url }}" alt="{{ ct.site_logo_url }}" class="paralapraca">
+            <img id="site-logo-preview" src="{{ ct.site_logo_url }}" alt="" class="paralapraca">
             <div class="certificate-logo">
                 <img id="cert-logo-preview" alt="" src="{{ ct.certificate_template.cert_logo_url }}">
             </div>
