@@ -1,42 +1,35 @@
 {% load i18n %}
-{% load staticfiles %}
-
 <div class="container-fluid">
     <div class="certificate-container receipt">
-      {% block certificate-logo %}
-      <div class="certificate-logos">
-          <img src="/static/img/logo-avante.png" alt="AVANTE" class="avante">
-          <img src="/static/img/site-logo-orange.svg" alt="{{ site.name }}" class="paralapraca">
-          <div class="certificate-logo">
-            <img class="img-responsive" src="{{ cert_template.cert_logo_url }}">
-          </div>
-      </div>
-      {% endblock %}
-      <div class="certificate-title">Declaração</div>
-      <div class="certificate-info">
-          <p>Declaramos, para os devidos fins, que</p>
-          {% block receipt-options-student %}
-              <p class="student">{{ object.course_student.user.get_full_name }}{% if object.course_student.user.rg %}, RG {{ object.course_student.user.rg }} {% endif %}</p>
-          {%   endblock %}
-          <p>inscrita no cadastro de pessoa física sob o número {{ object.course_student.user.cpf }}</p>
-          <p>participou do <em>{{ object.course.name }}</em></p>
-          <p>no Ambiente Virtual de Aprendizagem do Programa Paralapracá.</p>
-      </div>
-
-      <footer>
-        <div class="credits-section">
-            <p><b>Realizado em:</b> ava.paralapraca.org.br</p>
-            <p><b>URL de validação:</b> <a href="{% url 'certificate' object.link_hash %}">ava.paralapraca.org.br{% url 'certificate' object.link_hash %}</a></p>
-        </div>
-        <div class="coordinator-section">
-            {% if cert_template.signature_url %}
-            <div class="certificate-signature">
-                <img alt="Signature" src="{{ cert_template.signature_url }}">
+        <div class="certificate-logos">
+            <img src="{{ cert_template.certificate_template.base_logo_url }}" alt="" class="avante">
+            <img src="{{ cert_template.site_logo_url }}" alt="{{ cert_template.site_logo_url }}" class="paralapraca">
+            <div class="certificate-logo">
+                <img alt=""
+                     class="img-responsive"
+                     src="{{ cert_template.certificate_template.cert_logo_url }}">
             </div>
-            {% endif %}
-            <p class="name-coordinator">{{ cert_template.name }}</p>
-            <p class="role-coordinator">{{ cert_template.role }}</p>
         </div>
-      </footer>
+        <div class="certificate-title">Declaração</div>
+        <div class="certificate-info">
+            <p>Declaramos, para os devidos fins, que</p>
+            <p class="student">{{ object.course_student.user.get_full_name }}</p>
+            {{ cert_template.text | safe }}
+        </div>
+        <footer>
+            <div class="credits-section">
+                <p><b>Realizado em:</b> ava.paralapraca.org.br</p>
+                <p><b>URL de validação:</b> <a href="{% url 'certificate' object.link_hash %}">ava.paralapraca.org.br{% url 'certificate' object.link_hash %}</a></p>
+            </div>
+            <div class="coordinator-section">
+                {% if cert_template.certificate_template.signature_url %}
+                <div class="certificate-signature">
+                    <img alt="Signature" src="{{ cert_template.certificate_template.signature_url }}">
+                </div>
+                {% endif %}
+                <p class="name-coordinator">{{ cert_template.certificate_template.name }}</p>
+                <p class="role-coordinator">{{ cert_template.certificate_template.role }}</p>
+            </div>
+        </footer>
     </div>
 </div>
