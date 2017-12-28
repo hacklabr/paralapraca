@@ -8,7 +8,7 @@
         box-shadow: none;
     }
     .professor-assistant {
-        margin: 20px 0; 
+        margin: 20px 0;
     }
     .alert {
         label {
@@ -21,7 +21,7 @@
     }
     .add-users {
         margin: 40px 0;
-        overflow: hidden; 
+        overflow: hidden;
         label {
             float: left;
             margin-top: 5px;
@@ -32,6 +32,9 @@
         .btn {
             float: right;
             margin-top: -33px;
+        }
+        .form-row:not(:last-of-type) {
+            margin-bottom: 15px;
         }
     }
     .table {

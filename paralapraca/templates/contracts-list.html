@@ -7,11 +7,10 @@
     </header>
 
     <div class="contract-unit" ng-repeat="contract in contracts track by contract.id">
-        <h4 class="contract-title">{{ contract.name }}</h4>
-        <div class="contract-info"> | <b>Contrato válido até:</b> 25 de novembro de 2016</div>
+        <h4 class="contract-title"><a href="/contracts/#!/{{contract.id}}">{{ contract.name }}</a></h4>
         <div class="contract-content">
             <div class="row">
-                <div class="col-sm-7 col-md-8 col-lg-9 contract-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</div>
+                <div class="col-sm-7 col-md-8 col-lg-9 contract-text">{{ contract.description }}</div>
                 <div class="col-sm-5 col-md-4 col-lg-3">
                     <a href="#!/{{contract.id}}/edit" class="btn btn-xs btn-primary edit">editar</a>
                 </div>
@@ -21,3 +20,4 @@
 
 </div>
 {% endverbatim %}
+

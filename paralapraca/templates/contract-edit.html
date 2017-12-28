@@ -10,50 +10,48 @@
 
     <form>
         <div class="row">
-            <div class="col-xs-12 col-lg-10">
+            <div class="col-xs-12">
                 <label>Nome do contrato</label>
                 <input ng-model="contract.name" type="text" class="form-control" placeholder="Digite aqui o nome do contrato">
             </div>
         </div>
 
         <div class="row">
-            <div class="col-xs-12 col-md-6 col-lg-4">
-                <label>Firmado em</label>
-                <div class="date-input input-group">
-                    <input type="text" class="form-control" ng-model="contract.start_date" uib-datepicker-popup="dd/MM/yyyy" is-open="start_opened" show-button-bar="false" show-weeks="false" starting-day="0" placeholder="Escolha ou digite a data" />
-                    <span class="input-group-btn">
-                        <button class="btn btn-success" type="button" ng-click="start_opened = true"><span class="caret"></span></button>
-                    </span>
-                </div>
-            </div>
-            <div class="col-xs-12 col-md-6 col-lg-4">
-                <label>Válido até</label>
-                <div class="date-input input-group">
-                    <input type="text" class="form-control" ng-model="contract.expiry_date" uib-datepicker-popup="dd/MM/yyyy" is-open="expiry_opened" show-button-bar="false" show-weeks="false" starting-day="0" placeholder="Escolha ou digite a data" />
-                    <span class="input-group-btn">
-                        <button class="btn btn-success" type="button" ng-click="expiry_opened = true"><span class="caret"></span></button>
-                    </span>
-                </div>
+            <div class="col-xs-12">
+                <label>Descrição de contrato</label>
+                <textarea class="form-control" ng-model="contract.description"></textarea>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-xs-12 col-md-6 col-lg-4">
-                <label>Município</label>
-                <input type="text" class="form-control" placeholder="Digite e clique numa das opções">
-            </div>
-
-            <div class="col-xs-12 col-md-6 col-lg-4">
-                <label>Módulos disponíveis</label>
-                <ui-select multiple theme="bootstrap" class="form-control" ng-model="contract.courses" title="Escolha um ou mais módulos">
-                    <ui-select-match placeholder="Escolha um ou mais módulos">{{ $item.name }}</ui-select-match>
-                    <ui-select-choices repeat="course in courses | filter: {name: $select.search}" group-by="">
-                        <div ng-bind-html="course.name | highlight: $select.search"></div>
+            <div class="col-xs-12 col-md-6">
+                <label>Grupos de usuários</label>
+                <ui-select multiple theme="bootstrap" class="form-control" ng-model="contract.groups" title="Escolha um ou mais módulos">
+                    <ui-select-match placeholder="Escolha um ou mais grupos de usuários">{{ $item.name }}</ui-select-match>
+                    <ui-select-choices repeat="group in groups | filter: {name: $select.search} track by group.id">
+                        <div ng-bind-html="group.name | highlight: $select.search"></div>
                     </ui-select-choices>
                 </ui-select>
             </div>
 
-            <div class="col-xs-12 col-md-6 col-lg-4">
+            <div class="col-xs-12 col-md-6">
+                <label>Turmas</label>
+                <ui-select multiple theme="bootstrap" class="form-control" ng-model="contract.classes" title="Escolha um ou mais módulos">
+                    <ui-select-match placeholder="Escolha uma ou mais turmas">{{ $item.name }}</ui-select-match>
+                    <ui-select-choices repeat="klass in classes | filter: {name: $select.search} track by klass.id">
+                        <div ng-bind-html="klass.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <label>Municípios</label>
+                <input type="text" class="form-control" placeholder="Digite o nome do municípios separados por vírgula">
+            </div>
+
+            <div class="col-xs-12 col-md-6">
                 <label>Importar usuários</label>
                 <div class="flex">
                     <input type="text" class="form-control" placeholder="Somente arquivos em formato CSV">
@@ -65,9 +63,6 @@
                 </span>
             </div>
         </div>
-
-        <label>Descrição de contrato</label>
-        <textarea class="form-control"></textarea>
 
         <button class="btn btn-sm btn-primary save pull-right">salvar contrato</button>
     </form>

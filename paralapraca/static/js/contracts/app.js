@@ -10,6 +10,7 @@
         'ui.bootstrap',
         'ui.select',
         'ui.tinymce',
+        'core.services',
         'header',
     ]);
 
@@ -27,8 +28,8 @@
                     controller: 'EditContractCtrl'
                 }).
                 when('/:contractId', {
-                    templateUrl: '/paralapraca/contract-detail.html',
-                    controller: 'ContractDetailsCtrl'
+                    templateUrl: '/paralapraca/contract-edit.html',
+                    controller: 'EditContractCtrl'
                 }).
                 when('/', {
                     templateUrl: '/paralapraca/contracts-list.html',

@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% load compress %}
+{% load static %}
+{% load i18n %}
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'tinymce-dist/tinymce.js' %}"></script>
+    {% compress js %}
+    <!-- Core -->
+    <script type="text/javascript" src="{% static 'js/core/app.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'js/core/controllers.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'js/core/services.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'js/core/filters.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'angular-tweet-filter/index.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'angular-sortable-view/src/angular-sortable-view.min.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'js/directives/fixedBar.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'js/directives/alertPopup.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'js/directives/markdowneditor.js' %}" charset="utf-8"></script>
+
+    <!-- Certificate -->
+    <script type="text/javascript" src="{% static 'js/certificate/app.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'js/certificate/controllers.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'js/certificate/filters.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'js/certificate/services.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'checklist-model/checklist-model.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'js/directives/file.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'js/directives/previewImage.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'js/factories/timtec-models.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'angular-ui-tinymce/src/tinymce.js' %}"></script>
+    {% endcompress %}
+{% endblock %}
+
+{% block wrapper_classes %}
+wrapper-course-lesson
+{% endblock %}
+
+{% block body_attrs %}
+ng-app="certification"
+{% endblock %}
+
+{% block content %}
+<!-- CERTIFICATES -->
+<section class="course courses-admin" ng-controller="CertificateDataAdminController">
+    {% if user.is_superuser %}
+    <script type="text/ng-template" id="generate_templates_modal.html">
+         <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="class-modal-label">Gerar templates de Certificado/Recibo</h4>
+            </div>
+            <form role="form" novalidate>
+              <div class="modal-body">
+                <div class="form-group">
+                    {% verbatim %}
+                    <select ng-model="form_filters.contract" class="form-control"
+                        ng-options="c.id as c.name for c in contracts">
+                      <option value="">Todos os Contratos</option>
+                    </select>
+                    {% endverbatim %}
+                </div>
+
+                <div class="form-group">
+                    {% verbatim %}
+                    <select ng-model="form_filters.course" class="form-control"
+                        ng-options="c.id as c.name for c in courses">
+                      <option value="">Todos os Módulos</option>
+                    </select>
+                    {% endverbatim %}
+                </div>
+
+                <div class="courses-list">
+                  <div class="line" ng-repeat="certificate in (filteredList = (certificateFormList | filter:form_filters.check))">
+                    <div class="header">
+                        <h5>
+                            {% verbatim %}
+                            <span>{{ certificate.certificate_template.course_name + ' (' + certificate.contract.name + ')' }}</span>
+                            {% endverbatim %}
+                            <span class="label label-warning" ng-if="certificate.type =='receipt'">{% trans 'Receipt' %}</span>
+                            <span class="label label-success" ng-if="certificate.type == 'certificate'">{% trans 'Certificate' %}</span>
+                        </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="cancel()">{% trans 'Cancel' %}</button>
+                <button type="submit"
+                        ng-click="generate_templates()"
+                        ng-disabled="(!form_filters.has_data) || (certificateFormList | filter:form_filters.check).length >= 2"
+                        class="btn btn-primary">
+                  Gerar templates
+                </button>
+              </div>
+            </form>
+        </div>
+    </script>
+    <div class="actions-menu" fixed-bar>
+        <div class="container-fluid">
+            <a class="btn btn-sm btn-primary btn-inverse add" ng-click="generate_templates_modal()">
+              Gerar templates
+            </a>
+        </div>
+    </div>
+    {% endif %}
+    <div class="courses-content page container-fluid">
+        <header class="page-header">
+            <h3>{% trans 'Templates de Certificado e Recibos' %}</h3>
+        </header>
+
+        <!-- FILTERS -->
+        <div class="filters">
+            <!--  FORM INLINE -->
+            <div class="form-inline">
+                <!-- ROW -->
+                <div class="row">
+                    <div class="filter-checkbox col-md-2 col-sm-4">
+                        <div class="checkbox">
+                            <select ng-model="filters.type" class="form-control">
+                              <option value="all">&nbsp;</option>
+                              <option value="receipt">{% trans 'Receipt' %}</option>
+                              <option value="certificate">{% trans 'Certificate' %}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="filter-keyword col-md-3 col-sm-4">
+                        <input type="text" ng-model="filters.textsearch" placeholder="{% trans 'Keyword' %}" class="form-control">
+                    </div>
+                    <div class="filter-ordering col-md-2 col-sm-4">
+                        {% verbatim %}
+                        <select ng-model="filters.contract" class="form-control"
+                            ng-options="c.id as c.name for c in contracts">
+                          <option value="">Todos os Contratos</option>
+                        </select>
+                        {% endverbatim %}
+                    </div>
+                    <div class="filter-ordering col-md-3 col-sm-4">
+                        {% verbatim %}
+                        <select ng-model="filters.course" class="form-control"
+                            ng-options="c.id as c.name for c in courses">
+                          <option value="">Todos os Módulos</option>
+                        </select>
+                        {% endverbatim %}
+                    </div>
+                    <div class="filter-reverse col-md-2 col-sm-2">
+                        <div class="pull-right">
+                            <button class="btn btn-sm btn-danger" ng-show="!filters.is_clear" ng-click="filters.clear()">
+                              <i class="fa fa-times"></i>
+                              Limpar
+                            </button>
+                            <button class="btn btn-sm btn-primary" ng-class="{active:reverse}" ng-click="reverse=!reverse">
+                              <!--Inverter-->
+                              <i class="fa fa-sort-amount-asc" ng-class="{'fa-sort-amount-desc':reverse}" ></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- END ROW -->
+            </div>
+            <!-- END FORM INLINE -->
+        </div>
+        <!-- END FILTERS -->
+
+        <section class="courses-list">
+
+            <div class="line" ng-repeat="certificate in (filteredList = (certificateList | orderBy:ordering:reverse | filter:filters.check))">
+
+
+                <div class="header">
+                    <h4 class="course-title">
+                        {% verbatim %}
+                        <a ng-href="/paralapraca/admin/certificate_settings/{{ certificate.id }}" title="{{ certificate.name }}">
+                          {{ certificate.certificate_template.course_name + ' (' + certificate.contract.name + ')' }}</a>
+                        {% endverbatim %}
+                    </h4>
+
+                    <span class="label label-warning" ng-if="certificate.type =='receipt'">{% trans 'Receipt' %}</span>
+                    <span class="label label-success" ng-if="certificate.type == 'certificate'">{% trans 'Certificate' %}</span>
+                </div>
+            </div>
+
+            <div class="row" ng-show="certificateList.$resolved && filteredList.length === 0">
+                <p class="textcenter">{% trans 'No certificates found' %}</p>
+            </div>
+            <div class="row" ng-show="!certificateList.$resolved">
+                <p class="textcenter">{% trans 'Loading certificates...' %}<i class="loading fa fa-refresh fa-spin"></i></p>
+            </div>
+        </section>
+    </div>
+</section>
+{% endblock %}

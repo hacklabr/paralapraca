@@ -151,6 +151,9 @@
     &.save {
         @extend %icon-checked;
     }
+    &.cancel {
+        @extend %icon-ban;
+    }
     &.search {
         @extend %icon-search;
     }
@@ -159,6 +162,9 @@
         &:before {
             vertical-align: top;
         }
+    }
+    &.preview {
+        @extend %icon-see-more;
     }
     &.see-stats {
         @extend %icon-stats;

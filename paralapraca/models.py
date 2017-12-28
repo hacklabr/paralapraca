@@ -8,8 +8,8 @@ from django.contrib.postgres.fields import ArrayField
 from autoslug import AutoSlugField
 from discussion.models import TopicNotification
 from activities.models import Activity
-from core.models import Class
-
+from core.models import Class, CertificateTemplate
+from core.utils import hash_name
 
 @python_2_unicode_compatible
 class Contract(models.Model):
@@ -62,3 +62,36 @@ class UnreadNotification(models.Model):
                 user=self.user,
                 is_read=False).count()
         super(UnreadNotification, self).save(*args, **kwargs)
+
+
+class CertificateData(models.Model):
+    site_logo = models.ImageField(_('Site Logo'), null=True, blank=True,
+                                  upload_to=hash_name('site_logo', 'type'))
+
+    text = models.TextField(_('Content'), default='')
+    TYPES = (
+        ('receipt', _('Receipt')),
+        ('certificate', _('Certificate')),
+    )
+
+    type = models.CharField(_('Certificate Type'), choices=TYPES,
+                            max_length=127)
+
+    contract = models.ForeignKey(Contract)
+    certificate_template = models.ForeignKey(CertificateTemplate)
+
+    class Meta:
+        verbose_name = _('Certificate Data')
+        unique_together = ('contract', 'certificate_template', 'type')
+
+    def __unicode__(self):
+        return u'Data of {0} ({1})'.format(self.contract, self.type)
+
+    def __str__(self):
+        return 'Data of {0} ({1})'.format(self.contract, self.type)
+
+    @property
+    def site_logo_url(self):
+        if self.site_logo:
+            return self.site_logo.url
+        return ''

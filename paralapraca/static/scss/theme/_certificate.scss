@@ -38,8 +38,7 @@
                 margin-left: 80px;
             }
         }
-        .institute-logo {
-            text-align: right;
+        .certificate-logo {
             img {
                 height: 12px;
                 @media screen and (min-width: $screen-sm-min) {
@@ -65,10 +64,10 @@
                     margin-left: -55px;
                 }
                 @media screen and (min-width: $screen-md-min) {
-                
+
                 }
             }
-            .institute-logo {
+            .certificate-logo {
                 @media screen and (min-width: $screen-sm-min) {
                     img {
                         max-height: 15px;

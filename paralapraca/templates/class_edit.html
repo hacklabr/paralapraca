@@ -21,6 +21,7 @@
     <script type="text/javascript" src="{% static 'js/directives/waiting-screen.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/edit-class/app.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/edit-class/controllers.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/edit-class/services.js' %}"></script>
     <script type="text/javascript" src="{% static 'checklist-model/checklist-model.js' %}"></script>
     <script type="text/javascript" src="{% static 'angular-ui-select/dist/select.js' %}"></script>
     {% endcompress %}
@@ -67,7 +68,7 @@ wrapper-course-lesson
 </div>
 
 
-<div class="course course-classes" ng-controller="ClassController">
+<div class="course course-classes" ng-controller="EditClassController">
     <!-- ACTIONS -->
     <div class="actions-menu" fixed-bar>
         <div class="container-fluid">
@@ -156,18 +157,28 @@ wrapper-course-lesson
         </div>
 
         <form class="add-users">
-            <label for="search-user">Adicionar alunos: </label>
-            <div class="autocomplete">
-                <input type="text" id="search-user" class="form-control" ng-model="asyncSelected"
-                    placeholder="{% trans 'Type the name, email or user name of the professor to search...' %}"
-                    uib-typeahead="user as user.formated_name for user in getUsers($viewValue)"
-                    typeahead-loading="loadingLocations"
-                    typeahead-on-select="on_select_student($model); asyncSelected = '';"
-                    typeahead-min-length="2"
-                    typeahead-wait-ms="500">
-                <i ng-show="loadingLocations" class="loading fa fa-refresh fa-spin"></i>
+            <div class="form-row">
+                <label for="select-contract">Selecionar contrato: </label>
+                <div class="autocomplete">
+                    <select id="select-contract" class="form-control" ng-model="classe.contract" ng-options="contract.name for contract in contracts track by contract.id">
+                        <option value="">Nenhum contrato</option>
+                    </select>
+                </div>
             </div>
-            <a class="btn btn-sm btn-primary add" data-toggle="modal" data-target="#class-modal">Adicionar vários usuários</a>
+            <div class="form-row">
+                    <label for="search-user">Adicionar alunos: </label>
+                    <div class="autocomplete">
+                    <input type="text" id="search-user" class="form-control" ng-model="asyncSelected"
+                        placeholder="{% trans 'Type the name, email or user name of the professor to search...' %}"
+                        uib-typeahead="user as user.formated_name for user in getUsers($viewValue)"
+                        typeahead-loading="loadingLocations"
+                        typeahead-on-select="on_select_student($model); asyncSelected = '';"
+                        typeahead-min-length="2"
+                        typeahead-wait-ms="500">
+                    <i ng-show="loadingLocations" class="loading fa fa-refresh fa-spin"></i>
+                </div>
+                <a class="btn btn-sm btn-primary add" data-toggle="modal" data-target="#class-modal">Adicionar vários usuários</a>
+            </div>
         </form>
 
         <table class="table table-striped">

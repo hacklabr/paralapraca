@@ -15,20 +15,23 @@
         }
     ]);
 
-    app.controller('NewContractCtrl', ['$scope', 'Contracts', 'Courses',
-        function ($scope, Contracts, Courses) {
-            $scope.courses = Courses.query();
+    app.controller('NewContractCtrl', ['$scope', 'Class', 'Contracts', 'Groups',
+        function ($scope, Classes, Contracts, Groups) {
+            $scope.classes = Classes.query();
+            $scope.groups = Groups.query();
 
             $scope.editing_mode = false;
             $scope.contract = {
+                description: '',
                 name: ''
             };
         }
     ]);
 
-    app.controller('EditContractCtrl', ['$scope', '$routeParams', 'Contracts', 'Courses',
-        function ($scope, $routeParams, Contracts, Courses) {
-            $scope.courses = Courses.query();
+    app.controller('EditContractCtrl', ['$scope', '$routeParams', 'Class', 'Contracts', 'Groups',
+        function ($scope, $routeParams, Classes, Contracts, Groups) {
+            $scope.classes = Classes.query();
+            $scope.groups = Groups.query();
 
             $scope.editing_mode = true;
             $scope.contract_id = $routeParams.contractId;

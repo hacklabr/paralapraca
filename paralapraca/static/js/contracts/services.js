@@ -8,9 +8,10 @@
             {'id': '@id'});
     }]);
 
-    app.factory('Courses', ['$resource', function($resource){
-        return $resource('/api/course/:id',
-            {'id': '@id'});
-    }]);
+    app.factory('Groups', function($resource){
+        return $resource('/api/group_admin/:id', {}, {
+            update: {method: 'PUT'}
+        });
+    });
 
 })(angular);
