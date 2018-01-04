@@ -10,15 +10,16 @@ from django.views.generic import TemplateView, DetailView
 from django.core.exceptions import PermissionDenied
 
 from rest_framework import viewsets, status
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 
 from core.models import Course, CourseStudent, Class, CertificateTemplate, CourseCertification
 from core.views import ClassViewSet
 from core.permissions import IsProfessorCoordinatorOrAdminPermissionOrReadOnly
 from core.serializers import CertificateTemplateImageSerializer, CourseCertificationSerializer
 
-from accounts.models import TimtecUser
+from accounts.models import TimtecUser, Group
 from accounts.views import GroupViewSet, GroupAdminViewSet
 
 from paralapraca.serializers import (AnswerNotificationSerializer,
@@ -40,6 +41,7 @@ ROCKET_CHAT = {
     'address': 'http://chat.paralapraca.org.br',
     'service': 'paralapraca'
 }
+
 
 
 class ChatScreenView(TemplateView):
@@ -481,3 +483,85 @@ class CourseCertificationDetailView(DetailView):
         else:
             return super(CourseCertificationDetailView, self)\
                 .render_to_response(context, **response_kwargs)
+
+
+@api_view(['GET','POST'])
+@permission_classes((AllowAny,))
+def contract_uploader_view(request):
+    csv_file = request.FILES.get('file', None)
+    contract_id = request.data.get('contract_id', None)
+    if not contract_id:
+        return Response({'error', "Contract must be specified"}, status.HTTP_400_BAD_REQUEST)
+
+    contract = Contract.objects.get(pk=contract_id)
+    data = {
+        'errors' : {
+            'user_exists' : [],
+            'class_not_found' : [],
+        },
+        'stats'  : {
+            'inserted' : 0,
+            'num_errors': 0,
+            'new_groups':0,
+        }
+    }
+    if csv_file:
+        import unicodecsv as csv
+        transactions = {
+            'create' : [],
+            'group' : {
+                'contract': []
+            },
+            'class' : {
+                'contract': []
+            }
+        }
+
+        cf = csv_file.read().splitlines()
+        csv_reader = csv.DictReader(cf)
+        for user in csv_reader:
+            if not TimtecUser.objects.filter(email=user['Email']).exists():
+                u = TimtecUser(email=user['Email'], cpf=user['CPF'],
+                               city=user[u'Município'],
+                               first_name=user['Nome completo'],)
+                transactions['create'].append(u)
+                data['stats']['inserted']+=1
+            else:
+                data['errors']['user_exists'].append(user['Nome completo'])
+                data['stats']['num_errors']+=1
+                u = TimtecUser.objects.get(email=user['Email'])
+
+            groups = user['Grupos'].split(';')
+            for group in groups:
+                if not transactions['group'].has_key(group):
+                    if not Group.objects.filter(name=group).exists():
+                        g = Group(name=group)
+                        transactions['create'].append(g)
+                        data['stats']['new_groups']+=1
+
+                    transactions['group'][group] = {
+                        'users' : []
+                    }
+                transactions['group'][group]['users'].append(u)
+                transactions['group']['contract'].append(group)
+
+            classes = user['Turmas'].split(';')
+            for cclass in classes:
+                if not transactions['class'].has_key(cclass):
+                    if Class.objects.filter(name=cclass).exists():
+                        transactions['class'][cclass] = {
+                            'users' : []
+                        }
+                        transactions['class'][cclass]['users'].append(u)
+                        transactions['class']['contract'].append(cclass)
+                    else:
+                        data['errors']['class_not_found'].append(cclass)
+
+        # TODO crete entities
+        # TODO add to groups
+        # TODO add to classes
+        # TODO add to contract
+
+    # if all goes ok, return statistics, else, return some stats and a bad
+    #   vibe message blaming Akon, his up to taking blame
+    return Response(data)
