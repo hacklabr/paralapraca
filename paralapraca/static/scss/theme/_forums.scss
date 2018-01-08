@@ -17,3 +17,24 @@
         @include button-hover($gray,$gray,#fff,$yellow);
     }
 }
+
+.forum-admin {
+    .row {
+        padding: 10px;
+    }
+    &.forum-list {
+        .actions {
+            @media screen and (min-width: $screen-sm-min) {
+                text-align: right;
+            }
+        }
+        .row {
+            span {
+                line-height: 33px;
+            }
+            &:nth-child(even) {
+                background-color: rgba(white, 0.3);
+            }
+        }
+    }
+}
