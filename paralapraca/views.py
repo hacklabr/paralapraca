@@ -91,12 +91,42 @@ class RocketchatIframeAuthView(TemplateView):
 class ContractViewSet(viewsets.ModelViewSet):
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         if self.request.query_params.get('simple', None):
             self.serializer_class = SimpleContractSerializer
 
         return super(ContractViewSet, self).get_serializer_class()
+
+    def _get_set_diff(self, curr, new):
+        remove = set(curr) - set(new)
+        add = set(new) - set(curr)
+        return add,remove
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        curr_group_set = instance.groups.values_list('id', flat=True)
+        new_group_set = request.data.get('groups', [])
+        new_group_set = [g['id'] for g in new_group_set]
+
+        g_add, g_remove = self._get_set_diff(curr_group_set, new_group_set)
+        for g in g_add:
+            instance.groups.add(g)
+        for g in g_remove:
+            instance.groups.remove(g)
+
+        curr_class_set = instance.classes.values_list('id', flat=True)
+        new_class_set = request.data.get('classes', [])
+        new_class_set = [c['id'] for c in new_class_set]
+
+        c_add, c_remove = self._get_set_diff(curr_class_set, new_class_set)
+        for c in c_add:
+            instance.classes.add(c)
+        for c in c_remove:
+            instance.classes.remove(c)
+
+        return super(ContractViewSet, self).update(request, *args, **kwargs)
 
 
 class ClassViewSet(viewsets.ModelViewSet):

@@ -16,7 +16,7 @@
     }]);
 
     app.factory('Groups', function($resource){
-        return $resource('/api/group_admin/:id', {}, {
+        return $resource('/api/group/:id', {}, {
             update: {method: 'PUT'}
         });
     });
