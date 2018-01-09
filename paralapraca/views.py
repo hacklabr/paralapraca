@@ -29,7 +29,7 @@ from paralapraca.serializers import (AnswerNotificationSerializer,
 from paralapraca.models import (AnswerNotification, UnreadNotification,
                                 Contract, CertificateData)
 from paralapraca.serializers import ContractGroupAdminSerializer, ContractClassSerializer, \
-    CertificateDataSerializer, CertificateImageDataSerializer
+    CertificateDataSerializer, CertificateImageDataSerializer, SimpleContractSerializer
 
 from discussion.models import Comment, CommentLike, Topic, TopicLike
 from rest_pandas import PandasViewSet
@@ -37,6 +37,7 @@ from rest_pandas.renderers import PandasCSVRenderer, PandasJSONRenderer
 import pandas as pd
 
 from administration.views import AdminMixin
+from serializers import ClassSerializer
 
 ROCKET_CHAT = {
     'address': 'http://chat.paralapraca.org.br',
@@ -90,6 +91,17 @@ class RocketchatIframeAuthView(TemplateView):
 class ContractViewSet(viewsets.ModelViewSet):
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
+
+    def get_serializer_class(self):
+        if self.request.query_params.get('simple', None):
+            self.serializer_class = SimpleContractSerializer
+
+        return super(ContractViewSet, self).get_serializer_class()
+
+
+class ClassViewSet(viewsets.ModelViewSet):
+    queryset = Class.objects.all()
+    serializer_class = ClassSerializer
 
 
 class AnswerNotificationViewSet(viewsets.ModelViewSet):

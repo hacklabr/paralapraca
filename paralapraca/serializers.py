@@ -19,15 +19,15 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class ClassSerializer(serializers.ModelSerializer):
-
     course = CourseSerializer(read_only=True)
 
     class Meta:
         model = Class
+        fields = ('id', 'name', 'course')
 
 
 class ContractSerializer(serializers.ModelSerializer):
-
+    groups = GroupSerializer(many=True, read_only=True)
     classes = ClassSerializer(many=True, read_only=True)
 
     class Meta:
