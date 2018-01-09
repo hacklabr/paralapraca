@@ -14,6 +14,9 @@ from core.utils import hash_name
 @python_2_unicode_compatible
 class Contract(models.Model):
     name = models.CharField(_('Name'), max_length=255)
+    description = models.TextField(blank=True,
+                                   verbose_name = _("description"),
+                                   help_text = _("Enter the contract description (optional)" ),)
     slug = AutoSlugField(_('Slug'), populate_from='name', max_length=128, editable=False, unique=True)
     groups = models.ManyToManyField(
         Group,
