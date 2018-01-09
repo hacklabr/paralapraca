@@ -40,6 +40,9 @@
             });
 
             $scope.save_contract = function(){
+                if (typeof $scope.contract.unities === 'string') {
+                    $scope.contract.unities = $scope.contract.unities.split(',');
+                }
                 $scope.contract.$update({id : $scope.contract_id}, function(data){
                     // TODO Data handling
                 }, function(error){
