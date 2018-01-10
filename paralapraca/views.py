@@ -99,6 +99,18 @@ class ContractViewSet(viewsets.ModelViewSet):
 
         return super(ContractViewSet, self).get_serializer_class()
 
+    def _get_groups_data(self, instance, request):
+        curr_group_set = instance.groups.values_list('id', flat=True)
+        new_group_set = request.data.get('groups', [])
+        new_group_set = [g['id'] for g in new_group_set]
+        return curr_group_set, new_group_set
+
+    def _get_classes_data(self, instance, request):
+        curr_class_set = instance.classes.values_list('id', flat=True)
+        new_class_set = request.data.get('classes', [])
+        new_class_set = [c['id'] for c in new_class_set]
+        return curr_class_set, new_class_set
+
     def _get_set_diff(self, curr, new):
         remove = set(curr) - set(new)
         add = set(new) - set(curr)
@@ -106,20 +118,14 @@ class ContractViewSet(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        curr_group_set = instance.groups.values_list('id', flat=True)
-        new_group_set = request.data.get('groups', [])
-        new_group_set = [g['id'] for g in new_group_set]
-
+        curr_group_set, new_group_set = self._get_groups_data(instance, request)
         g_add, g_remove = self._get_set_diff(curr_group_set, new_group_set)
         for g in g_add:
             instance.groups.add(g)
         for g in g_remove:
             instance.groups.remove(g)
 
-        curr_class_set = instance.classes.values_list('id', flat=True)
-        new_class_set = request.data.get('classes', [])
-        new_class_set = [c['id'] for c in new_class_set]
-
+        curr_class_set, new_class_set = self._get_classes_data(instance, request)
         c_add, c_remove = self._get_set_diff(curr_class_set, new_class_set)
         for c in c_add:
             instance.classes.add(c)
@@ -127,6 +133,30 @@ class ContractViewSet(viewsets.ModelViewSet):
             instance.classes.remove(c)
 
         return super(ContractViewSet, self).update(request, *args, **kwargs)
+
+    def create(self, request, *args, **kwargs):
+        MContractSerializer = self.get_serializer_class()
+        serializer = MContractSerializer(data=request.data)
+        if serializer.is_valid():
+            contract = serializer.save()
+        else:
+            return Response({"error" : "Error creating new Contract"}, status.HTTP_400_BAD_REQUEST)
+
+        curr_group_set, new_group_set = self._get_groups_data(contract, request)
+        g_add, g_remove = self._get_set_diff(curr_group_set, new_group_set)
+        for g in g_add:
+            contract.groups.add(g)
+        for g in g_remove:
+            contract.groups.remove(g)
+
+        curr_class_set, new_class_set = self._get_classes_data(contract, request)
+        c_add, c_remove = self._get_set_diff(curr_class_set, new_class_set)
+        for c in c_add:
+            contract.classes.add(c)
+        for c in c_remove:
+            contract.classes.remove(c)
+
+        return Response(serializer.data, status.HTTP_201_CREATED)
 
 
 class ClassViewSet(viewsets.ModelViewSet):
@@ -646,5 +676,11 @@ def contract_uploader_view(request):
             unities = contract.unities + list(set(transactions['contract']['unities']))
             contract.unities = unities
             contract.save()
+            serializer = ContractSerializer(instance=contract)
+            data['instance'] = serializer.data
+        else:
+            serializer = ContractSerializer(instance=contract)
+            data['instance'] = serializer.data
+            return Response(data, status.HTTP_400_BAD_REQUEST)
 
-    return Response(data)
+    return Response(data, status.HTTP_200_OK)

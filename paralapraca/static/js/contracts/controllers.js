@@ -16,20 +16,32 @@
     ]);
 
     app.controller('NewContractCtrl', ['$scope', 'ClassData', 'Contract', 'Groups',
-        function ($scope, Classes, Contracts, Groups) {
+        function ($scope, Classes, Contract, Groups) {
             $scope.classes = Classes.query();
             $scope.groups = Groups.query();
 
             $scope.editing_mode = false;
-            $scope.contract = {
+            $scope.contract = new Contract({
                 description: '',
                 name: ''
-            };
+            });
+
+            $scope.save_contract = function(){
+                if (typeof $scope.contract.unities === 'string') {
+                    $scope.contract.unities = $scope.contract.unities.split(',');
+                }
+                $scope.contract.$save({}, function(data){
+                    // TODO Data handling
+
+                }, function(error){
+                    // TODO Error handling
+                });
+            }
         }
     ]);
 
-    app.controller('EditContractCtrl', ['$scope', '$routeParams', 'ClassData', 'Contract', 'Groups',
-        function ($scope, $routeParams, Classes, Contracts, Groups) {
+    app.controller('EditContractCtrl', ['$scope', '$routeParams', 'FormUpload', 'ClassData', 'Contract', 'Groups',
+        function ($scope, $routeParams, FormUpload, Classes, Contracts, Groups) {
             $scope.classes = Classes.query();
             $scope.groups = Groups.query();
 
@@ -38,6 +50,8 @@
             Contracts.get({id: $scope.contract_id}, function(data){
                 $scope.contract = data;
             });
+
+            $scope.c = {}
 
             $scope.save_contract = function(){
                 if (typeof $scope.contract.unities === 'string') {
@@ -50,6 +64,20 @@
                 });
             }
 
+            $scope.uploadCSVData = function(){
+                var fu = new FormUpload();
+                fu.addField("file", $scope.c['csv_data_file']);
+                fu.addField("contract_id", $scope.contract_id);
+
+                var request = fu.sendTo('/paralapraca/admin/contracts/upload_data');
+                request.then(function(data){
+                    // TODO Data handling
+                    $scope.contract = data.instance;
+                }, function(error){
+                    // TODO Error handling
+                    $scope.contract = data.instance;
+                })
+            }
         }
     ]);
 

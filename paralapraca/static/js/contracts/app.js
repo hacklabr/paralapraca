@@ -5,6 +5,7 @@
         'contracts.controllers',
         'contracts.services',
         'ngFileUpload',
+        'directive.file',
         'ngRoute',
         'ngSanitize',
         'ui.bootstrap',
