@@ -33,7 +33,7 @@
                 $scope.contract.$save({}, function(data){
                     $location.path('/');
                 }, function(error){
-                    // TODO Error handling
+                    window.alert('Erro ao salvar contrato: ' + error.status + ' ' + error.statusText);
                 });
             }
         }
@@ -59,7 +59,7 @@
                 $scope.contract.$update({id : $scope.contract_id}, function(data){
                     $location.path('/');
                 }, function(error){
-                    // TODO Error handling
+                    window.alert('Erro ao salvar contrato: ' + error.status + ' ' + error.statusText);
                 });
             }
 
