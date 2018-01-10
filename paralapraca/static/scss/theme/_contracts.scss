@@ -7,6 +7,16 @@
         @media screen and (min-width: $screen-md-min) {
             margin: -30px -30px 35px -30px !important;
         }
+        .pull-right {
+            margin: 10px;
+            margin-right: 20px;
+            .btn-link {
+                font-size: $font-size-large;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
     }
     .page-title {
         font-size: 48px;
