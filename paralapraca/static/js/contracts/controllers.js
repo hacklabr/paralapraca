@@ -15,8 +15,8 @@
         }
     ]);
 
-    app.controller('NewContractCtrl', ['$scope', 'ClassData', 'Contract', 'Groups',
-        function ($scope, Classes, Contract, Groups) {
+    app.controller('NewContractCtrl', ['$scope', '$location', 'ClassData', 'Contract', 'Groups',
+        function ($scope, $location, Classes, Contract, Groups) {
             $scope.classes = Classes.query();
             $scope.groups = Groups.query();
 
@@ -31,8 +31,7 @@
                     $scope.contract.unities = $scope.contract.unities.split(',');
                 }
                 $scope.contract.$save({}, function(data){
-                    // TODO Data handling
-
+                    $location.path('/');
                 }, function(error){
                     // TODO Error handling
                 });
@@ -40,8 +39,8 @@
         }
     ]);
 
-    app.controller('EditContractCtrl', ['$scope', '$routeParams', 'FormUpload', 'ClassData', 'Contract', 'Groups',
-        function ($scope, $routeParams, FormUpload, Classes, Contracts, Groups) {
+    app.controller('EditContractCtrl', ['$scope', '$location', '$routeParams', 'FormUpload', 'ClassData', 'Contract', 'Groups',
+        function ($scope, $location, $routeParams, FormUpload, Classes, Contracts, Groups) {
             $scope.classes = Classes.query();
             $scope.groups = Groups.query();
 
@@ -58,7 +57,7 @@
                     $scope.contract.unities = $scope.contract.unities.split(',');
                 }
                 $scope.contract.$update({id : $scope.contract_id}, function(data){
-                    // TODO Data handling
+                    $location.path('/');
                 }, function(error){
                     // TODO Error handling
                 });
