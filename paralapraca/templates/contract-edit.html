@@ -152,4 +152,32 @@
         </div>
     </div>
 </div>
+
+<script type="text/ng-template" id="statsModal.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()"><i class="fa fa-times" aria-hidden="true"></i> fechar</button>
+        <h4 class="modal-title">Resultados</h4>
+    </div>
+    <div class="modal-body">
+        <div class="" ng-show="errors || stats.num_errors > 0">
+            <h5 class="modal-title">{{ stats.num_errors }} erro(s) encontrado(s)</h5>
+            <p ng-show="errors.form"><b>Erro fatal:</b> {{ errors.form }}</p>
+            <div ng-show="errors.class_not_found && errors.class_not_found.length > 0">
+                <p>As seguintes turmas não foram encontradas:</p>
+                <ul>
+                    <li ng-repeat="error_klass in errors.class_not_found">{{ error_klass }}</li>
+                </ul>
+            </div>
+            <div ng-show="errors.users_exist && errors.users_exist.length > 0">
+                <p>Os seguintes usuários já existem, e não puderam ser recriados:</p>
+                <ul>
+                    <li ng-repeat="error_user in errors.users_exist">{{ error_user }}</li>
+                </ul>
+            </div>
+        </div>
+        <h5 class="modal-title">Estatísticas</h5>
+        <p><b>Usuários criados:</b> {{ stats.inserted }}.</p>
+        <p><b>Grupos criados:</b> {{ stats.new_groups }}.</p>
+    </div>
+</script>
 {% endverbatim %}

@@ -39,8 +39,8 @@
         }
     ]);
 
-    app.controller('EditContractCtrl', ['$scope', '$location', '$routeParams', 'FormUpload', 'ClassData', 'Contract', 'Groups',
-        function ($scope, $location, $routeParams, FormUpload, Classes, Contracts, Groups) {
+    app.controller('EditContractCtrl', ['$scope', '$location', '$routeParams', '$uibModal', 'FormUpload', 'ClassData', 'Contract', 'Groups',
+        function ($scope, $location, $routeParams, $uibModal, FormUpload, Classes, Contracts, Groups) {
             $scope.classes = Classes.query();
             $scope.groups = Groups.query();
 
@@ -69,13 +69,47 @@
                 fu.addField("contract_id", $scope.contract_id);
 
                 var request = fu.sendTo('/paralapraca/admin/contracts/upload_data');
-                request.then(function(data){
-                    // TODO Data handling
+                request.then(function(data) {
+                    var modalInstance = $uibModal.open({
+                        templateUrl: 'statsModal.html',
+                        controller: ['$scope', '$uibModalInstance', 'data',
+                            function($scope, $uibModalInstance, data) {
+                                $scope.errors = undefined;
+                                $scope.stats = data.stats;
+                                $scope.cancel = function () {
+                                    $uibModalInstance.dismiss();
+                                };
+                            }
+                        ],
+                        resolve: {
+                            data: function() {
+                                return data;
+                            }
+                        }
+                    });
+
                     $scope.contract = data.instance;
-                }, function(error){
-                    // TODO Error handling
+                }, function(data) {
+                    var modalInstance = $uibModal.open({
+                        templateUrl: 'statsModal.html',
+                        controller: ['$scope', '$uibModalInstance', 'data',
+                            function($scope, $uibModalInstance, data) {
+                                $scope.errors = data.errors;
+                                $scope.stats = data.stats;
+                                $scope.cancel = function () {
+                                    $uibModalInstance.dismiss();
+                                };
+                            }
+                        ],
+                        resolve: {
+                            data: function() {
+                                return data;
+                            }
+                        }
+                    });
+
                     $scope.contract = data.instance;
-                })
+                });
             }
         }
     ]);
