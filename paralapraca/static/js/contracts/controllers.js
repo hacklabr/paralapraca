@@ -63,6 +63,31 @@
                 });
             }
 
+            $scope.remove_users = function(contract) {
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'removeUsersModal.html',
+                    controller: ['$scope', '$uibModalInstance', 'contract',
+                        function($scope, $uibModalInstance, contract) {
+                            $scope.contract = contract;
+
+                            $scope.cancel = function() {
+                                $uibModalInstance.dismiss();
+                            };
+
+                            $scope.bulk_remove = function() {
+                                // TODO
+                                $uibModalInstance.close();
+                            };
+                        }
+                    ],
+                    resolve: {
+                        contract: function() {
+                            return $scope.contract;
+                        }
+                    }
+                });
+            };
+
             $scope.uploadCSVData = function(){
                 var fu = new FormUpload();
                 fu.addField("file", $scope.c['csv_data_file']);

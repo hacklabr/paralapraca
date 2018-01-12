@@ -180,4 +180,21 @@
         <p><b>Grupos criados:</b> {{ stats.new_groups }}.</p>
     </div>
 </script>
+
+<script type="text/ng-template" id="removeUsersModal.html">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Cancelar</span></button>
+            <h4 class="modal-title" id="remove-users-modal-label">Remover usuários em lote do contrato "{{ contract.name }}"</h4>
+        </div>
+        <div class="modal-body">
+            <label for="bulk-remove-list">Lista de usuários</label>
+            <textarea id="bulk-remove-list" ng-model="bulk_remove_list" class="form-control" rows="10" placeholder="Copie a lista de e-mails aqui. Apenas um e-mail por linha."></textarea>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="cancel()">Cancelar</button>
+            <button type="button" class="btn btn-primary" ng-click="bulk_remove()">Remover usuários</button>
+        </div>
+    </div>
+</script>
 {% endverbatim %}
