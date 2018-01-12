@@ -563,10 +563,6 @@ class CourseCertificationDetailView(DetailView):
 def contract_uploader_view(request):
     csv_file = request.FILES.get('file', None)
     contract_id = request.data.get('contract_id', None)
-    if not contract_id:
-        return Response({'error', "Contract must be specified"}, status.HTTP_400_BAD_REQUEST)
-
-    contract = Contract.objects.get(pk=contract_id)
     data = {
         'errors' : {
             'user_exists' : [],
@@ -578,6 +574,11 @@ def contract_uploader_view(request):
             'new_groups':0,
         }
     }
+    if not contract_id:
+        data['errors']['form'] = "Contract must be specified"
+        return Response(data, status.HTTP_400_BAD_REQUEST)
+
+    contract = Contract.objects.get(pk=contract_id)
     if csv_file:
         import unicodecsv as csv
         transactions = {
@@ -590,97 +591,121 @@ def contract_uploader_view(request):
                 'unities' : []
             }
         }
+        try:
+            cf = csv_file.read().splitlines()
+            csv_reader = csv.DictReader(cf)
+            csv_reader = [c for c in csv_reader]
 
-        cf = csv_file.read().splitlines()
-        csv_reader = csv.DictReader(cf)
-        csv_reader = [c for c in csv_reader]
-
-        groups = set([c for u in csv_reader for c in u['Grupos'].split(';')])
-        for group in groups:
-            if not Group.objects.filter(name=group).exists():
-                g = Group(name=group)
-                transactions['create'].append(g)
-                data['stats']['new_groups']+=1
-
-        for user in csv_reader:
-            transactions['contract']['unities'] += user[u'Município'].split(';')
-            if not TimtecUser.objects.filter(email=user['Email']).exists():
-                username = slugify((user['Nome'] + user['Sobrenome'])[0:30])
-                tries = 0
-                while TimtecUser.objects.filter(username=username).exists() and tries < 10:
-                    tries+=1
-                    username = username[0:-1] + str(tries)
-
-                u = TimtecUser(email=user['Email'], cpf=user['CPF'],
-                               username=username,
-                               first_name=user['Nome'][0:30],
-                               last_name=user['Sobrenome'][0:30])
-                transactions['create'].append(u)
-                data['stats']['inserted']+=1
-            else:
-                data['errors']['user_exists'].append(user['Nome'] + user['Sobrenome'])
-                data['stats']['num_errors']+=1
-                u = None
-
-            groups = user['Grupos'].split(';')
+            groups = set([c for u in csv_reader for c in u['Grupos']
+                         .split(';')])
             for group in groups:
-                if not transactions['group_users'].has_key(group):
-                    transactions['group_users'][group] = []
+                if not Group.objects.filter(name=group).exists():
+                    g = Group(name=group)
+                    transactions['create'].append(g)
+                    data['stats']['new_groups']+=1
 
-                transactions['contract']['group'].append(group)
-                if u:
-                    transactions['group_users'][group].append(u)
+            for user in csv_reader:
+                transactions['contract']['unities'] += user[u'Município']\
+                    .split(';')
+                if not TimtecUser.objects.filter(email=user['Email']).exists():
+                    username = slugify((user['Nome'] + user['Sobrenome'])[0:30])
+                    tries = 0
+                    while TimtecUser.objects.filter(username=username)\
+                        .exists() and tries < 10:
+                        tries+=1
+                        username = username[0:-1] + str(tries)
 
-            classes = user['Turmas'].split(';')
-            for class_course in classes:
-                (cclass, course) = class_course.split(' @ ')
-                if Class.objects.filter(name=cclass, course__slug=course).exists():
-                    if not transactions['class_users'].has_key(class_course):
-                        transactions['class_users'][class_course] = []
-                    if u:
-                        transactions['class_users'][class_course].append(u)
-                    transactions['contract']['class'].append(class_course)
+                    u = TimtecUser(email=user['Email'], cpf=user['CPF'],
+                                   username=username,
+                                   first_name=user['Nome'][0:30],
+                                   last_name=user['Sobrenome'][0:30])
+                    transactions['create'].append(u)
+                    data['stats']['inserted']+=1
                 else:
-                    data['errors']['class_not_found'].append(class_course)
+                    data['errors']['user_exists'].append(user['Nome'] +
+                                                         user['Sobrenome'])
                     data['stats']['num_errors']+=1
+                    u = None
 
-        if data['stats']['num_errors'] == 0:
-            # create entities
-            for transaction in transactions['create']:
-                transaction.save()
+                groups = user['Grupos'].split(';')
+                for group in groups:
+                    if not transactions['group_users'].has_key(group):
+                        transactions['group_users'][group] = []
 
-            # add to groups
-            for group_transaction in transactions['group_users']:
-                group = Group.objects.get(name=group_transaction)
-                for u in transactions['group_users'][group_transaction]:
-                    group.user_set.add(u)
-                group.save()
+                    transactions['contract']['group'].append(group)
+                    if u:
+                        transactions['group_users'][group].append(u)
 
-            # add to classes
-            for class_transaction in transactions['class_users']:
-                (cclass, course) = class_transaction.split(' @ ')
-                cclass = Class.objects.get(name=cclass, course__slug=course)
-                for u in transactions['class_users'][class_transaction]:
-                    cclass.students.add(u)
-                cclass.save()
+                classes = user['Turmas'].split(';')
+                for class_course in classes:
+                    (cclass, course) = class_course.split(' @ ')
+                    if Class.objects.filter(name=cclass, course__slug=course)\
+                        .exists():
+                        if not transactions['class_users']\
+                            .has_key(class_course):
+                            transactions['class_users'][class_course] = []
+                        if u:
+                            transactions['class_users'][class_course].append(u)
+                        transactions['contract']['class']\
+                            .append(Class.objects
+                                    .get(name=cclass, course__slug=course))
+                    else:
+                        data['errors']['class_not_found'].append(class_course)
+                        data['stats']['num_errors']+=1
 
-            # add groups and classes to contract
-            groups = Group.objects.filter(name__in=transactions['contract']['group'])
-            for group in groups:
-                contract.groups.add(group)
+            if data['stats']['num_errors'] == 0:
+                from django.db import transaction
+                with transaction.atomic():
+                    # create entities
+                    for transaction in transactions['create']:
+                        transaction.save()
 
-            classes = Class.objects.filter(name__in=transactions['contract']['class'])
-            for cclass in classes:
-                contract.classes.add(cclass)
+                    # add to groups
+                    for group_transaction in transactions['group_users']:
+                        group = Group.objects.get(name=group_transaction)
+                        for u in transactions['group_users'][group_transaction]:
+                            group.user_set.add(u)
+                        group.save()
 
-            unities = contract.unities + list(set(transactions['contract']['unities']))
-            contract.unities = unities
-            contract.save()
-            serializer = ContractSerializer(instance=contract)
-            data['instance'] = serializer.data
-        else:
-            serializer = ContractSerializer(instance=contract)
-            data['instance'] = serializer.data
+                    # add to classes
+                    for class_transaction in transactions['class_users']:
+                        (cclass, course) = class_transaction.split(' @ ')
+                        cclass = Class.objects\
+                            .get(name=cclass, course__slug=course)
+                        for u in transactions['class_users'][class_transaction]:
+                            cclass.students.add(u)
+                            cclass.save()
+                            if not CourseStudent.objects\
+                                .filter(user=u, course=cclass.course).exists():
+                                cs = CourseStudent(user=u, course=cclass.course)
+                                cs.save()
+
+                    # add groups and classes to contract
+                    groups = Group.objects\
+                        .filter(name__in=transactions['contract']['group'])
+                    for group in groups:
+                        contract.groups.add(group)
+
+                    # add classes to contract
+                    classes = transactions['contract']['class']
+                    for cclass in classes:
+                        contract.classes.add(cclass)
+
+                    unities = contract.unities + \
+                              list(set(transactions['contract']['unities']))
+                    contract.unities = unities
+                    contract.save()
+                    serializer = ContractSerializer(instance=contract)
+                    data['instance'] = serializer.data
+            else:
+                serializer = ContractSerializer(instance=contract)
+                data['instance'] = serializer.data
+                return Response(data, status.HTTP_400_BAD_REQUEST)
+        except KeyError:
+            data['errors']['form'] = "Not valid CSV file"
             return Response(data, status.HTTP_400_BAD_REQUEST)
+    else:
+        data['errors']['form'] = "Not valid CSV file"
+        return Response(data, status.HTTP_400_BAD_REQUEST)
 
     return Response(data, status.HTTP_200_OK)
