@@ -159,7 +159,7 @@
     </div>
     <div class="modal-body">
         <div class="" ng-show="errors || stats.num_errors > 0">
-            <h5 class="modal-title">{{ stats.num_errors }} erro(s) encontrado(s)</h5>
+            <h5 class="modal-title"><ng-pluralize count="stats.num_errors" when="{'0': 'Nenhum erro encontrado', '1': 'Um erro encontrados', 'other': '{{ stats.num_errors }} erros encontrados'}"></ng-pluralize></h5>
             <p ng-show="errors.form"><b>Erro fatal:</b> {{ errors.form }}</p>
             <div ng-show="errors.class_not_found && errors.class_not_found.length > 0">
                 <p>As seguintes turmas não foram encontradas:</p>
@@ -167,16 +167,16 @@
                     <li ng-repeat="error_klass in errors.class_not_found">{{ error_klass }}</li>
                 </ul>
             </div>
-            <div ng-show="errors.users_exist && errors.users_exist.length > 0">
+            <div ng-show="errors.user_exists && errors.user_exists.length > 0">
                 <p>Os seguintes usuários já existem, e não puderam ser recriados:</p>
                 <ul>
-                    <li ng-repeat="error_user in errors.users_exist">{{ error_user }}</li>
+                    <li ng-repeat="error_user in errors.user_exists">{{ error_user }}</li>
                 </ul>
             </div>
         </div>
+        <p ng-show="!errors && stats.num_errors === 0">Contrato atualizado com sucesso!</p>
         <h5 class="modal-title">Estatísticas</h5>
-        <p><b>Usuários criados:</b> {{ stats.inserted }}.</p>
-        <p><b>Grupos criados:</b> {{ stats.new_groups }}.</p>
+        <p><ng-pluralize count="stats.inserted" when="{'0': 'Nenhum usuário criado.', '1': 'Um usuário criado.', 'other': '{{ stats.inserted }} usuários criados.'}"></ng-pluralize> <ng-pluralize count="stats.new_groups" when="{'0': 'Nenhum grupo criado.', '1': 'Um grupo criado.', 'other': '{{ stats.new_groups }} grupos criados.'}"></ng-pluralize></p>
     </div>
 </script>
 

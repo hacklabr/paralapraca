@@ -90,14 +90,14 @@
 
             $scope.uploadCSVData = function(){
                 if (!$scope.c.hasOwnProperty('csv_data_file')) {
-                    window.alert('Arquivo não selecionado');
+                    return window.alert('Arquivo não selecionado');
                 }
                 var fu = new FormUpload();
                 fu.addField("file", $scope.c['csv_data_file']);
                 fu.addField("contract_id", $scope.contract_id);
 
                 var request = fu.sendTo('/paralapraca/admin/contracts/upload_data');
-                request.then(function(data) {
+                request.then(function(res) {
                     var modalInstance = $uibModal.open({
                         templateUrl: 'statsModal.html',
                         controller: ['$scope', '$uibModalInstance', 'data',
@@ -111,14 +111,14 @@
                         ],
                         resolve: {
                             data: function() {
-                                return data;
+                                return res.data;
                             }
                         }
                     });
 
                     $scope.contract = new Contracts(res.data.instance);
                     upload_complete();
-                }, function(data) {
+                }, function(res) {
                     var modalInstance = $uibModal.open({
                         templateUrl: 'statsModal.html',
                         controller: ['$scope', '$uibModalInstance', 'data',
@@ -132,7 +132,7 @@
                         ],
                         resolve: {
                             data: function() {
-                                return data;
+                                return res.data;
                             }
                         }
                     });
