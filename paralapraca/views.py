@@ -16,7 +16,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 
 from core.models import Course, CourseStudent, Class, CertificateTemplate, CourseCertification
-from core.views import ClassViewSet
+from core import views as core_views
 from core.permissions import IsProfessorCoordinatorOrAdminPermissionOrReadOnly
 from core.serializers import CertificateTemplateImageSerializer, CourseCertificationSerializer
 
@@ -162,7 +162,7 @@ class ContractViewSet(viewsets.ModelViewSet):
 class ClassViewSet(viewsets.ModelViewSet):
     queryset = Class.objects.all()
     serializer_class = ClassSerializer
-
+    filter_fields = ('course',)
 
 class AnswerNotificationViewSet(viewsets.ModelViewSet):
     """
@@ -351,7 +351,7 @@ class ContractGroupAdminViewSet(GroupAdminViewSet):
         return ContractGroupAdminSerializer
 
 
-class ContractClassViewSet(ClassViewSet):
+class ContractClassViewSet(core_views.ClassViewSet):
     """
     Override group viewset add contracts.
     """
