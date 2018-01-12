@@ -64,6 +64,9 @@
             }
 
             $scope.uploadCSVData = function(){
+                if (!$scope.c.hasOwnProperty('csv_data_file')) {
+                    window.alert('Arquivo não selecionado');
+                }
                 var fu = new FormUpload();
                 fu.addField("file", $scope.c['csv_data_file']);
                 fu.addField("contract_id", $scope.contract_id);
@@ -88,7 +91,8 @@
                         }
                     });
 
-                    $scope.contract = data.instance;
+                    $scope.contract = new Contracts(res.data.instance);
+                    upload_complete();
                 }, function(data) {
                     var modalInstance = $uibModal.open({
                         templateUrl: 'statsModal.html',
@@ -107,10 +111,13 @@
                             }
                         }
                     });
-
-                    $scope.contract = data.instance;
+                    upload_complete();
                 });
-            }
+                var upload_complete = function(){
+                    $scope.c = {};
+                    angular.element("#csv_file").val(null);
+                }
+        }
         }
     ]);
 

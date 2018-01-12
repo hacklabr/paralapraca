@@ -56,9 +56,8 @@
 
                 <label>Importar usuários</label>
                 <div class="flex">
-                    <file class="form-control" placeholder="Somente arquivos em formato CSV"
+                    <file id="csv_file" class="form-control" placeholder="Somente arquivos em formato CSV"
                           ng-model="c.csv_data_file" name="file"></file>
-                    <!--<input type="text" class="form-control" placeholder="Somente arquivos em formato CSV">-->
                     <button class="btn btn-sm btn-default attach" ng-click="uploadCSVData()">enviar</button>
                 </div>
                 <span class="see-all">
