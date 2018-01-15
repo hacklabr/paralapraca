@@ -170,7 +170,7 @@ class SimpleContractSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Contract
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'description')
 
 
 class ContractBaseSerializerMixin(serializers.ModelSerializer):
