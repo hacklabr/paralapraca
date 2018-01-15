@@ -10,7 +10,10 @@
         <h4 class="contract-title"><a href="/contracts/#!/{{contract.id}}">{{ contract.name }}</a></h4>
         <div class="contract-content">
             <div class="row">
-                <div class="col-sm-7 col-md-8 col-lg-9 contract-text">{{ contract.description }}</div>
+                <div class="col-sm-7 col-md-8 col-lg-9 contract-text">
+                    <span ng-if="contract.description">{{ contract.description }}</span>
+                    <span ng-if="!contract.description" class="text-muted">Nenhuma descrição fornecida no momento.</span>
+                </div>
                 <div class="col-sm-5 col-md-4 col-lg-3">
                     <a href="#!/{{contract.id}}/edit" class="btn btn-xs btn-primary edit">editar</a>
                 </div>
