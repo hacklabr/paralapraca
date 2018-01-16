@@ -17,6 +17,7 @@ router.register(r'users-by-class', views.UsersByClassViewSet, base_name='users-b
 
 router.register(r'group', views.ContractGroupViewSet, base_name='group')
 router.register(r'group_admin', views.ContractGroupAdminViewSet, base_name='group_admin')
+router.register(r'course_group', views.CourseGroupViewSet, base_name='course_groups')
 router.register(r'course_classes', views.ContractClassViewSet, base_name='course_classes')
 router.register(r'certificate_template', CertificateDataViewSet, base_name='certificate_template')
 router.register(r'certificate_template_images', CertificateImageDataViewSet, base_name='certificate_template_images')

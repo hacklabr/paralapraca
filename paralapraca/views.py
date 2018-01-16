@@ -14,6 +14,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from rest_framework.viewsets import ModelViewSet
 
 from core.models import Course, CourseStudent, Class, CertificateTemplate, CourseCertification
 from core import views as core_views
@@ -37,7 +38,7 @@ from rest_pandas.renderers import PandasCSVRenderer, PandasJSONRenderer
 import pandas as pd
 
 from administration.views import AdminMixin
-from serializers import ClassSerializer
+from serializers import ClassSerializer, CourseGroupSerializer
 
 ROCKET_CHAT = {
     'address': 'http://chat.paralapraca.org.br',
@@ -709,3 +710,23 @@ def contract_uploader_view(request):
         return Response(data, status.HTTP_400_BAD_REQUEST)
 
     return Response(data, status.HTTP_200_OK)
+
+
+class CourseGroupViewSet(viewsets.ModelViewSet):
+    queryset = Course.objects.all()
+    serializer_class = CourseGroupSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def update(self, request, *args, **kwargs):
+        groups = request.data.get('groups', None)
+        course_slug = request.data.get('slug', None)
+        instance = Course.objects.get(slug=course_slug)
+        if groups:
+            for g in groups:
+                instance.groups.add(g)
+            instance.save()
+            serializer = CourseGroupSerializer(instance)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'error' : 'no group set'},
+                            status=status.HTTP_400_BAD_REQUEST)

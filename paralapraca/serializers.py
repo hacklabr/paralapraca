@@ -266,3 +266,11 @@ class CertificateImageDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = CertificateData
         fields = ('site_logo',)
+
+
+class CourseGroupSerializer(serializers.ModelSerializer):
+    groups = ContractGroupSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Course
+        fields = ('slug', 'name', 'groups')
