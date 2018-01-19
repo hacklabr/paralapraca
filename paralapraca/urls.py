@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^certificates-list.html$', TemplateView.as_view(template_name="administration/certificates-list.html")),
 
     url(r'^admin/contracts/upload_data$', views.contract_uploader_view, name="contract_uploader"),
+    url(r'^admin/contracts/remove_users$', views.contract_remove_users_view, name="contract_remove_users"),
     url(r'^admin/contracts$', TemplateView.as_view(template_name="contracts.html"), name="contracts"),
     url(r'^admin/certificates$', CertificateDataAdminView.as_view(template_name="administration/certificate-data.html"), name='administration.certificates'),
     url(r'^admin/certificate_settings/(?P<pk>[1-9][0-9]*)/$', CertificateDataAdminView.as_view(template_name="certificate-settings.html"), name="certificate_settings"),

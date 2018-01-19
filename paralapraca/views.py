@@ -560,7 +560,7 @@ class CourseCertificationDetailView(DetailView):
 
 
 @api_view(['POST'])
-@permission_classes((AllowAny,))
+@permission_classes((IsAdminUser,))
 def contract_uploader_view(request):
     csv_file = request.FILES.get('file', None)
     contract_id = request.data.get('contract_id', None)
@@ -710,6 +710,77 @@ def contract_uploader_view(request):
         return Response(data, status.HTTP_400_BAD_REQUEST)
 
     return Response(data, status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes((IsAdminUser,))
+def contract_remove_users_view(request):
+    CONTRACT_ARCHIVE_CLASS_PREFIX = "ARQUIVO_"
+    contract_id = request.data.get('contract', None)
+    if not contract_id:
+        return Response({"error" : "Contrato não informado"},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+    users = request.data.get('users', None)
+    if users:
+        users = users.split('\n')
+    else:
+        return Response({"error" : "Erro ao receber lista de usuários"},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+    contract = Contract.objects.get(id=contract_id)
+    errors = {
+        'num_errors' : 0,
+        'email_with_error' : [],
+    }
+    users_to_remove = []
+    for u in users:
+        if TimtecUser.objects.filter(email=u).exists():
+            user = TimtecUser.objects.get(email=u)
+            users_to_remove.append(user)
+        else:
+            errors['num_errors']+=1
+            errors['email_with_error'].append(u)
+
+    if errors['num_errors'] == 0:
+        groups_remove = contract.groups.values_list('id', flat=True)
+        contract_classes = contract.classes.exclude(name__contains="ARQUIVO_")
+        archive_classes = {}
+        for c in contract_classes:
+            archive_class_name = "%s%s@%s" % \
+                                 (
+                                     CONTRACT_ARCHIVE_CLASS_PREFIX,
+                                     c.course.name,
+                                     contract.name
+                                 )
+            if not Class.objects \
+                .filter(name=archive_class_name,
+                        course=c.course,
+                        contract__id=contract_id).exists():
+                archive_class = Class(name=archive_class_name,
+                                      course=c.course,)
+                archive_class.save()
+                archive_class.contract.add(contract_id,)
+            else:
+                archive_class = Class.objects.get(name=archive_class_name,
+                                                     course=c.course,
+                                                     contract__id=contract_id)
+            archive_classes[c.name] = archive_class
+
+        from django.db import transaction
+        with transaction.atomic():
+            for u in users_to_remove:
+                for g in groups_remove:
+                    u.groups.remove(g)
+
+                for c in u.classes.all().exclude(name__contains="ARQUIVO_"):
+                    if c.contract.first().id == contract.id:
+                        c.remove_students(u)
+                        archive_classes[c.name].add_students(u)
+
+        return Response({}, status=status.HTTP_200_OK)
+    else:
+        return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CourseGroupViewSet(viewsets.ModelViewSet):

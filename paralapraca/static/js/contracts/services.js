@@ -26,4 +26,15 @@
              update: {method: 'PUT'}
         });
     });
+
+
+    app.factory('ContractRemoveUsers', ['$http', function($http){
+        return function(contract_id, user_list) {
+            return $http.post('/paralapraca/admin/contracts/remove_users', {
+                contract: contract_id,
+                users: user_list,
+            });
+        };
+    }]);
+
 })(angular);

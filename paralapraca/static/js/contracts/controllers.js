@@ -39,8 +39,8 @@
         }
     ]);
 
-    app.controller('EditContractCtrl', ['$scope', '$location', '$routeParams', '$uibModal', 'FormUpload', 'ClassData', 'Contract', 'Groups',
-        function ($scope, $location, $routeParams, $uibModal, FormUpload, Classes, Contracts, Groups) {
+    app.controller('EditContractCtrl', ['$scope', '$location', '$routeParams', '$uibModal', 'FormUpload', 'ClassData', 'Contract', 'Groups', 'ContractRemoveUsers',
+        function ($scope, $location, $routeParams, $uibModal, FormUpload, Classes, Contracts, Groups, ContractRemoveUsers) {
             $scope.classes = Classes.query();
             $scope.groups = Groups.query();
 
@@ -69,20 +69,26 @@
                     controller: ['$scope', '$uibModalInstance', 'contract',
                         function($scope, $uibModalInstance, contract) {
                             $scope.contract = contract;
+                            $scope.data = {};
 
                             $scope.cancel = function() {
                                 $uibModalInstance.dismiss();
                             };
 
                             $scope.bulk_remove = function() {
-                                // TODO
+                                if($scope.data.bulk_remove_list){
+                                    console.log(ContractRemoveUsers($scope.contract, $scope.data.bulk_remove_list));
+                                } else {
+                                    window.alert("É necessário adicionar pelo menos um e-mail válido")
+                                }
+                                $scope.data['bulk_remove_list'] = undefined;
                                 $uibModalInstance.close();
                             };
                         }
                     ],
                     resolve: {
                         contract: function() {
-                            return $scope.contract;
+                            return $scope.contract_id;
                         }
                     }
                 });
