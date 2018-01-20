@@ -729,6 +729,16 @@ def contract_remove_users_view(request):
                         status=status.HTTP_400_BAD_REQUEST)
 
     contract = Contract.objects.get(id=contract_id)
+    contract_archive_group = u'Espaço Aberto %s' % (contract.name,)
+    if not Group.objects.filter(name=contract_archive_group).exists():
+        contract_archive_group = Group(name=contract_archive_group)
+        contract_archive_group.save()
+    else:
+        contract_archive_group = Group.objects.get(name=contract_archive_group)
+
+    groups_add = [Group.objects.get(name="Espaço Aberto"),
+                  Group.objects.get(name="students"), contract_archive_group]
+
     errors = {
         'num_errors' : 0,
         'email_with_error' : [],
@@ -772,6 +782,9 @@ def contract_remove_users_view(request):
             for u in users_to_remove:
                 for g in groups_remove:
                     u.groups.remove(g)
+
+                for g in groups_add:
+                    u.groups.add(g)
 
                 for c in u.classes.all().exclude(name__contains="ARQUIVO_"):
                     if c.contract.first().id == contract.id:
