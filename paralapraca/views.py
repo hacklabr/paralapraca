@@ -775,7 +775,7 @@ def contract_remove_users_view(request):
                 archive_class = Class.objects.get(name=archive_class_name,
                                                      course=c.course,
                                                      contract__id=contract_id)
-            archive_classes[c.name] = archive_class
+            archive_classes[c.name + c.course.name] = archive_class
 
         from django.db import transaction
         with transaction.atomic():
@@ -789,7 +789,7 @@ def contract_remove_users_view(request):
                 for c in u.classes.all().exclude(name__contains="ARQUIVO_"):
                     if c.contract.first().id == contract.id:
                         c.remove_students(u)
-                        archive_classes[c.name].add_students(u)
+                        archive_classes[c.name + c.course.name].add_students(u)
 
         return Response({}, status=status.HTTP_200_OK)
     else:
