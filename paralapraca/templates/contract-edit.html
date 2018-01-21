@@ -54,35 +54,38 @@
             </div>
         </div>
         <div class="row">
-          <div class="col-xs-12 col-md-12">
-            <button class="btn btn-sm btn-primary save pull-right" ng-click="save_contract()">salvar contrato</button>
-          </div>
+            <div class="col-xs-12 col-md-12">
+                <button class="btn btn-sm btn-primary save pull-right" ng-click="save_contract()">salvar contrato</button>
+            </div>
         </div>
         <hr />
         <h3>Ações em massa</h3>
         <div class="row" ng-if="editing_mode" >
-          <header>
-          </header>
-          <section >
             <div class="col-xs-12 col-md-6">
-              <h4>Importar usuários</h4>
-              <div class="flex">
-                <p>Para inserir dados no contrato, envie um arquivo tipo CSV com novos usuários e turmas que serão matrículados</p>
-                <file id="csv_file" class="form-control" placeholder="Somente arquivos em formato CSV"
-                      ng-model="c.csv_data_file" name="file"></file>
-                <button class="btn btn-sm btn-default attach" ng-click="uploadCSVData()">enviar</button>
-              </div>
+                <h4>Importar usuários</h4>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <p class="small text-justify">Para inserir dados no contrato, envie um arquivo tipo CSV com novos usuários e turmas que serão matrículados</p>
+                    </div>
+                    <div class="col-xs-12 col-md-6 flex">
+                        <file id="csv_file" class="form-control" placeholder="Somente arquivos em formato CSV"
+                            ng-model="c.csv_data_file" name="file"></file>
+                        <button class="btn btn-sm btn-default attach" ng-click="uploadCSVData()">enviar</button>
+                    </div>
+                </div>
             </div>
             <div class="col-xs-12 col-md-6">
-              <h4>Desativar usuários</h4>
-              <div class="flex">
-                <p>Para desativar usuários, insira uma lista de e-mails no formulário que pode ser acessado através do seguinte botão </p>
-                <button class="btn btn-sm btn-default attach" ng-click="remove_users()">Desativar Usuários</button>
-              </div>
+                <h4>Desativar usuários</h4>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <p class="small text-justify">Para desativar usuários, insira uma lista de e-mails no formulário que pode ser acessado através do seguinte botão </p>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <button class="btn btn-sm btn-default attach" ng-click="remove_users()">Desativar Usuários</button>
+                    </div>
+                </div>
             </div>
-          </section>
         </div>
-
     </form>
 </div>
 
