@@ -1,6 +1,28 @@
 // Mixins
 // --------------------------------------------------
 
+//== Aspect ratio
+//
+// Maintain aspect ration even while resizing the window
+// https://css-tricks.com/snippets/sass/maintain-aspect-ratio-mixin/
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+  &:before{
+      display: block;
+      content: " ";
+      width: 100% !important;
+      padding-top: ($height / $width) * 100% !important;
+  }
+
+  > .content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+  }
+}
+
 //== Icons
 //
 // For adding font icons to elements using CSS pseudo-elements
