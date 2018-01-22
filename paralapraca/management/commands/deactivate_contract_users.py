@@ -16,7 +16,6 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         # Positional arguments
         parser.add_argument('contract_id', nargs='+', type=int)
-        parser.add_argument('filename', nargs='+', type=str)
 
         # Named (optional) arguments
         parser.add_argument(
@@ -29,18 +28,14 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        with open(options['filename'][0], 'r') as emails_file:
-            emails = emails_file.read().rstrip('\n')
+        if options['dry_run']:
+            result = self._contract_remove_users_view(options['contract_id'][0], True)
+        else:
+            result = self._contract_remove_users_view(options['contract_id'][0])
 
-            if options['dry_run']:
-                result = self._contract_remove_users_view(options['contract_id'][0], emails, True)
-            else:
-                result = self._contract_remove_users_view(options['contract_id'][0], emails)
+        print(result)
 
-            print(result)
-
-    def _contract_remove_users_view(self, contract_id, users, dry_run = False):
-        users = users.split('\n')
+    def _contract_remove_users_view(self, contract_id, dry_run = False):
         contract = Contract.objects.get(id=contract_id)
         contract_archive_group = u'Espaço Aberto %s' % (contract.name,)
 
@@ -60,15 +55,11 @@ class Command(BaseCommand):
         stats = {
             "users_to_add" : 0,
         }
-        users_to_remove = []
-        for u in users:
-            if TimtecUser.objects.filter(email=u).exists():
-                user = TimtecUser.objects.get(email=u)
-                users_to_remove.append(user)
-                stats["users_to_add"]+=1
-            else:
-                errors['num_errors']+=1
-                errors['email_with_error'].append(u)
+        users_to_remove = TimtecUser.objects\
+            .exclude(is_superuser=True, is_staff=True)\
+            .exclude(groups=Group.objects.get(name="Espaço Aberto"))
+
+        stats["users_to_add"] = len(users_to_remove)
 
         if errors['num_errors'] == 0:
             groups_remove = contract.groups.values_list('id', flat=True)
