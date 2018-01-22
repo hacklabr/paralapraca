@@ -587,6 +587,14 @@
             font-size: 20px;
             margin: 35px 0 5px;
         }
+        .carousel {
+            @media screen and (min-width: $screen-md-min) {
+                width: 50%;
+            }
+            @media screen and (min-width: $screen-lg-min) {
+                width: 65%;
+            }
+        }
         .author {
             font-family: $font-family-sans-serif;
             font-size: 16px;
@@ -596,7 +604,22 @@
         .actions {
             margin: 20px 0;
         }
+        .float-right {
+            @media screen and (min-width: $screen-md-min) {
+                float: right;
+                clear: both;
+                margin-left: 20px;
+            }
+        }
         .sidebar {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            @media screen and (min-width: $screen-md-min) {
+                width: 50%;
+            }
+            @media screen and (min-width: $screen-lg-min) {
+                width: 35%;
+            }
             .box {
                 background-color: $orange;
                 color: #fff;
