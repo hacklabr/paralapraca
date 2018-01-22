@@ -169,9 +169,6 @@
                 <div class="pull-right hidden-xs">
                     <a class="btn btn-success list-all" href="/discussion/">mostrar todos</a>
                     <a class="btn btn-success new-topic" href="/discussion/topic/new/#!/topic/new/">criar novo tópico</a>
-                    <!-- visto apenas por assessoras
-                        <a class="btn btn-success see-stats" href="#">ver estatísticas</a>
-                    -->
                 </div>
                 <div class="pull-right dropdown visible-xs">
                     <button class="btn btn-default list-all dropdown-toggle" type="button" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -183,58 +180,8 @@
                     </ul>
                 </div>
 
-                <!-- <form class="widget-filter form-inline">
-                    <input class="form-control" type="text" placeholder="Busca nos fóruns...">
-                </form> -->
             </div>
         </header>
-
-        <!-- <div class="line two-column forty-sixty">
-            <div class="column">
-                <h3 class="section-title">últimas postagens</h3>
-                <div class="forum-update">
-                    Avante e Entremeios
-                </div>
-                <div class="forum-update">
-                    Curso de Mediação
-                </div>
-                <div class="forum-update">
-                    Formação de formadoras
-                </div>
-                <div class="forum-update">
-                    Avante e Entremeios
-                </div>
-                <div class="forum-update">
-                    Curso de Mediação
-                </div>
-                <div class="forum-update">
-                    Formação de formadoras
-                </div>
-            </div>
-            <div class="column">
-                <h3 class="section-title">Últimas postagens</h3>
-
-                {% verbatim %}
-                <div class="user-update" ng-repeat="topic in latest_topics">
-                    <div class="user-icon">
-                        <img ng-src="{{topic.author.picture}}" alt="{{topic.author.first_name}}" />
-                    </div>
-                    <div class="info">
-                        <b>{{topic.author.first_name}}</b> comentou no tópico <a href="../discussion/topic/##{{topic.id}}" class="thread-name">{{topic.title}}</a>
-                        no fórum <a ng-href="/discussion/forum/#/{{ topic.forum }}">{{topic.forum_info.title}}</a></span>
-                    </div>
-                    <div class="actions">
-                        <span class="action replies">{{topic.count_replies}} {{topic.count_replies > 1 || topic.count_replies == 0? 'respostas':'resposta'}}</span>
-                        <span class="action liked">{{topic.count_likes}} {{topic.count_likes > 1 || topic.count_likes == 0? 'gostaram':'gostou'}}</span>
-                    </div>
-                    <div class="tags">
-                        <span ng-repeat="tag in topic.tags" class="tag">#{{tag.name}}</span>
-                    </div>
-                </div>
-                {% endverbatim %}
-
-            </div>
-        </div> -->
 
         <div class="line one-column">
             <div class="column">
