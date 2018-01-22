@@ -248,7 +248,7 @@
     }
 
     .carousel {
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         .item {
             .text-center {
                 background: rgba(255,255,255,0.5);
@@ -609,6 +609,12 @@
                 float: right;
                 clear: both;
                 margin-left: 20px;
+            }
+        }
+        .reverse-on-small {
+            @media screen and (max-width: $screen-md-min) {
+                display: flex;
+                flex-direction: column-reverse;
             }
         }
         .sidebar {
