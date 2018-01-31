@@ -31,9 +31,12 @@ home
 <div>
     <section class="blocks">
 
-        <div class="welcome">
-            <h2>Seja bem vindo ao Paralapracá!</h2>
-            <p>Toda criança tem direito a uma escola equitativa, plural e acolhedora.</p>
+        <div class="welcome" style="padding: 0; min-height: 215px;">
+            <!--<h2>Seja bem vindo ao Paralapracá!</h2>-->
+            <!--<p>Toda criança tem direito a uma escola equitativa, plural e acolhedora.</p>-->
+            <iframe width="100%" height="100%" style="min-height: 215px;"
+                    src="https://www.youtube.com/embed/ywudePfl4aU?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0"
+                    allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
 
         <div class="login">
@@ -60,14 +63,14 @@ home
         </div>
 
         <div class="register">
-            <h2>O AVA Paralapracá está de cara nova.</h2>
-            <!--<p>Não é cadastrado no AVA? Com 4 passos você tem acesso a área livre e pode conhecer o ambiente-->
-                <!--virtual de aprendizagem do Paralapracá.</p>-->
-            <p class="info"><a href="/pages/novo-ava">Clique aqui para conhecer as novidades!</a></p>
+            <!--<h2>O AVA Paralapracá está de cara nova.</h2>-->
+            <!--<p class="info"><a href="/pages/novo-ava">Clique aqui para conhecer as novidades!</a></p>-->
+          <h2>O Paralapracá pode colaborar com o seu município!</h2>
+          <p class="info"><a href="/pages/para-o-municipio">Clique aqui para saber como!</a></p>
         </div>
 
         <div class="use">
-            <p>Pense, conheça e exercite novos olhares sobre as crianças e a educação infantil.</p>
+          <p>Quer conhecer o <a href="{% url 'account_signup' %}">Ambiente Virtual do Paralapracá?</a></p>
         </div>
 
     </section>
