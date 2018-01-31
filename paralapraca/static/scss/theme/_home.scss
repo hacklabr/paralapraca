@@ -40,7 +40,7 @@
                 text-align: left;
             }
             @media screen and (max-width: $screen-sm-max) {
-                @include aspect-ratio(562, 316);
+                @include aspect-ratio(16, 9);
             }
             h2 {
                 font-size: 6vmax;
