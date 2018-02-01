@@ -320,7 +320,6 @@
         .ui-select-choices {
             max-height: 300px;
             overflow-y: scroll;
-            top: 30px !important;
         }
         .btn-default {
             @include button-hover($purple,#fff,transparent,$purple);
