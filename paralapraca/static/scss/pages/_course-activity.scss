@@ -65,6 +65,7 @@
     }
 
     .slides {
+        margin: -30px;
         .slides-material {
             @include aspect-ratio(960, 700);
             pointer-events: none;
