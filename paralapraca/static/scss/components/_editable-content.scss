@@ -28,15 +28,17 @@
     input {
         font-weight: $bold;
     }
+    margin-top: 5px;
 }
 .editable-secondary-title {
     @extend %editable;
     @extend %editable-input;
-    font-family: $font-family-sans-serif;
+    font-family: $headings-font-family;
     font-size: 20px;
     input {
         font-weight: $bold;
     }
+    margin-top: 10px;
 }
 .editable-slug {
     @extend %editable;
