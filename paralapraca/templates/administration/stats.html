@@ -125,12 +125,12 @@ wrapper-course-lesson
                                 {% verbatim %}
                                     <div class="col-sm-1 col-xs-2">
                                         <div class="user-icon">
-                                            <img ng-src="{{ user.picture }}" alt="{{ user.name }}">
+                                            <a ng-href="/profile/{{ user.username }}"><img ng-src="{{ user.picture }}" alt="{{ user.name }}"></a>
                                         </div>
                                     </div>
                                     <div class="col-sm-4 col-xs-8">
                                         <strong>{{ user.name }}</strong><br>
-                                        ({{ user.email }})
+                                        (<a ng-href="/profile/{{ user.username }}">{{ user.email }}</a>)
                                     </div>
                                     <div class="col-md-3 col-sm-4 col-xs-2 course-progress">
                                         <span class="progress-label">{{ user.course_progress }}%</span>
