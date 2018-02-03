@@ -4,6 +4,12 @@
 {% block account_content %}
 
 <div class="register-page">
+    <script type="text/javascript">
+        var setOccupation = function(event) {
+            elem = document.getElementById("occupation");
+            elem.value = event.target.value;
+        }
+    </script>
     {% for error in errors %}
     <div class="alert alert-danger" role="alert">
         {{error}}
@@ -23,7 +29,7 @@
             <div class="form-group{{ errors|yesno:' has-error,' }}">
                 <i class="fa fa-user" aria-hidden="true"></i>
                 <label for="username" class="sr-only">{% trans "Username" %}</label>
-                <input name="username" type="text" value="{{form.username.value|default_if_none:""}}" class="form-control" id="username" placeholder="{% trans 'Username' %}">
+                <input name="username" type="text" value="{{form.username.value|default_if_none:''}}" class="form-control" id="username" placeholder="{% trans 'Username' %}">
                 {% for error in errors %}<small>{{error}}</small>{% endfor %}
             </div>
             {% endwith %}
@@ -32,7 +38,7 @@
             <div class="form-group{{ errors|yesno:' has-error,' }}">
                 <i class="fa fa-envelope" aria-hidden="true"></i>
                 <label for="email" class="sr-only">{% trans "E-mail" %}</label>
-                <input name="email" type="email" id="email" value="{{form.email.value|default_if_none:""}}" class="form-control" placeholder="{% trans 'Your e-mail' %}">
+                <input name="email" type="email" id="email" value="{{form.email.value|default_if_none:''}}" class="form-control" placeholder="{% trans 'Your e-mail' %}">
                 {% for error in errors %}<small>{{error}}</small>{% endfor %}
             </div>
             {% endwith %}
@@ -40,8 +46,40 @@
             {% with errors=form.cpf.errors %}
             <div class="form-group{{ errors|yesno:' has-error,' }}">
                 <i class="fa fa-id-card-o" aria-hidden="true"></i>
-                <label for="email" class="sr-only">CPF</label>
-                <input name="cpf" type="text" id="cpf" value="{{form.cpf.value|default_if_none:""}}" class="form-control" placeholder="CPF">
+                <label for="cpf" class="sr-only">CPF</label>
+                <input name="cpf" type="text" id="cpf" value="{{form.cpf.value|default_if_none:''}}" class="form-control" placeholder="CPF">
+                {% for error in errors %}<small>{{error}}</small>{% endfor %}
+            </div>
+            {% endwith %}
+
+            {% with errors=form.institution.errors %}
+            <div class="form-group{{ errors|yesno:' has-error,' }}">
+                <i class="fa fa-id-card-o" aria-hidden="true"></i>
+                <label for="institution" class="sr-only">Instituição</label>
+                <input name="institution" type="text" id="institution"
+                       value="{{form.institution.value|default_if_none:''}}"
+                       class="form-control" placeholder="Instituição">
+                {% for error in errors %}<small>{{error}}</small>{% endfor %}
+            </div>
+            {% endwith %}
+
+
+            {% with errors=form.occupation.errors %}
+            <div class="form-group{{ errors|yesno:' has-error,' }}">
+                <i class="fa fa-id-card-o" aria-hidden="true"></i>
+                <label for="occupation" class="sr-only">Instituição</label>
+                <input list="list__occupation-list" type="name"
+                       class="form-control" onchange="setOccupation(event)"
+                       value="{{form.occupation.value|default_if_none:''}}"
+                       placeholder="Você é" />
+                <input name="occupation" type="hidden" id="occupation" class="form-control"
+                       value="{{form.occupation.value|default_if_none:''}}">
+                <datalist id="list__occupation-list">
+                    <option value="Gestor Municipal">Gestor Municipal</option>
+                    <option value="Gestor Estadual">Gestor Estadual</option>
+                    <option value="Coordenador(a) de Educação infantil">Coordenador(a) de Educação infantil</option>
+                    <option value="Professor(a) de Educação infantil">Professor(a) de Educação infantil</option>
+                </datalist>
                 {% for error in errors %}<small>{{error}}</small>{% endfor %}
             </div>
             {% endwith %}
@@ -50,7 +88,7 @@
             <div class="form-group{% if errors or form.non_field_errors %} has-error{% endif %}">
                 <i class="fa fa-lock" aria-hidden="true"></i>
                 <label for="password1" class="sr-only">{% trans "Password" %}</label>
-                <input name="password1" type="password" id="password" class="form-control" placeholder="{% trans 'Really strong password' %}">
+                <input name="password1" type="password" id="password1" class="form-control" placeholder="{% trans 'Really strong password' %}">
                 {% for error in errors %}<small>{{error}}</small>{% endfor %}
                 {% for error in form.non_field_errors %}<small>{{error}}</small>{% endfor %}
             </div>
@@ -60,7 +98,7 @@
             <div class="form-group{% if errors or form.non_field_errors %} has-error{% endif %}">
                 <i class="fa fa-lock" aria-hidden="true"></i>
                 <label for="password2" class="sr-only">{% trans 'Password confirmation' %}</label>
-                <input name="password2" type="password" class="form-control" placeholder="{% trans 'Password confirmation' %}">
+                <input name="password2" type="password" id="password2"  class="form-control" placeholder="{% trans 'Password confirmation' %}">
             </div>
             {% endwith %}
 
