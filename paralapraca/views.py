@@ -805,12 +805,20 @@ class CourseGroupViewSet(viewsets.ModelViewSet):
         groups = request.data.get('groups', None)
         course_slug = request.data.get('slug', None)
         instance = Course.objects.get(slug=course_slug)
-        if groups:
-            for g in groups:
+        if groups and type(groups[0]) == int:
+            curr_groups = set(list(instance.groups.all().values_list('id', flat=True)))
+            remove_groups = curr_groups - set(groups)
+            add_groups = set(groups) - curr_groups
+
+            for g in add_groups:
                 instance.groups.add(g)
+
+            for g in remove_groups:
+                instance.groups.remove(g)
+
             instance.save()
             serializer = CourseGroupSerializer(instance)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response({'error' : 'no group set'},
                             status=status.HTTP_400_BAD_REQUEST)
