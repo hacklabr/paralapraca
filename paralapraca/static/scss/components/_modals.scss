@@ -5,11 +5,12 @@
 }
 
 .modal {
+    z-index: 5000;
     .text-editor {
         .btn {
             border: 1px solid $gray !important;
             border-bottom: 0px !important;
-            border-radius: 10px 10px 0px 0px; 
+            border-radius: 10px 10px 0px 0px;
             &:hover {
                 color: #000;
             }
@@ -18,7 +19,7 @@
 }
 
 .modal-content {
-    background: rgba(255,255,255,0.9);
+    background: rgba(255,255,255, 0.95);
     border: 0;
     border-radius: 0;
     box-shadow: none;
@@ -42,7 +43,7 @@
     font-family: $font-family-sans-serif;
     font-weight: $bold;
     line-height: 1;
-    padding: 0 0 8px; 
+    padding: 0 0 8px;
 }
 
 .close {
@@ -107,7 +108,7 @@
             margin-bottom: 30px;
         }
         .thumb {
-            margin: 10px 0 0; 
+            margin: 10px 0 0;
         }
     }
     .user-name-wrapper {
