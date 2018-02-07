@@ -162,11 +162,13 @@ wrapper-course-lesson
 
                     <div class="panel-body">
                         <ng-include src="loadActivityTemplateUrl()"></ng-include>
-                        <hr/>
-                        <p>{% trans 'The text bellow will be shown to students when they correctly finish this activity.' %}</p>
-                        <textarea ui-tinymce="tinymceOptions"
-                                  ng-model="currentActivity.comment"
-                                  placeholder="Comentários" name="content"></textarea>
+                        <div ng-hide="currentActivity.type === 'reading'">
+                            <hr/>
+                            <p>{% trans 'The text bellow will be shown to students when they correctly finish this activity.' %}</p>
+                            <textarea ui-tinymce="tinymceOptions"
+                                      ng-model="currentActivity.comment"
+                                      placeholder="Comentários" name="content"></textarea>
+                        </div>
                     </div>
                 </div>
 
