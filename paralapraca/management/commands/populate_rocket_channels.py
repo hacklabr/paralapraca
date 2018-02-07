@@ -109,9 +109,15 @@ class Command(BaseCommand):
                                   .filter(is_staff=True)
                                   .values_list('username', flat=True))
 
+            contract_users = list(TimtecUser.objects \
+                .filter(groups=contract.groups.all()) \
+                .distinct() \
+                .values_list('username', flat=True))
+
             for cclass in contract.classes.exclude(name__contains="ARQUIVO_"):
                 users = list(cclass.students.all()
                              .values_list('username', flat=True))
+                users = list(set(users).intersection(set(contract_users)))
                 users += list(cclass.assistants.all()
                               .values_list('username', flat=True))
                 users += is_staff_users
@@ -122,11 +128,8 @@ class Command(BaseCommand):
             for unity in contract.unities:
                 users = list(TimtecUser.objects.filter(city=unity)
                              .values_list('username', flat=True))
+                users = list(set(users).intersection(set(contract_users)))
                 users += is_staff_users
                 sync_room(users, slugify(unity))
 
-            users = list(TimtecUser.objects \
-                .filter(groups=contract.groups.all()) \
-                .distinct() \
-                .values_list('username', flat=True))
-            sync_room(users, slugify(contract.name))
+            sync_room(contract_users, slugify(contract.name))
