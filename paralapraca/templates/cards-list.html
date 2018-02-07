@@ -89,7 +89,7 @@
     </section>
 
     <div ng-show="blank_filters">
-        <section class="cards-list praticas-certificadas">
+        <section class="cards-list praticas-certificadas" ng-show="cards.certified.length > 0">
             <div class="row">
                 <header class="col-xs-12">
                     <h3 class="subtitle pull-left">
@@ -116,7 +116,7 @@
                 </header>
             </div>
 
-            <div class="row" ng-show="cards.certified.length > 0">
+            <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-4" ng-repeat="card in slider.certified">
                     <article class="card">
                         <header>
@@ -141,7 +141,7 @@
             <div class="scroll-warning">role a página para ver todas as práticas</div>
         </section>
 
-        <section class="cards-list praticas-independentes">
+        <section class="cards-list praticas-independentes" ng-show="cards.community.length > 0">
             <div class="row">
                 <header class="col-xs-12">
                     <h3 class="subtitle pull-left">
@@ -167,7 +167,7 @@
                 </header>
             </div>
 
-            <div class="row" ng-show="cards.community.length > 0">
+            <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-4" ng-repeat="card in slider.community">
                     <article class="card">
                         <header>
@@ -199,6 +199,8 @@
                     <h3 class="subtitle pull-left">Todas as práticas</h3>
                 </header>
             </div>
+
+            <p ng-show="cards.all.length == 0">Nenhuma prática encontrada.</p>
 
             <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-4" ng-repeat="card in cards.all">
