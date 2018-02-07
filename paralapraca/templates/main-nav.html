@@ -18,21 +18,21 @@
             {% endverbatim %}
         </li>
         <!--<li><a href="#" class="repositories">{% trans "Repository" %}</a></li>-->
-        <!-- {% if not request.user|has_group:"Espaço Aberto" %}
+        {% if not request.user|has_group:"Espaço Aberto" %}
         <li><a href="{% url 'discussion:forum-home' %}" class="forum">Fóruns</a></li>
-        {% endif %} -->
+        {% endif %}
         <!--<li><a href="#" class="help">{% trans "Help" %}</a></li>-->
         <li><a href="/cards" class="cards">Assim se faz</a></li>
 
         {% if not request.user|has_group:"Espaço Aberto" %}
-        <!-- <li>
+        <li>
             {% verbatim %}
             <a class="chat" href="/paralapraca/chat">
                 <span class="notification-bubble" ng-show="chat.notifications">{{ chat.notifications }}</span>
                 <span class="">Chat</span>
             </a>
             {% endverbatim %}
-        </li> -->
+        </li>
         {% endif %}
 
         {% if user.is_superuser %}
