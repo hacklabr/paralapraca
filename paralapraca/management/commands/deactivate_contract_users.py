@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from paralapraca.models import Contract
 from accounts.models import Group
 from core.models import Class
+from django.db.models import Q
 
 TimtecUser = get_user_model()
 
@@ -62,7 +63,9 @@ class Command(BaseCommand):
         stats["users_to_add"] = len(users_to_remove)
 
         if errors['num_errors'] == 0:
-            groups_remove = contract.groups.values_list('id', flat=True)
+            groups_remove = contract.groups \
+                .exclude(Q(name="Avante") | Q(name="Entremeios")) \
+                .values_list('id', flat=True)
             contract_classes = contract.classes.exclude(name__contains="ARQUIVO_")
             archive_classes = {}
             for c in contract_classes:
