@@ -41,7 +41,7 @@
         <header class="widget-topbar breadcrumb">
             <div class="line">
                 <div class="pull-left">
-                    <h2 class="title" ng-cloak>Fóruns > {{ topic.forum_info.title }}</h2>
+                    <h2 class="title" ng-cloak><a class="forum-header-link" href="/discussion/#!/">Fóruns</a> > <a class="forum-header-link" ng-href="/discussion/#!/forum/{{ topic.forum }}">{{ topic.forum_info.title }}</h2>
                 </div>
                 <div class="pull-right hidden-xs">
                     <a class="btn btn-sm btn-success new-topic"
