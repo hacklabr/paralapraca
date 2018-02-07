@@ -20,6 +20,9 @@
 .widget-topbar {
     &.breadcrumb {
         .line {
+            .forum-header-link {
+                @include link-hover($orange,$orange,transparent,$orange);
+            }
             .new-topic {
                 margin-right: 10px;
             }
@@ -59,6 +62,10 @@
                 text-decoration: underline;
             }
         }
+    }
+    .tinymce-loading {
+        text-align: center !important;
+        color: $orange;
     }
     .mce-tinymce {
         margin-bottom: 15px;

@@ -21,6 +21,22 @@
             }
         }
     }
+    .chapters {
+        .btn-group {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            .btn {
+                background-color: $yellow;
+                border: 1px solid #c9a30d !important;
+            }
+            .btn:first-child {
+                border-right: 0 !important;
+            }
+            .btn:nth-child(2) {
+                border-left: 0 !important;
+            }
+        }
+    }
 }
 
 // Course content (used on course intro and lesson page)

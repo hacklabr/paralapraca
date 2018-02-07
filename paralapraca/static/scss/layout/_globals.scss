@@ -37,6 +37,11 @@ body {
             position: relative;
             min-height: 100%;
             width: 100%;
+            .site-logo a {
+                position: absolute;
+                left: 25%;
+                width: 50%;
+            }
         }
         // content wrapper
         .wrapper {

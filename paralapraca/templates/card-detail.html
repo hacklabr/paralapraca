@@ -34,55 +34,47 @@
 
     <div class="card-page-content">
 
-        <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-4">
-                <span ng-bind-html="card.text"></span>
-
-                <div ng-show="card.you_will_need">
-                    <h5 class="subtitle">Você vai precisar de:</h5>
-                    <span ng-bind-html="card.you_will_need"></span>
+        <div class="reverse-on-small">
+            <div class="float-right carousel" uib-carousel active="active_slide" interval="0">
+                <div uib-slide ng-repeat="slide in slides track by $index" index="$index">
+                    <img ng-show="slide.type == 'image'" ng-src="{{slide.el.image}}">
+                    <iframe ng-show="slide.type == 'video'" ng-src="{{safe_url('https://www.youtube-nocookie.com/embed/' + slide.el.video_id + '?rel=0&showinfo=0')}}" frameborder="0" allowfullscreen></iframe>
                 </div>
-            </div> <!-- /.col -->
+            </div>
 
-            <div class="col-sm-12 col-md-6 col-lg-8">
-                <div uib-carousel active="active_slide" interval="0">
-                    <div uib-slide ng-repeat="slide in slides track by $index" index="$index">
-                        <img ng-show="slide.type == 'image'" ng-src="{{slide.el.image}}">
-                        <iframe ng-show="slide.type == 'video'" ng-src="{{safe_url('https://www.youtube-nocookie.com/embed/' + slide.el.video_id + '?rel=0&showinfo=0')}}" frameborder="0" allowfullscreen></iframe>
+            <span ng-bind-html="card.text"></span>
+        </div>
+
+        <div ng-show="card.you_will_need">
+            <h5 class="subtitle">Você vai precisar de:</h5>
+            <span ng-bind-html="card.you_will_need"></span>
+        </div>
+
+        <div class="reverse-on-small">
+            <div class="sidebar float-right">
+                <div class="box" ng-show="card.hint">
+                    <h5>Dicas</h5>
+                    <span ng-bind-html="card.hint"></span>
+                </div>
+
+                <div ng-show="card.tags.length > 0">
+                    <h5>Tags</h5>
+                    <div class="tags">
+                        <a class="tag" ng-repeat="tag in card.tags" ng-click="filter_by_tag(tag.name)">#{{ tag.name }}</a>
                     </div>
                 </div>
-            </div> <!-- /.col -->
-        </div> <!-- /.row -->
+            </div>
 
-        <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-8">
-                <div ng-show="card.development">
-                    <h5 class="subtitle">Desenvolvimento</h5>
-                    <span ng-bind-html="card.development"></span>
-                </div>
+            <div ng-show="card.development">
+                <h5 class="subtitle">Desenvolvimento</h5>
+                <span ng-bind-html="card.development"></span>
+            </div>
+        </div>
 
-                <div ng-show="card.know_more">
-                    <h5 class="subtitle">Para saber mais</h5>
-                    <span ng-bind-html="card.know_more"></span>
-                </div>
-            </div> <!-- /.col -->
-
-            <div class="col-sm-12 col-md-6 col-lg-4">
-                <div class="sidebar">
-                    <div class="box" ng-show="card.hint">
-                        <h5>Dicas</h5>
-                        <span ng-bind-html="card.hint"></span>
-                    </div>
-
-                    <div ng-show="card.tags.length > 0">
-                        <h5>Tags</h5>
-                        <div class="tags">
-                            <a class="tag" ng-repeat="tag in card.tags" ng-click="filter_by_tag(tag.name)">#{{ tag.name }}</a>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- /.col -->
-        </div> <!-- /.row -->
+        <div ng-show="card.know_more">
+            <h5 class="subtitle">Para saber mais</h5>
+            <span ng-bind-html="card.know_more"></span>
+        </div>
 
         <div ng-show="card.authors.length > 0">
             <h5 class="subtitle">Autoria</h5>

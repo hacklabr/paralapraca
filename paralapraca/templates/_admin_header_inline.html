@@ -19,6 +19,7 @@
                     <h2 class="course-name">{{ course.name }}</h2>
                     {% include "_course-details-inline.html" with course=course %}
                     <div class="editable-title"><input type="text" ng-model="lesson.name" placeholder="Nome do capítulo"></div>
+                    <div class="editable-secondary-title"><input type="text" ng-model="lesson.desc" placeholder="Descrição do capítulo"></div>
 
                     <nav class="chapters" ng-show="lesson.name">
                         <div class="btn-group">

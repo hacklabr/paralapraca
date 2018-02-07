@@ -2,6 +2,9 @@
 // --------------------------------------------------
 
 .anonymous {
+    @media screen and (max-width: $screen-sm-max) {
+        position: absolute !important;
+    }
     .site-header {
         background-color: transparent;
         box-shadow: none;
@@ -34,10 +37,10 @@
                 font-size: 4.5vmax;
             }
         }
-       
+
         .site-nav {
             @media screen and (max-width: $screen-xs-max) {
-                background-color: #f6f6f6; 
+                background-color: #f6f6f6;
                 bottom: 0;
                 box-shadow: 2px 0 5px 0px rgba(0,0,0,0.3);
                 left: -46vmax;
@@ -51,7 +54,7 @@
                 }
                 ul {
                     border-top: 1px solid rgba(0,0,0,0.1);
-                    list-style: none; 
+                    list-style: none;
                     margin-top: 11vmax;
                     padding: 0;
                     li {
@@ -69,12 +72,12 @@
                 }
             }
             @media screen and (min-width: $screen-xs-min) {
-                margin: 30px 60px 60px 0; 
-                overflow: hidden; 
+                margin: 30px 60px 60px 0;
+                overflow: hidden;
                 padding-bottom: 2px;
                 ul {
                     float: right;
-                    list-style: none; 
+                    list-style: none;
                     margin-bottom: 2px;
                     padding: 0;
                     li {
@@ -95,7 +98,7 @@
         }
         .site-logo {
             height: auto;
-            margin: 0 15px 20px; 
+            margin: 0 15px 20px;
             max-width: 560px;
             position: static;
             left: initial;
@@ -104,7 +107,7 @@
                 margin-top: 12vmax;
             }
             @media screen and (min-width: 561px) {
-                margin: 0 auto 30px; 
+                margin: 0 auto 30px;
             }
             h1 {
                 margin: 0;
@@ -126,7 +129,7 @@
             }
         }
         .animals {
-            margin: 0 auto; 
+            margin: 0 auto;
             max-width: 946px;
             overflow: hidden;
             padding: 0 5%;
@@ -137,7 +140,7 @@
                 background-size: 100%;
                 display: inline-block;
                 height: 6vmax;
-                margin: 0 1.5%; 
+                margin: 0 1.5%;
                 width: 12%;
                 @media screen and (min-width: $screen-sm-min) {
                     height: 81px;
@@ -170,7 +173,7 @@
             background: linear-gradient(to right,  #66b821 0%,#66b821 20%,#0470b0 20%,#0470b0 35%,#b02488 35%,#b02488 50%,#e02128 50%,#e02128 65%,#f22d92 65%,#f22d92 80%,#ff4100 80%,#ff4100 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#66b821', endColorstr='#ff4100',GradientType=1 ); /* IE6-9 */
             height: 3px;
-            margin: -8px auto 0; 
+            margin: -8px auto 0;
             max-width: 946px;
             width: 100%;
         }
