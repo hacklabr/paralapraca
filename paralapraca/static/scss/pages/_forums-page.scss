@@ -63,6 +63,10 @@
             }
         }
     }
+    .tinymce-loading {
+        text-align: center !important;
+        color: $orange;
+    }
     .mce-tinymce {
         margin-bottom: 15px;
     }
