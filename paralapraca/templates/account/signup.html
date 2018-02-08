@@ -45,7 +45,7 @@
 
             {% with errors=form.cpf.errors %}
             <div class="form-group{{ errors|yesno:' has-error,' }}">
-                <i class="fa fa-id-card-o" aria-hidden="true"></i>
+                <i class="fa fa-id-card" aria-hidden="true"></i>
                 <label for="cpf" class="sr-only">CPF</label>
                 <input name="cpf" type="text" id="cpf" value="{{form.cpf.value|default_if_none:''}}" class="form-control" placeholder="CPF">
                 {% for error in errors %}<small>{{error}}</small>{% endfor %}
@@ -54,7 +54,7 @@
 
             {% with errors=form.institution.errors %}
             <div class="form-group{{ errors|yesno:' has-error,' }}">
-                <i class="fa fa-id-card-o" aria-hidden="true"></i>
+                <i class="fa fa-university" aria-hidden="true"></i>
                 <label for="institution" class="sr-only">Instituição</label>
                 <input name="institution" type="text" id="institution"
                        value="{{form.institution.value|default_if_none:''}}"
@@ -66,7 +66,7 @@
 
             {% with errors=form.occupation.errors %}
             <div class="form-group{{ errors|yesno:' has-error,' }}">
-                <i class="fa fa-id-card-o" aria-hidden="true"></i>
+                <i class="fa fa-briefcase" aria-hidden="true"></i>
                 <label for="occupation" class="sr-only">Instituição</label>
                 <input list="list__occupation-list" type="name"
                        class="form-control" onchange="setOccupation(event)"
