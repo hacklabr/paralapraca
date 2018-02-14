@@ -58,10 +58,10 @@
     }
     .user-name {
         display: none;
-        float: left;
         font-size: $font-size-base;
         font-weight: $semi-bold;
         margin: 15px 0 0 10px;
+        overflow: auto;
         text-align: left;
         @media screen and (min-width: $screen-xs-min) {
             margin: 10px 0 0 10px;
