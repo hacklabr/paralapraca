@@ -77,7 +77,7 @@
 
                             $scope.bulk_remove = function() {
                                 if($scope.data.bulk_remove_list){
-                                    console.log(ContractRemoveUsers($scope.contract, $scope.data.bulk_remove_list));
+                                    console.log(ContractRemoveUsers($scope.contract.id, $scope.data.bulk_remove_list));
                                 } else {
                                     window.alert("É necessário adicionar pelo menos um e-mail válido")
                                 }
@@ -88,7 +88,7 @@
                     ],
                     resolve: {
                         contract: function() {
-                            return $scope.contract_id;
+                            return $scope.contract;
                         }
                     }
                 });
