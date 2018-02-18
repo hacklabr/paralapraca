@@ -38,6 +38,18 @@ home
                     class="content" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
 
+        <div class="use" style="min-height: 322px;">
+          <p style="font-size: 20px;">Conheça o <a href="{% url 'account_signup' %}">Ambiente Virtual de Aprendizagem do Paralapracá</a></p>
+        </div>
+
+        <div class="register">
+            <!--<h2>O AVA Paralapracá está de cara nova.</h2>-->
+            <!--<p class="info"><a href="/pages/novo-ava">Clique aqui para conhecer as novidades!</a></p>-->
+          <h2 style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: normal; font-size: 42px;">O Paralapracá pode colaborar com o seu município!</h2>
+          <p class="info"><a href="/pages/para-o-municipio">Clique aqui para saber como!</a></p>
+        </div>
+
         <div class="login">
             <form method="post" action="{% url 'account_login' %}" class="login-form">{% csrf_token %}
                 <fieldset>
@@ -59,17 +71,6 @@ home
                 </fieldset>
                 <p class="info">Esqueceu sua senha? <a href="{% url 'account_reset_password' %}">Clique aqui para recuperá-la</a></p>
             </form>
-        </div>
-
-        <div class="register">
-            <!--<h2>O AVA Paralapracá está de cara nova.</h2>-->
-            <!--<p class="info"><a href="/pages/novo-ava">Clique aqui para conhecer as novidades!</a></p>-->
-          <h2>O Paralapracá pode colaborar com o seu município!</h2>
-          <p class="info"><a href="/pages/para-o-municipio">Clique aqui para saber como!</a></p>
-        </div>
-
-        <div class="use">
-          <p>Quer conhecer o <a href="{% url 'account_signup' %}">Ambiente Virtual do Paralapracá?</a></p>
         </div>
 
     </section>
