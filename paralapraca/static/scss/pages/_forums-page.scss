@@ -63,10 +63,6 @@
             }
         }
     }
-    .tinymce-loading {
-        text-align: center !important;
-        color: $orange;
-    }
     .mce-tinymce {
         margin-bottom: 15px;
     }
@@ -184,6 +180,11 @@
         font-weight: $extra-bold;
         margin: 0 0 20px 0;
     }
+}
+
+.tinymce-loading {
+    text-align: center !important;
+    color: $orange;
 }
 
 .thread .info img {
