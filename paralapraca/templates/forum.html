@@ -143,7 +143,7 @@
         {% endverbatim %}
 
         {% if user.is_superuser %}
-        <div class="line one-column">
+        <div class="line one-column" ng-if="!forum_single">
             <div class="column">
                 <h3 class="section-title">filtrar por contrato</h3>
                 <select class="form-control" ng-model="filters.contract"
