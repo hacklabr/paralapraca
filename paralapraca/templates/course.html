@@ -458,13 +458,13 @@ wrapper-course-intro
                             <div class="units">
                                 <span class="units-title">{% trans 'Units' %}</span>
                                 {% verbatim %}
-                                <span class="has-tooltip unit"
+                                <a class="has-tooltip unit"
                                       ng-repeat="unit in lesson.units"
                                       data-toggle="tooltip"
                                       data-placement="bottom"
-                                      data-original-title="Unidade {{ unit.position+1 }}">
+                                      data-original-title="Unidade {{ unit.position+1 }}" ng-href="lessons/{{lesson.id}}#?unit={{unit.position}}">
                                       <span ng-bind="unit.position+1">1</span>
-                                </span>
+                                </a>
                                 {% endverbatim %}
                             </div>
                         </div>
@@ -534,13 +534,13 @@ wrapper-course-intro
                                     <div class="units">
                                         <span class="units-title">{% trans 'Units' %}</span>
                                         {% verbatim %}
-                                        <span class="has-tooltip unit"
+                                        <a class="has-tooltip unit"
                                               ng-repeat="unit in lesson.units"
                                               data-toggle="tooltip"
                                               data-placement="bottom"
-                                              data-original-title="Unidade {{ unit.position+1 }}">
+                                              data-original-title="Unidade {{ unit.position+1 }}" ng-href="lessons/{{lesson.id}}#?unit={{unit.position}}">
                                               <span ng-bind="unit.position+1">1</span>
-                                        </span>
+                                        </a>
                                         {% endverbatim %}
                                     </div>
                                 </div>
