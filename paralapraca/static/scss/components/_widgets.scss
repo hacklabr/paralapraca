@@ -140,7 +140,7 @@
 // --------------------------------------------------
 
 .forums-widget {
-    @include card(rgba(#fff,0.3));
+    @include card(rgba(#fff,0.5));
 
     .widget-filter {
         @include icon(after, search);

@@ -2,7 +2,7 @@
 // --------------------------------------------------
 
 .profile.page {
-    @include card(rgba(#fff,0.3));
+    @include card(rgba(#fff,0.5));
     padding: 15px;
     @media screen and (min-width: $screen-md-min) {
         padding: 30px;
