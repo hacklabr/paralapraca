@@ -38,10 +38,10 @@
 						<ui-select-match placeholder="Selecione uma tag...">#{{ $item.name }}</ui-select-match>
 						<ui-select-choices repeat="tag in tags | filter: {name: $select.search}" group-by="">
                             <div ng-if="tag.isTag">
-                                <div ng-if="tag_exists($select.search)" ng-bind-html="tag.name | highlight: $select.search"></div>
-                                <div ng-if="!tag_exists($select.search)" ng-bind-html="(tag.name | highlight: $select.search) +' (nova tag)'"></div>
+                                <div ng-if="tag_exists($select.search.toLowerCase())" ng-bind-html="tag.name | highlight: $select.search"></div>
+                                <div ng-if="!tag_exists($select.search.toLowerCase())" ng-bind-html="(tag.name | highlight: $select.search) +' (nova tag)'"></div>
                             </div>
-                            <div ng-if="!tag.isTag" ng-bind-html="tag.name + tag.isTag | highlight: $select.search" ng-hide="$select.search == tag.name"></div>
+                            <div ng-if="!tag.isTag" ng-bind-html="tag.name + tag.isTag | highlight: $select.search" ng-hide="$select.search.toLowerCase() == tag.name"></div>
 						</ui-select-choices>
 					</ui-select>
                 </div>
