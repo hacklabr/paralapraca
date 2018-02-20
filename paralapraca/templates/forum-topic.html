@@ -43,12 +43,12 @@
                 <div class="pull-left">
                     <h2 class="title" ng-cloak><a class="forum-header-link" href="/discussion/#!/">Fóruns</a> > <a class="forum-header-link" ng-href="/discussion/#!/forum/{{ topic.forum }}">{{ topic.forum_info.title }}</h2>
                 </div>
-                <div ng-if="!fatal_error" class="pull-right hidden-xs">
+                <div ng-show="!fatal_error" class="pull-right hidden-xs">
                     <a class="btn btn-sm btn-success new-topic"
                    href="/discussion/topic/new/#!/topic/new/">criar novo tópico</a>
                     <a ng-href="/discussion/#!/forum/{{ topic.forum }}" class="btn btn-link goback"><span>voltar</span></a>
                 </div>
-                <div ng-if="!fatal_error" class="pull-right dropdown visible-xs">
+                <div ng-show="!fatal_error" class="pull-right dropdown visible-xs">
                     <button class="btn btn-default list-all dropdown-toggle" type="button" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         opções
                     </button>
@@ -60,13 +60,13 @@
             </div>
         </header>
 
-        <div ng-if="fatal_error" class="line one-column">
+        <div ng-show="fatal_error" class="line one-column">
           <div class="column">
             <p class="danger">{{ error_message }}</p>
           </div>
         </div>
         <!-- Edição do tópico -->
-        <div ng-if="!fatal_error" class="line one-column">
+        <div ng-show="!fatal_error" class="line one-column">
             <div class="column">
                 <div class="forum-thread" ng-cloak>
                     <form class="new-thread" name="topic_form" novalidate ng-show="updating" ng-submit="topic_form.$valid && update_topic()">
@@ -188,7 +188,7 @@
                     <!-- /Exibição de tópico -->
                     <!-- Novo comentário -->
                     <div id="new-comment">
-                        <form class="comments-form" ng-if="topic.show_comment_input" ng-init="comment = new_comment()">
+                        <form class="comments-form" ng-show="topic.show_comment_input" ng-init="comment = new_comment()">
                             <div class="tinymce-loading">
                                 <div class="fa fa-spinner fa-pulse fa-4x"></div>
                                 <p>Carregando formulário...</p>
@@ -218,13 +218,13 @@
                                 <span class="user-name">
                                   <a ng-href="/profile/{{ comment.author.username }}">{{ comment.author.name }}</a>
                                 </span>
-                                <div class="comment-post" ng-if="!comment.updating">
+                                <div class="comment-post" ng-show="!comment.updating">
                                     <div ng-bind-html="get_as_safe_html(comment.text)"></div>
 
                                     <files files="comment.files" editable="false"></files>
                                 </div>
                                 <!-- Edição de um comentário -->
-                                <form class="comments-form" ng-if="comment.updating" ng-init="changed_comment = comment">
+                                <form class="comments-form" ng-show="comment.updating" ng-init="changed_comment = comment">
                                     <div class="tinymce-loading">
                                         <div class="fa fa-spinner fa-pulse fa-4x"></div>
                                         <p>Carregando formulário...</p>
@@ -280,7 +280,7 @@
                                         </div>
                                     </div>
                                     <!-- Edição de resposta a um comentário -->
-                                    <form class="comments-form" ng-if="reply.updating" ng-init="changed_reply = reply">
+                                    <form class="comments-form" ng-show="reply.updating" ng-init="changed_reply = reply">
                                         <div class="tinymce-loading">
                                             <div class="fa fa-spinner fa-pulse fa-4x"></div>
                                             <p>Carregando formulário...</p>
@@ -321,7 +321,7 @@
 
                             <!-- Criar nova resposta a comentário -->
                             <div id="new-answer-{{comment.id}}" class="info">
-                                <form class="comments-form" ng-if="comment.show_comment_input" ng-init="reply = new_comment()">
+                                <form class="comments-form" ng-show="comment.show_comment_input" ng-init="reply = new_comment()">
                                     <div class="tinymce-loading">
                                         <div class="fa fa-spinner fa-pulse fa-4x"></div>
                                         <p>Carregando formulário...</p>
