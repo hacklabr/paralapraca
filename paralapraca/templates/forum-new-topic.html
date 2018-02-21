@@ -110,8 +110,11 @@
                                 <ui-select multiple tagging="tagTransform" ng-model="new_topic.tags" theme="bootstrap" title="Escolha algumas tags...">
                                   <ui-select-match placeholder="Selecione uma tag...">#{{$item.name}}</ui-select-match>
                                   <ui-select-choices repeat="tag in tags | filter: {name: $select.search}" group-by="">
-                                    <div ng-if="tag.isTag && !tagExists($select.search)" ng-bind-html="(tag.name | highlight: $select.search) +' (nova tag)'"></div>
-                                    <div ng-if="!tag.isTag" ng-bind-html="tag.name + tag.isTag | highlight: $select.search" ng-class="{'active': $select.search == tag.name}"></div>
+                                        <div ng-if="tag.isTag">
+                                            <div ng-if="tagExists($select.search.toLowerCase())" ng-bind-html="tag.name | highlight: $select.search"></div>
+                                            <div ng-if="!tagExists($select.search.toLowerCase())" ng-bind-html="(tag.name | highlight: $select.search) +' (nova tag)'"></div>
+                                        </div>
+                                        <div ng-if="!tag.isTag" ng-bind-html="tag.name + tag.isTag | highlight: $select.search" ng-class="{'active': $select.search == tag.name}" ng-hide="$select.search.toLowerCase() == tag.name.toLowerCase()"></div>
                                   </ui-select-choices>
                                 </ui-select>
                             </div>
