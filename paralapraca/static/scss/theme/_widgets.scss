@@ -28,7 +28,7 @@
 
 .courses-widget {
     @include card(rgba($light-blue,0.6));
-    
+
     .widget-header {
         margin-bottom: 30px;
     }
@@ -86,5 +86,20 @@
     }
     .btn {
         @include button-hover(#fff,#fff,$orange,darken($orange,5%));
+    }
+}
+
+// Cards widget
+// --------------------------------------------------
+.cards-widget {
+    background-color: rgba($yellow, 0.4) !important;
+    padding: 17px;
+
+    .presentation {
+        margin-top: 20px;
+    }
+
+    .widget-title {
+        color: $purple;
     }
 }
