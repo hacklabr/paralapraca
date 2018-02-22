@@ -92,11 +92,16 @@
 // Cards widget
 // --------------------------------------------------
 .cards-widget {
-    background-color: rgba($yellow, 0.4) !important;
+    background-color: rgba($yellow, 0.35) !important;
     padding: 17px;
 
     .presentation {
+        font-size: initial;
         margin-top: 20px;
+    }
+
+    .see-more {
+        background-color: $purple;
     }
 
     .widget-title {

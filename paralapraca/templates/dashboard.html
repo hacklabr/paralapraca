@@ -32,7 +32,6 @@
     <script type="text/javascript" src="{% static 'js/filters/he.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/cards-controllers.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/cards-services.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/cards-directives.js' %}"></script>
     <script type="text/javascript" src="{% static 'angular-sanitize/angular-sanitize.js' %}"></script>
 
     <!-- Image upload dependencies for TinyMCE editors -->
@@ -42,9 +41,6 @@
     {% endcompress %}
     <script type="text/javascript">
         tinyMCE.baseURL = '/static/tinymce-dist/';
-    </script>
-    <script type="text/javascript">
-        angular.bootstrap(document.getElementById('cards'), ['cards']);
     </script>
 
 {% endblock %}
@@ -225,12 +221,11 @@
     </section>
     {% endif %}
 </div>
-<section class="widget cards container-fluid cards-widget " id="cards-app" ng-controller="CardsListCtrl">
+<section class="widget cards container-fluid cards-widget" ng-controller="CardsListCtrl">
     <h2 class="widget-title">Assim se Faz</h2>
     <div class="presentation">
         <p><b>Assim se Faz</b> é um repositório de práticas culturais e pedagógicas que traz ideias que apoiam os
-          profissionais da Educação Infantil nas suas interações com as crianças e a comunidade.
-          Poste suas práticas e desfrute das sugestões publicadas!</p>
+          profissionais da Educação Infantil nas suas interações com as crianças e a comunidade.</p>
     </div>
     {% verbatim %}
     <div class="cards-list praticas-certificadas" ng-show="cards.certified.length > 0">
@@ -256,10 +251,9 @@
                 </article>
             </div>
         </div>
-
-        <div class="scroll-warning">role a página para ver todas as práticas</div>
     </div>
     {% endverbatim %}
+    <a href="#" class="btn btn-primary see-more">conheça mais práticas</a>
 </section>
 
 {% endblock %}
