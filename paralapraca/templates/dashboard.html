@@ -27,6 +27,14 @@
     <script type="text/javascript" src="{% static 'angular-ui-tinymce/src/tinymce.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/ui.tinymce.paralapraca.config.js' %}"></script>
 
+    <!-- Cards -->
+    <script type="text/javascript" src="{% static 'js/cards-app.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/filters/he.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/cards-controllers.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/cards-services.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/cards-directives.js' %}"></script>
+    <script type="text/javascript" src="{% static 'angular-sanitize/angular-sanitize.js' %}"></script>
+
     <!-- Image upload dependencies for TinyMCE editors -->
     <script type="text/javascript" src="{% static 'js/discussion-services.js' %}"></script>
     <script type="text/javascript" src="{% static 'ng-file-upload/ng-file-upload.js' %}"></script>
@@ -34,6 +42,9 @@
     {% endcompress %}
     <script type="text/javascript">
         tinyMCE.baseURL = '/static/tinymce-dist/';
+    </script>
+    <script type="text/javascript">
+        angular.bootstrap(document.getElementById('cards'), ['cards']);
     </script>
 
 {% endblock %}
@@ -214,5 +225,41 @@
     </section>
     {% endif %}
 </div>
+<section class="widget cards container-fluid cards-widget " id="cards-app" ng-controller="CardsListCtrl">
+    <h2 class="widget-title">Assim se Faz</h2>
+    <div class="presentation">
+        <p><b>Assim se Faz</b> é um repositório de práticas culturais e pedagógicas que traz ideias que apoiam os
+          profissionais da Educação Infantil nas suas interações com as crianças e a comunidade.
+          Poste suas práticas e desfrute das sugestões publicadas!</p>
+    </div>
+    {% verbatim %}
+    <div class="cards-list praticas-certificadas" ng-show="cards.certified.length > 0">
+
+        <div class="row">
+            <div class="col-xs-12 col-md-6 col-lg-4" ng-repeat="card in slider.certified">
+                <article class="card">
+                    <header>
+                        <a href="#!/{{card.id}}"><div class="card-image" style="background-image: url('{{card_image(card)}}')"></div></a>
+                        <a class="category" ng-click="card_filter.audience = card.audience.name">{{ card.audience.name }}</a>
+
+                        <a class="card-axis" ng-click="card_filter.axis = card.axis.name">{{ card.axis.name }}</a>
+                        <h4 class="card-title"><a href="#!/{{ card.id }}">{{ card.title }}</a></h4>
+                        <span class="card-author">publicado por <a href="/profile/{{card.author.username}}">{{ card.author.name }}</a> <span class="action liked pull-right">{{ card.likes }}</span></span>
+                    </header>
+
+                    <footer>
+                        <div class="tags">
+                            <a class="tag" ng-click="insert_tag(tag.name)" ng-repeat="tag in card.tags.slice(0,2)">#{{ tag.name }}</a>
+                            <a class="tag" ng-show="card.tags.length > 2" href="#!/{{card.id}}">+{{ card.tags.length - 2 }}</a>
+                        </div>
+                    </footer>
+                </article>
+            </div>
+        </div>
+
+        <div class="scroll-warning">role a página para ver todas as práticas</div>
+    </div>
+    {% endverbatim %}
+</section>
 
 {% endblock %}
