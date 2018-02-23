@@ -101,10 +101,12 @@ class Command(BaseCommand):
                             u.groups.add(g)
 
                     for c in u.classes.all().exclude(name__contains="ARQUIVO_"):
-                        if c.contract.first().id == contract.id:
+                        if c.contract.first() and \
+                            c.contract.first().id == contract.id:
                             if not dry_run:
                                 c.remove_students(u)
-                                archive_classes[c.name + c.course.name].add_students(u)
+                                archive_classes[c.name + c.course.name] \
+                                    .add_students(u)
 
             return (stats, errors)
         else:
