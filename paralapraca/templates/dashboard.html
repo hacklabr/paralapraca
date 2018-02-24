@@ -30,7 +30,6 @@
     <!-- Cards -->
     <script type="text/javascript" src="{% static 'js/cards-app.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/filters/he.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/cards-controllers.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/cards-services.js' %}"></script>
     <script type="text/javascript" src="{% static 'angular-sanitize/angular-sanitize.js' %}"></script>
 
@@ -221,31 +220,33 @@
     </section>
     {% endif %}
     {% if request.user|has_group:"Espaço Aberto" %}
-    <section class="widget cards container-fluid cards-widget" ng-controller="CardsListCtrl">
+    <section class="widget cards container-fluid cards-widget" >
         <h2 class="widget-title">Assim se Faz</h2>
         <div class="presentation">
             <p><b>Assim se Faz</b> é um repositório de práticas culturais e pedagógicas que traz ideias que apoiam os
               profissionais da Educação Infantil nas suas interações com as crianças e a comunidade.</p>
         </div>
         {% verbatim %}
-        <div class="cards-list praticas-certificadas" ng-show="cards.certified.length > 0">
+        <div class="cards-list praticas-certificadas" ng-show="cards.length > 0">
 
             <div class="row">
-                <div class="col-xs-12 col-md-6 col-lg-4" ng-repeat="card in slider.certified">
+                <div class="col-xs-12 col-md-6 col-lg-4" ng-repeat="card in cards">
                     <article class="card">
                         <header>
-                            <a href="#!/{{card.id}}"><div class="card-image" style="background-image: url('{{card_image(card)}}')"></div></a>
+                            <a href="/cards/#!/{{card.id}}"><div class="card-image" style="background-image: url('{{card_image(card)}}')"></div></a>
                             <a class="category" ng-click="card_filter.audience = card.audience.name">{{ card.audience.name }}</a>
 
                             <a class="card-axis" ng-click="card_filter.axis = card.axis.name">{{ card.axis.name }}</a>
-                            <h4 class="card-title"><a href="#!/{{ card.id }}">{{ card.title }}</a></h4>
-                            <span class="card-author">publicado por <a href="/profile/{{card.author.username}}">{{ card.author.name }}</a> <span class="action liked pull-right">{{ card.likes }}</span></span>
+                            <h4 class="card-title"><a href="/cards/#!/{{ card.id }}">{{ card.title }}</a></h4>
+                            <span class="card-author">publicado por <a href="/profile/{{card.author.username}}">
+                              {{ card.author.name }}</a> <span class="action liked pull-right">{{ card.likes }}
+                            </span></span>
                         </header>
 
                         <footer>
                             <div class="tags">
                                 <a class="tag" ng-click="insert_tag(tag.name)" ng-repeat="tag in card.tags.slice(0,2)">#{{ tag.name }}</a>
-                                <a class="tag" ng-show="card.tags.length > 2" href="#!/{{card.id}}">+{{ card.tags.length - 2 }}</a>
+                                <a class="tag" ng-show="card.tags.length > 2" href="/cards/#!/{{card.id}}">+{{ card.tags.length - 2 }}</a>
                             </div>
                         </footer>
                     </article>
