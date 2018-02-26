@@ -220,18 +220,17 @@
     </section>
     {% endif %}
     {% if request.user|has_group:"Espaço Aberto" %}
-    <section class="widget cards container-fluid cards-widget" >
+    <section class="widget cards container-fluid cards-widget" ng-if="cards.length > 0">
         <h2 class="widget-title">Assim se Faz</h2>
         <div class="presentation">
             <p><b>Assim se Faz</b> é um repositório de práticas culturais e pedagógicas que traz ideias que apoiam os
               profissionais da Educação Infantil nas suas interações com as crianças e a comunidade.</p>
         </div>
         {% verbatim %}
-        <div class="cards-list praticas-certificadas" ng-show="cards.length > 0">
-
+        <div class="cards-list">
             <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-4" ng-repeat="card in cards">
-                    <article class="card">
+                    <article class="card" ng-class="{'praticas-certificadas': card.is_certified, 'praticas-independentes': !card.is_certified}">
                         <header>
                             <a href="/cards/#!/{{card.id}}"><div class="card-image" style="background-image: url('{{card_image(card)}}')"></div></a>
                             <a class="category" ng-click="card_filter.audience = card.audience.name">{{ card.audience.name }}</a>
