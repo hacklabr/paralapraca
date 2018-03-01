@@ -16,7 +16,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.viewsets import ModelViewSet
 
-from core.models import Course, CourseStudent, Class, CertificateTemplate, CourseCertification
+from core.models import Course, CourseStudent, Class, CertificateTemplate, CourseCertification, StudentProgress
 from core import views as core_views
 from core.permissions import IsProfessorCoordinatorOrAdminPermissionOrReadOnly
 from core.serializers import CertificateTemplateImageSerializer, CourseCertificationSerializer
@@ -39,6 +39,8 @@ import pandas as pd
 
 from administration.views import AdminMixin
 from serializers import ClassSerializer, CourseGroupSerializer
+from activities.models import Activity, Answer
+from django.db.models import Count
 
 ROCKET_CHAT = {
     'address': 'http://chat.paralapraca.org.br',
@@ -220,7 +222,112 @@ class SummaryViewSet(viewsets.ViewSet):
 
     permission_classes = [IsAuthenticated]
 
+    def list_new(self, request):
+
+        courses = Course.objects.all()
+        stats = {}
+        activities = {}
+        unit_set = {}
+        all_answers = {}
+        all_progress = {}
+        classes = Class.objects.filter(course=courses)
+        for course in courses:
+            stats[course.slug] = {
+                'name': course.name,
+                'user_count': course.coursestudent_set.count(),
+                'user_finished_course_count': 0,
+                'classes' : []
+            }
+            unit_set[course.slug] = course.unit_set.count()
+            le_activities = Activity.objects \
+                .filter(unit__lesson__in=course.lessons
+                        .filter(status='published'),
+                        type="discussion")
+            all_answers[course.slug] = {}
+            all_progress[course.slug] = {}
+            activities[course.slug] = le_activities.count()
+
+            aux = Answer.objects \
+                .filter(activity__in=le_activities)\
+                .values('user')\
+                .order_by('user')\
+                .annotate(Count('user'))
+            for ans in aux:
+                all_answers[course.slug][ans['user']] = ans['user__count']
+
+            aux = StudentProgress.objects\
+                .exclude(complete=None) \
+                .filter(unit__lesson__course=course)\
+                .values('user')\
+                .order_by('user').\
+                annotate(Count('user'))
+
+            for progress in aux:
+                all_progress[course.slug][progress['user']] = progress['user__count']
+
+
+
+        def __plpc_course_finished(activities, answers, units_len,
+                                  units_done_len, min_percent_to_complete):
+            return __percent_progress(units_len, units_done_len) > min_percent_to_complete and \
+                   activities == answers
+
+        def __percent_progress(units_len, units_done_len):
+            if units_len <= 0:
+                return 0
+            return int(100.0 * units_done_len / units_len)
+
+        def __can_emmit_receipt(cclass, certificate, answers, user):
+            course_finished = __plpc_course_finished(activities[cclass.course.slug],
+                                                    answers,
+                                                    unit_set[cclass.course.slug],
+                                                    all_progress[cclass.course.slug].get(user, 0),
+                                                    cclass.course.min_percent_to_complete)
+            if not cclass.user_can_certificate and not course_finished:
+                return False
+            if cclass.user_can_certificate_even_without_progress and certificate:
+                return True
+            return course_finished
+
+        for cclass in classes:
+            certified = cclass.get_students.filter(certificate__type='certificate')
+            not_certified = cclass.get_students.exclude(certificate__type='certificate')
+            cclass_stats = {
+                'name': cclass.name,
+                'user_count': cclass.get_students.count(),
+                'certificate_count': certified.count(),
+                'user_finished': 0
+            }
+
+            for cs in certified:
+                answers = all_answers[cclass.course.slug].get(cs.user.id, 0)
+                if __can_emmit_receipt(cclass, True, answers, cs.user.id):
+                    stats[cclass.course.slug]['user_finished_course_count'] += 1
+                    cclass_stats['user_finished'] += 1
+
+            for cs in not_certified:
+                answers = all_answers[cclass.course.slug].get(cs.user.id, 0)
+                if __can_emmit_receipt(cclass, False, answers, cs.user.id):
+                    stats[cclass.course.slug]['user_finished_course_count'] += 1
+                    cclass_stats['user_finished'] += 1
+
+            stats[cclass.course.slug]['classes'].append(cclass_stats)
+
+        stats = list(stats.values())
+
+        response = Response({
+            'user_count': TimtecUser.objects.count(),
+            'total_number_of_topics': Topic.objects.count(),
+            'total_number_of_comments': Comment.objects.count(),
+            'total_number_of_likes': TopicLike.objects.count() + CommentLike.objects.count(),
+            'statistics_per_course': stats})
+
+        return response
+
     def list(self, request):
+        return self.list_new(request)
+
+    def list_old(self, request):
         courses = Course.objects.all()
         stats = []
         for course in courses:
