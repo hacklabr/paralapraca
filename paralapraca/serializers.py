@@ -74,7 +74,7 @@ class UserInDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TimtecUser
-        fields = sorted(('cpf', 'cities', 'courses', 'date_joined', 'last_login',
+        fields = sorted(('cpf', 'cities', 'city', 'occupation', 'courses', 'date_joined', 'last_login',
                          'full_name', 'topics_created', 'number_of_likes',
                          'comments_created',))
 
@@ -130,6 +130,14 @@ class UsersByClassSerializer(serializers.Serializer):
     course_finished = serializers.SerializerMethodField()
     class_name = serializers.SerializerMethodField()
     cities = serializers.SerializerMethodField()
+    city = serializers.SerializerMethodField()
+    occupation = serializers.SerializerMethodField()
+
+    def get_city(self, obj):
+        return obj.user.city
+
+    def get_occupation(self, obj):
+        return obj.user.occupation
 
     def get_cpf(self, obj):
         return obj.user.cpf
