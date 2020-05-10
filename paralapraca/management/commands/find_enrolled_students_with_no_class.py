@@ -19,7 +19,7 @@ class Command(BaseCommand):
             action='store_true',
             dest='recover',
             default=False,
-            help='Put students with no classes in a class "HISTÓRICO"',
+            help='Put students with no classes in a class',
         )
 
     @transaction.atomic
@@ -34,8 +34,7 @@ class Command(BaseCommand):
                 # if 'recover' was set, the student must be put in a class now
                 if options['recover']:
                     # Find or create the appropriate class
-                    cl, _ = Class.objects.get_or_create(name='HISTÓRICO', course=cs.course)
-                    cl.add_students(cs.user)
+                    cs.course.default_class.students.add(cs.user)
 
         print(*users, sep='\n')
 
