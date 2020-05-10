@@ -377,12 +377,18 @@ class UsersByGroupViewSet(PandasViewSet):
     renderer_classes = [PandasCSVRenderer, PandasJSONRenderer]
     queryset = TimtecUser.objects.all()
 
-    def list(self, request, format=None):
-        groups = request.query_params.get('group', None)
+    def get_queryset(self):
+        groups = self.request.query_params.get('group', None)
         if groups is not None:
-            serializer = UserInDetailSerializer(self.queryset.filter(groups__name__in=groups.split(',')), many=True)
-        else:
-            serializer = UserInDetailSerializer(self.queryset, many=True)
+            self.queryset = self.queryset.filter(groups__name__in=groups.split(','))
+
+        self.queryset = self.queryset.prefetch_related('groups', 'coursestudent_set')
+
+        return self.queryset
+
+    def list(self, request, format=None):
+
+        serializer = UserInDetailSerializer(self.queryset, many=True)
         # in order to get the data in the wanted column form, I'll need to make some transformations
         return Response(self.transform_data(serializer.data))
 
@@ -683,7 +689,7 @@ def contract_uploader_view(request):
         }
     }
     if not contract_id:
-        data['errors']['form'] = "Contract must be specified"
+        data['errors']['form'] = "Um contrato deve ser selecionado!"
         return Response(data, status.HTTP_400_BAD_REQUEST)
 
     contract = Contract.objects.get(pk=contract_id)
@@ -704,8 +710,7 @@ def contract_uploader_view(request):
             csv_reader = csv.DictReader(cf)
             csv_reader = [c for c in csv_reader]
 
-            groups = set([c for u in csv_reader for c in u['Grupos']
-                         .split(';')])
+            groups = set([c.strip() for u in csv_reader for c in u['Grupos'].split(';')])
             for group in groups:
                 if not Group.objects.filter(name=group).exists():
                     g = Group(name=group)
@@ -810,10 +815,10 @@ def contract_uploader_view(request):
                 data['instance'] = serializer.data
                 return Response(data, status.HTTP_400_BAD_REQUEST)
         except KeyError:
-            data['errors']['form'] = "Not valid CSV file"
+            data['errors']['form'] = "Arquivo CSV inválido. Por favor contate o suporte."
             return Response(data, status.HTTP_400_BAD_REQUEST)
     else:
-        data['errors']['form'] = "Not valid CSV file"
+        data['errors']['form'] = "Arquivo CSV inválido. Por favor contate o suporte."
         return Response(data, status.HTTP_400_BAD_REQUEST)
 
     return Response(data, status.HTTP_200_OK)
