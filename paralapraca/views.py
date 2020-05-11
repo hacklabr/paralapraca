@@ -416,23 +416,30 @@ class UsersByClassViewSet(PandasViewSet):
     permission_classes = [IsAuthenticated]
     queryset = CourseStudent.objects.all()
 
-    def list(self, request, format=None):
-        try:
-            ids = request.query_params.get('id', None).split(',')
-            ids = [int(i) for i in ids]
-        except AttributeError:
-            ids = []
+    def get_queryset(self):
 
-        classes = Class.objects.all().filter(pk__in=ids)
-        students = [cls.students.all() for cls in classes]
-        students = [s for cls in students for s in cls]
-        courses = [cls['course_id'] for cls in classes.values()]
+        self.queryset = super(UsersByClassViewSet, self).get_queryset()
 
-        queryset = self.queryset
-        if len(ids) > 0:
-            queryset = self.queryset \
+        ids = self.request.query_params.get('id', [])
+        if ids:
+            ids = [int(i) for i in ids.split(',')]
+
+            classes = Class.objects.all().filter(pk__in=ids).prefetch_related('students')
+            students = [cls.students.all() for cls in classes]
+            students = [s for cls in students for s in cls]
+            courses = [cls['course_id'] for cls in classes.values()]
+
+            self.queryset = self.queryset \
                 .filter(user__in=students, course__id__in=courses)
 
+        self.queryset = self.queryset.select_related('user', 'course', 'certificate')
+        self.queryset = self.queryset.prefetch_related('course__lessons__units')
+
+        return self.queryset
+
+    def list(self, request, format=None):
+
+        queryset = self.get_queryset()
         serializer = UsersByClassSerializer(queryset, many=True)
 
         return Response(pd.DataFrame
