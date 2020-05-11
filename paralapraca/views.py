@@ -378,6 +378,8 @@ class UsersByGroupViewSet(PandasViewSet):
     queryset = TimtecUser.objects.all()
 
     def get_queryset(self):
+        self.queryset = super(UsersByGroupViewSet, self).get_queryset()
+
         groups = self.request.query_params.get('group', None)
         if groups is not None:
             self.queryset = self.queryset.filter(groups__name__in=groups.split(','))
@@ -388,7 +390,9 @@ class UsersByGroupViewSet(PandasViewSet):
 
     def list(self, request, format=None):
 
-        serializer = UserInDetailSerializer(self.queryset, many=True)
+        queryset = self.get_queryset()
+
+        serializer = UserInDetailSerializer(queryset, many=True)
         # in order to get the data in the wanted column form, I'll need to make some transformations
         return Response(self.transform_data(serializer.data))
 
