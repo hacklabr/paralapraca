@@ -224,12 +224,13 @@ class SummaryViewSet(viewsets.ViewSet):
 
     def list_new(self, request):
 
-        courses = Course.objects.all()
+        courses = Course.objects.all().prefetch_related('classes', 'coursestudent_set')
         stats = {}
         activities = {}
         unit_set = {}
         all_answers = {}
         all_progress = {}
+        # FIXME get from courses.classes
         classes = Class.objects.filter(course=courses)
         for course in courses:
             stats[course.slug] = {
@@ -394,7 +395,9 @@ class UsersByGroupViewSet(PandasViewSet):
 
         serializer = UserInDetailSerializer(queryset, many=True)
         # in order to get the data in the wanted column form, I'll need to make some transformations
-        return Response(self.transform_data(serializer.data))
+        return self.update_pandas_headers(
+            Response(self.transform_data(serializer.data))
+        )
 
     def transform_data(self, data):
         response = []
@@ -409,6 +412,10 @@ class UsersByGroupViewSet(PandasViewSet):
             user.pop('courses', None)
             response.append(user)
         return pd.DataFrame.from_dict(response)
+
+    def get_pandas_filename(self, request, format):
+        
+        return 'Relatorio-geral'
 
 
 class UsersByClassViewSet(PandasViewSet):
@@ -442,9 +449,10 @@ class UsersByClassViewSet(PandasViewSet):
         queryset = self.get_queryset()
         serializer = UsersByClassSerializer(queryset, many=True)
 
-        return Response(pd.DataFrame
+        return self.update_pandas_headers(Response(pd.DataFrame
                         .from_dict(self.transform_data(serializer.data))
                         .set_index('cpf'))
+        )
 
     def transform_data(self, data):
         for coursestudent in data:
@@ -458,6 +466,10 @@ class UsersByClassViewSet(PandasViewSet):
                     })
             coursestudent.pop('percent_progress_by_lesson', None)
         return data
+
+    def get_pandas_filename(self, request, format):
+        
+        return 'Relatorio-de-modulos'
 
 
 class ContractGroupViewSet(GroupViewSet):
