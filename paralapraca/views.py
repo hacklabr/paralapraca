@@ -224,7 +224,7 @@ class SummaryViewSet(viewsets.ViewSet):
 
     def list_new(self, request):
 
-        courses = Course.objects.all().prefetch_related('classes', 'coursestudent_set')
+        courses = Course.objects.all().prefetch_related('class_set', 'coursestudent_set')
         stats = {}
         activities = {}
         unit_set = {}
