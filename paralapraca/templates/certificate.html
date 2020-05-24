@@ -6,7 +6,6 @@
 
 {% block js %}
     {{ block.super }}
-    <script type="text/javascript" src="{% static 'tinymce-dist/tinymce.js' %}"></script>
 
     {% compress js %}
     <!-- Core -->
@@ -30,10 +29,6 @@
     <script type="text/javascript" src="{% static 'js/directives/previewImage.js' %}" charset="utf-8"></script>
     <script type="text/javascript" src="{% static 'js/factories/timtec-models.js' %}" charset="utf-8"></script>
     <script type="text/javascript" src="{% static 'angular-ui-tinymce/src/tinymce.js' %}"></script>
-    <!-- PDF generation dependencies -->
-    <script type="text/javascript" src="{% static 'bluebird/js/browser/bluebird.min.js' %}" charset="utf-8"></script>
-    <script type="text/javascript" src="{% static 'html2canvas/build/html2canvas.min.js' %}" charset="utf-8"></script>
-    <script type="text/javascript" src="{% static 'jspdf/dist/jspdf.min.js' %}" charset="utf-8"></script>
     {% endcompress %}
 {% endblock %}
 
@@ -59,7 +54,8 @@ wrapper-course-lesson
             {% if object.course_student.user.is_profile_filled %}
                 <div class="row">
                     <div class="container">
-                        <a id="download-certificate" href="#" onclick="printToPDF()"
+                        <a id="download-certificate" href="{% url 'certificate-print'  object.link_hash %}"
+                           target="_blank"
                            class="btn btn-sm btn-primary pull-right hidden-print download">
                             {% if object.type == 'receipt' %}
                                 Baixar Declaração
@@ -88,5 +84,4 @@ wrapper-course-lesson
         </div>
     </section>
 </div>
-<script type="text/javascript" src="{% static 'js/certificate-to-pdf.js' %}" charset="utf-8"></script>
 {% endblock %}

@@ -19,10 +19,11 @@ var pdf = new jsPDF({
   format: [225, 131]
 });
 
-pdf.addHTML(document.getElementsByClassName('certificate-container'), function () {});
-
-// Apenas quando o usuário clicar no botão de download, o arquivo PDF será enviado para download
 // Vale lembrar que esse recurso não está disponível para Internet Explorer
-function printToPDF() {
-    pdf.save('certificado.pdf');
-}
+pdf.addHTML($('#certificate-container')[0]).then(function() {
+    var promise = new Promise(function (resolve, reject) {
+        pdf.save('certificado.pdf');
+        window.setTimeout(resolve, 100, 'PDF generated')
+    });
+    promise.then(window.close)
+});
