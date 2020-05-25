@@ -17,8 +17,7 @@ wrapper-course-lesson
         {% include "_certificate-certificate.html" %}
         {% endif %}
     </div>
-    <script type="text/javascript">
-        window.print();
-    </script>
+    <script src="https://unpkg.com/jspdf@1.4.1/dist/jspdf.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/certificate-to-pdf.js' %}" charset="utf-8"></script>
     {% endblock %}
 </div>
