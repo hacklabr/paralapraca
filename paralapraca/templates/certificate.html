@@ -52,19 +52,21 @@ wrapper-course-lesson
     <section id="certificate-content" class="container-fluid">
         <div>
             {% if object.course_student.user.is_profile_filled %}
-                <div class="row">
-                    <div class="container">
-                        <a id="download-certificate" href="{% url 'certificate-print'  object.link_hash %}"
-                           target="_blank"
-                           class="btn btn-sm btn-primary pull-right hidden-print download">
-                            {% if object.type == 'receipt' %}
-                                Baixar Declaração
-                            {% else %}
-                                Baixar Certificado
-                            {% endif %}
-                        </a>
+                {% if user.is_staff %}
+                    <div class="row">
+                        <div class="container">
+                            <a id="download-certificate" href="{% url 'certificate-print'  object.link_hash %}"
+                            target="_blank"
+                            class="btn btn-sm btn-primary pull-right hidden-print download">
+                                {% if object.type == 'receipt' %}
+                                    Baixar Declaração
+                                {% else %}
+                                    Baixar Certificado
+                                {% endif %}
+                            </a>
+                        </div>
                     </div>
-                </div>
+                {% endif %}
                 <div id="certificate-id-print" style="margin-bottom: 100px; padding-bottom: 100px;">
                     {% if object.type == 'receipt' %}
                         {% include "_certificate-receipt.html" %}
