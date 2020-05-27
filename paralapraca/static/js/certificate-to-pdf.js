@@ -25,5 +25,5 @@ pdf.addHTML($('#certificate-container')[0]).then(function() {
         pdf.save('certificado.pdf');
         window.setTimeout(resolve, 100, 'PDF generated')
     });
-    promise.then(window.close)
+    // promise.then(window.close)
 });

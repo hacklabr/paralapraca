@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+{% load i18n %}
+{% load static %}
+{% load compress %}
+{% load pinax_webanalytics_tags %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}{{ site.name }}{% endblock %}</title>
+
+    {% compress css %}
+        <link rel='stylesheet' href="{% static 'font-awesome/css/font-awesome.css' %}" type='text/css' media='screenprojectionprint' />
+        <link rel='stylesheet' href="{% static 'scss/main-paralapraca.scss' %}" type='text/x-scss' media='screen,projection,print' />
+    {% endcompress %}
+
+    <script>
+        window.STATIC_URL = '{{ STATIC_URL }}';
+        window.MEDIA_URL = '{{ MEDIA_URL }}';
+        window.DEBUG = '{{ DEBUG }}';
+        window.YOUTUBE_API_KEY = '{{ site.YOUTUBE_API_KEY }}';
+        window.USER_ID = '{{ user.id }}';
+    </script>
+    {% compress js %}
+      <script type="text/javascript" src="{% static 'modernizr/modernizr.js' %}"></script>
+      <script type="text/javascript" src="{% static 'jquery/dist/jquery.js' %}"></script>
+      <script type="text/javascript" src="{% static 'bootstrap/dist/js/bootstrap.js' %}"></script>
+    {% endcompress %}
+
+    {% block js %}{% endblock %}
+
+    {% analytics %}
+</head>
+<body {% if in_admin %}id="admin"{% else %}id="notadmin"{% endif %} {% spaceless %}{% block body_attrs %}{% endblock %}{% endspaceless %}>
+{% block content %}
+<h1>missing content block</h1>
+{% endblock %}
+
+</body>
+</html>
