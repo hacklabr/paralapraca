@@ -21,9 +21,6 @@ var pdf = new jsPDF({
 
 // Vale lembrar que esse recurso não está disponível para Internet Explorer
 pdf.addHTML($('#certificate-container')[0]).then(function() {
-    var promise = new Promise(function (resolve, reject) {
-        pdf.save('certificado.pdf');
-        window.setTimeout(resolve, 100, 'PDF generated')
-    });
-    // promise.then(window.close)
+    var student = $('.student').get(0).innerText.toLowerCase().replace(/ /g, '-')
+    window.setTimeout(pdf.save, 500, 'certificado-' + student + '.pdf');
 });
