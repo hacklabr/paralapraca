@@ -101,7 +101,7 @@
             <div class="column">
                 <h2 class="widget-title">Fóruns</h2>
                 <a class="btn btn-success new-topic"
-                   href="/discussion/topic/new/#!/topic/new/">criar novo tópico</a>
+                    has-group-permission="user.groups" href="/discussion/topic/new/#!/topic/new/">criar novo tópico</a>
 
                 <form class="widget-filter form-inline">
                     <input class="form-control" type="text" placeholder="Busca nos fóruns..." ng-model="search" uib-typeahead="result for results in getResults($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noResults" typeahead-min-length="2" typeahead-wait-ms="500">
