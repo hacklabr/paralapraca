@@ -174,7 +174,9 @@
                 </div>
                 <div class="pull-right hidden-xs">
                     <a class="btn btn-success list-all" href="/discussion/">mostrar todos</a>
+                    {% if request.user|has_group:"professors" or request.user|has_group:"Avante" %}
                     <a class="btn btn-success new-topic" href="/discussion/topic/new/#!/topic/new/">criar novo tópico</a>
+                    {% endif %}
                 </div>
                 <div class="pull-right dropdown visible-xs">
                     <button class="btn btn-default list-all dropdown-toggle" type="button" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

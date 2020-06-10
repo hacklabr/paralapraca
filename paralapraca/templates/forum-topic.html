@@ -45,7 +45,7 @@
                 </div>
                 <div ng-show="!fatal_error" class="pull-right hidden-xs">
                     <a class="btn btn-sm btn-success new-topic"
-                   href="/discussion/topic/new/#!/topic/new/">criar novo tópico</a>
+                        ng-show="{{ hasGroup }}" href="/discussion/topic/new/#!/topic/new/">criar novo tópico</a>
                     <a ng-href="/discussion/#!/forum/{{ topic.forum }}" class="btn btn-link goback"><span>voltar</span></a>
                 </div>
                 <div ng-show="!fatal_error" class="pull-right dropdown visible-xs">
