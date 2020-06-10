@@ -82,7 +82,7 @@
                 </div>
                 <div class="pull-right hidden-xs">
                     <a class="btn btn-sm btn-success new-topic"
-                   href="/discussion/topic/new/#!/topic/new/">criar novo tópico</a>
+                        has-group-permission="user.groups" href="/discussion/topic/new/#!/topic/new/">criar novo tópico</a>
                     <a ng-href="/discussion/#!/forum/" class="btn btn-link goback"><span>voltar para o fórum</span></a>
                 </div>
                 <div class="pull-right dropdown visible-xs">
@@ -90,7 +90,7 @@
                         opções
                     </button>
                     <ul class="dropdown-menu dropdown-options" aria-labelledby="dropdownOptions">
-                        <li><a href="/discussion/topic/new/#!/topic/new/">criar novo tópico</a></li>
+                        <li has-group-permission="user.groups"><a href="/discussion/topic/new/#!/topic/new/">criar novo tópico?</a></li>
                         <li><a ng-href="/discussion/#!/forum/">voltar para o fórum</a></li>
                     </ul>
                 </div>
