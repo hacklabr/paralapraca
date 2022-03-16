@@ -1,27 +1,27 @@
-// Declare specifc theme variables 
+// Declare specifc theme variables
 // --------------------------------------------------
 
 //== Colors
 //
 //## Parapraca brand colors
 
-$blue:          #006eb1;
-$light-blue:    #87c2e4;
-$green:         #87b726;
-$yellow:        #eabc00;
-$orange:        #de6f10;
-$red:           #d51300;
-$pink:          #cf086a;
-$purple:        #993671;
-$gray:          #4a4a4a;
+$blue:          #2B3CA3;
+$light-blue:    #00A9FB;
+$green:         #61CE70;
+$yellow:        #FFA200;
+$orange:        #FF5400;
+$red:           #FF5400;
+$pink:          #BF247F;
+$purple:        #9200FD;
+$gray:          #4D4D4D;
 
-//## Override Bootstrap's variables 
+//## Override Bootstrap's variables
 // --------------------------------------------------
 
 $brand-primary:     $blue;
 $brand-success:     $green;
 $brand-info:        $light-blue;
-$brand-warning:     $orange;
+$brand-warning:     $yellow;
 $brand-danger:      $red;
 
 // Allows for customizing button radius independently from global border radius
@@ -78,16 +78,16 @@ $table-bg-active:               $table-bg-hover !default;
 $table-border-color:            transparent !default;
 
 
-// Override base theme variables 
+// Override base theme variables
 // --------------------------------------------------
 
 //== Specific component colors
 //
 //** Site header background color
-$site-header-bg-color:      rgba(255,255,255,0.75);
+$site-header-bg-color:      white;
 
 //** Main navigation background color
-$main-nav-bg-color:         rgba($purple,0.75);
+$main-nav-bg-color:         $pink;
 
 //== Scaffolding
 //

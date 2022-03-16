@@ -2,7 +2,7 @@
 // --------------------------------------------------
 
 .main-nav {
-    background-image: url(../img/bg-menu.png);
+    background-color: $pink;
     bottom: 0;
     left: -245px;
     top: 0;
@@ -22,7 +22,7 @@
     }
     @media screen and (min-width: $screen-sm-min) {
         left: 0;
-        width: 100px; 
+        width: 100px;
     }
 }
 .main-nav-opened { // when the offcanvas menu is opened
@@ -35,7 +35,7 @@
 .user-nav {
     font-size: $font-size-small;
     font-weight: $semi-bold;
-    margin: 80px 10px 10px; 
+    margin: 80px 10px 10px;
     text-align: center;
     @media screen and (min-width: $screen-sm-min) {
         margin-top: 105px;
@@ -60,7 +60,7 @@
     }
     .submenu {
         margin-bottom: 20px;
-        ul { 
+        ul {
             li {
                 font-size: 11px;
                 font-weight: $normal;
@@ -120,7 +120,7 @@
 .main-nav-opened { // when the offcanvas menu is opened
     .user-nav {
         font-size: $font-size-large;
-        margin: 80px 25px 25px; 
+        margin: 80px 25px 25px;
         text-align: left;
         @media screen and (min-width: $screen-sm-min) {
             margin-top: 105px;
@@ -164,7 +164,7 @@
     .legal-text {
         color: #fff;
         font-size: $font-size-small;
-        text-align: center; 
+        text-align: center;
     }
 }
 .main-nav-opened {  // when the offcanvas menu is opened
