@@ -56,7 +56,7 @@
             });
             if(filtered[0] === undefined) return ""; // prevent runtime error with undefined
             if(filtered[0].time_unit == "mês" && filtered[0].time_int > 1) {
-                return "em "+past.getDate()+"/"+(past.getMonth()+1)+"/"+past.getFullYear()+", às "+past.getHours()+":"+past.getMinutes();
+                return "em "+past.getDate()+"/"+(past.getMonth()+1)+"/"+past.getFullYear()+", às "+String(past.getHours()).padStart(2, '0')+":"+String(past.getMinutes()).padStart(2, '0');
             }
             else {
                 return "há "+filtered[0].time_int+" "+filtered[0].time_unit;
