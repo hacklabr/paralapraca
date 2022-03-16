@@ -49,7 +49,6 @@
             width: 30px;
             @include button-hover($gray,$gray,$gray-lighter,darken($gray-lighter,10%));
             &.bold, &.italic, &.underline {
-                font-family: $font-family-serif;
                 font-size: 18px;
             }
             &.bold {

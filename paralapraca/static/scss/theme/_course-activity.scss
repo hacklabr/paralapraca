@@ -26,7 +26,7 @@
         color: #fff;
         height: 40px;
         margin: -30px -30px 0;
-        padding: 10px; 
+        padding: 10px;
         text-align: right;
         a {
             &:first-child {
@@ -85,19 +85,19 @@
             background-color: rgba($purple,0.2);
         }
         .message {
-            margin: 20px auto 0; 
+            margin: 20px auto 0;
             max-width: 760px;
             text-align: center;
             h3 {
                 color: $purple;
                 font-size: 36px;
-                font-weight: bold;
-                margin: 0 auto 20px; 
+                font-weight: $bold;
+                margin: 0 auto 20px;
                 max-width: 400px;
             }
             p {
                 color: #000;
-                font-size: 16px; 
+                font-size: 16px;
             }
             .btn {
                 margin-top: 30px;
@@ -108,12 +108,12 @@
 .all-activity {
     background-color: rgba($gray,0.15);
     margin: 30px -30px -30px;
-    padding: 30px; 
+    padding: 30px;
 
     .title {
         color: #000;
         font-size: 30px;
-        margin: 0; 
+        margin: 0;
     }
     table {
         border-top: 2px solid $gray;
@@ -130,7 +130,7 @@
                     color: $brand-primary;
                 }
             }
-        } 
+        }
         a.action {
             &.liked, &.used, &.replies {
                 color: $gray;

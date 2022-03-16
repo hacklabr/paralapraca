@@ -15,8 +15,7 @@
 
     .reports-list {
         h3, h4 {
-            font-family: $font-family-sans-serif;
-            font-weight: bold;
+            font-weight: $bold;
             margin-top: 0;
         }
         h3 {
@@ -97,7 +96,7 @@
                 float: left;
                 margin: 0px 7px 0;
             }
-        } 
+        }
         table {
             width: 100%;
             tr {
@@ -121,7 +120,7 @@
                     }
                 }
             }
-        }        
+        }
     }
     .reports-downloads {
         border: 1px solid $purple;

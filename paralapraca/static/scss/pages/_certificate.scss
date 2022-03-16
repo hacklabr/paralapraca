@@ -57,7 +57,6 @@
         }
     }
     .certificate-title {
-        font-family: $font-family-serif;
         font-size: 4.5vmax;
         line-height: 1;
         margin: 50px 0 10px;
@@ -84,9 +83,8 @@
             }
         }
         .student {
-            font-family: $font-family-serif;
             font-size: 3.5vmax;
-            font-weight: $bold;
+            font-weight: $extra-bold;
             line-height: 1;
             @media screen and (min-width: $screen-md-min) {
                 font-size: 2vmax;

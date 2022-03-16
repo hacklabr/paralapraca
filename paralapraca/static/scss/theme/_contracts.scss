@@ -20,7 +20,7 @@
     }
     .page-title {
         font-size: 48px;
-        font-weight: bold;
+        font-weight: $extra-bold;
         margin: -10px 0 0 15px;
         @media screen and (min-width: $screen-md-min) {
             margin: -10px 0 0 30px;

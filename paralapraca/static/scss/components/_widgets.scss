@@ -62,7 +62,7 @@
 
 .widget-title {
     font-size: 6.5vmax;
-    font-weight: bold;
+    font-weight: $extra-bold;
     line-height: 90%;
     margin: 0 20px 0 0;
     @media screen and (min-width: $screen-xs-min) {
@@ -191,7 +191,7 @@
     .widget-topbar {
         .title {
             font-size: 18px;
-            font-weight: $bold;
+            font-weight: $extra-bold;
             @media screen and (min-width: $screen-sm-min) {
                 margin: 7px 0 0 15px;
             }
