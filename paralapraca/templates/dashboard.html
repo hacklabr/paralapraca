@@ -209,9 +209,9 @@
                 <div class="actions">
                     <span class="action last-update">Última atividade <b>{{ topic.last_activity_at | dateFilter }}</b></span>
                     <span class="action liked"
-                          ng-class="{ 'active': topic.count_likes }">{{topic.count_likes}} {{topic.count_likes > 1 || topic.count_likes == 0? 'gostaram':'gostou'}}</span>
+                          ng-class="{ 'active': topic.count_likes }">{{topic.count_likes}} <span class="sr-only">{{topic.count_likes > 1 || topic.count_likes == 0? 'gostaram':'gostou'}}</span></span>
                     <span class="action replies"
-                          ng-class="{ 'active': topic.count_replies }">{{topic.count_replies}} {{topic.count_replies > 1 || topic.count_replies == 0? 'comentários':'comentário'}}</span>
+                          ng-class="{ 'active': topic.count_replies }">{{topic.count_replies}} <span class="sr-only">{{topic.count_replies > 1 || topic.count_replies == 0? 'comentários':'comentário'}}</span></span>
                 </div>
             </div>
             {% endverbatim %}
