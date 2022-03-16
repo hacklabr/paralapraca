@@ -46,9 +46,9 @@
     .course-content {
         .course-info {
             .column {
-                background-color: rgba($light-blue,0.4);
+                background-color: lighten($light-blue,30%);
                 &:last-child {
-                    background-color: rgba($green,0.4);
+                    background-color: lighten($green,30%);
                 }
             }
         }

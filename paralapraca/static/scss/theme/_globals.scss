@@ -4,7 +4,7 @@
 //## Set shared styles for all pages
 //##
 .page {
-    @include card(rgba($light-blue,0.6));
+    @include card(lighten($light-blue, 30%));
 
     @media screen and (min-width: $screen-sm-min) {
         padding: 30px !important;

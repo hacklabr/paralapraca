@@ -134,7 +134,7 @@ a {
         @include button-hover($purple,$purple,transparent,transparent);
     }
     &.new-topic {
-        @include button-hover(#fff,#fff,rgba($orange,0.6),$orange);
+        @include button-hover(#fff,#fff,$orange,darken($orange,5%));
     }
     &.reply {
         @include button-hover(#fff,#fff,$pink,darken($pink,10%));
@@ -152,7 +152,7 @@ a {
 .forums-widget {
     .btn {
         &.list-all, &.see-stats {
-            @include button-hover(#fff,#fff,rgba($orange,0.6),$orange);
+            @include button-hover(#fff,#fff,$orange,darken($orange,5%));
         }
     }
 }

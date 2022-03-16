@@ -27,7 +27,7 @@
 // --------------------------------------------------
 
 .courses-widget {
-    @include card(rgba($light-blue,0.6));
+    @include card(lighten($light-blue, 30%));
 
     .widget-header {
         margin-bottom: 30px;
@@ -80,9 +80,9 @@
 // --------------------------------------------------
 
 .messages-widget {
-    @include card(rgba($purple,0.7));
+    @include card(lighten($pink,30%));
     .widget-topbar {
-        background-color: $purple;
+        background-color: $pink;
     }
     .btn {
         @include button-hover(#fff,#fff,$orange,darken($orange,5%));

@@ -25,7 +25,7 @@
             div {
                 background-color: $purple;
             }
-        } 
+        }
     }
 }
 
@@ -45,7 +45,7 @@
 
 .see-all-topics {
     .btn {
-        @include button-hover(#fff,#fff,rgba($orange,0.6),$orange);
+        @include button-hover(#fff,#fff,$orange,darken($orange,5%));
     }
 }
 
@@ -55,5 +55,5 @@
     }
     .selected-forum {
         color: $orange;
-    } 
+    }
 }

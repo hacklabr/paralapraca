@@ -16,7 +16,7 @@
 
     .page-header {
         h2 {
-            color: $pink;
+            color: $purple;
         }
     }
 
@@ -44,5 +44,5 @@
 }
 
 .profile-admin.page {
-    border: 1px red dashed;
+    border: 1px $red dashed;
 }

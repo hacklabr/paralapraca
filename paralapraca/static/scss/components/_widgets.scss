@@ -140,7 +140,7 @@
 // --------------------------------------------------
 
 .forums-widget {
-    @include card(rgba(#fff,0.5));
+    @include card(white);
 
     .widget-filter {
         @include icon(after, search);
@@ -166,7 +166,7 @@
             margin-bottom: 10px;
         }
         @media screen and (min-width: $screen-md-min) {
-            height: 80px;
+            height: 100px;
         }
         .last-update {
             display: block;
@@ -186,7 +186,7 @@
 // --------------------------------------------------
 
 .messages-widget {
-    @include card(rgba($brand-primary,0.7));
+    @include card(lighten($brand-primary,50%));
     color: #fff;
     .widget-topbar {
         .title {
