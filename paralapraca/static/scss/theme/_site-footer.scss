@@ -2,21 +2,118 @@
 // --------------------------------------------------
 
 .anonymous {
-    .site-footer {
-        border-top: 1px solid #000;
-        max-width: 946px;
-        margin: 80px auto 40px;
-        padding-top: 10px;
-        text-align: center;
-        .legal-text {
-            font-size: $font-size-small;
-        }
-        .logos {
-            @extend %list-inline;
-            margin-top: 15px;
-            li {
-                margin: 0 10px; 
-            }
-        }
+
+  .site-footer {
+    background-color: $light-gray;
+    color: $gray;
+    margin: 80px auto 0;
+    padding: 40px 20px;
+
+    a {
+      color: inherit;
     }
+
+    ul, li {
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      list-style: none;
+    }
+
+    .row + .row {
+      border-top: 1px solid #333;
+      margin-top: 30px;
+      padding-top: 30px;
+    }
+
+    .col-sm-3 {
+
+      a {
+        display: block;
+        font-family: 'Courier New', Courier, monospace;
+        margin-bottom: 10px;
+        padding: 0 10px;
+        text-transform: uppercase;
+      }
+    }
+
+    .col-sm-4 {
+
+      @media screen and (max-width: 768px) {
+        margin-bottom: 20px;
+      }
+
+      i.fa {
+        font-size: 30px;
+      }
+    }
+
+    .logo {
+      padding: 0 !important;
+
+      img {
+        filter: grayscale(1) brightness(0.5);
+      }
+    }
+
+    .follow-us {
+      color: #999;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+      font-size: 20px;
+
+      @media screen and (max-width: 768px) {
+        margin-bottom: 20px;
+      }
+
+      li {
+        margin-right: 15px;
+      }
+
+      a {
+        padding: 0;
+      }
+
+      svg {
+        height: 1em;
+        width: 1em;
+      }
+    }
+
+    .address {
+      margin-left: 30px;
+
+      i.fa {
+        display: block;
+        float: left;
+        margin-left: -30px;
+      }
+    }
+
+    a.button-link {
+      background-color: $pink;
+      color: white;
+      margin-top: 30px;
+      padding: 5px 10px;
+      width: fit-content;
+    }
+
+    .contact {
+      align-items: center;
+      display: flex;
+
+      i.fa {
+        display: inline-block;
+        margin-right: 10px;
+      }
+    }
+  }
 }
