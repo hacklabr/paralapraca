@@ -161,7 +161,7 @@ ng-app="certification"
             <p class="student">____________________________________</p>
             <div class="certificate-template">
               <textarea ui-tinymce class="editable-text" rows="3" ng-model="ct.text" required
-                        placeholder="concluiu o módulo {nome_curso} no ambiente virtual de aprendizagem Programa Paralapracá, perfazendo o total de {carga_horaria} horas."></textarea>
+                        placeholder="concluiu o módulo {nome_curso} no ambiente virtual de aprendizagem Avante, perfazendo o total de {carga_horaria} horas."></textarea>
             </div>
           </div>
           <footer>
@@ -207,8 +207,8 @@ ng-app="certification"
         <footer>
             <div class="credits-section">
                 <p ng-show="ct.type == 'certificate'"><b>Emitido em:</b> 01/01/2017</p>
-                <p><b>Realizado em:</b> ava.paralapraca.org.br</p>
-                <p><b>URL de validação:</b> <a href="{% url 'certificate' object.link_hash %}">ava.paralapraca.org.br/certificate/(código)</a></p>
+                <p><b>Realizado em:</b> ava.avante.org.br</p>
+                <p><b>URL de validação:</b> <a href="{% url 'certificate' object.link_hash %}">ava.avante.org.br/certificate/(código)</a></p>
             </div>
             <div class="coordinator-section">
                 <div class="certificate-signature">

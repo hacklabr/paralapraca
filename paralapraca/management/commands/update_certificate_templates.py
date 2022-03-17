@@ -13,12 +13,12 @@ class Command(BaseCommand):
 
     receipt_text = '<p>inscrita no cadastro de pessoa f&iacute;sica sob o n&uacute;mero {CPF}&nbsp;</p>\
 <p>participou do <em>{MODULO}</em></p>\
-<p>no Ambiente Virtual de Aprendizagem do Programa Paralaprac&aacute;.</p>'
+<p>no Ambiente Virtual de Aprendizagem da Avante.</p>'
 
     certificate_text = '<p style="text-align: center;">inscrita no cadastro de pessoa f&iacute;sica sob o n&uacute;mero&nbsp;{CPF}</p>\
 <p style="text-align: center;">concluiu o&nbsp;<strong>{MODULO}</strong>,</p>\
 <p style="text-align: center;">com carga hor&aacute;ria total de 40 horas, no&nbsp;</p>\
-<p style="text-align: center;">Ambiente Virtual de Aprendizagem&nbsp;do Programa Paralaprac&aacute;.</p>'
+<p style="text-align: center;">Ambiente Virtual de Aprendizagem&nbsp;da Avante.</p>'
 
 
     def handle(self, *files, **options):
