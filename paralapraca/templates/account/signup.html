@@ -30,12 +30,12 @@
 
     <form onclick="event.stopPropagation()" method="post" action="{% url 'account_signup' %}" class="register-form">{% csrf_token %}
         <fieldset>
-            <legend>{% trans "Sign Up" %}</legend>
+            <legend>Cadastre-se</legend>
             {% with errors=form.username.errors %}
             <div class="form-group{{ errors|yesno:' has-error,' }}">
                 <i class="fa fa-user" aria-hidden="true"></i>
-                <label for="username" class="sr-only">{% trans "Username" %}</label>
-                <input name="username" type="text" value="{{form.username.value|default_if_none:''}}" class="form-control" id="username" placeholder="{% trans 'Username' %}">
+                <label for="username" class="sr-only">Nome de usuário</label>
+                <input name="username" type="text" value="{{form.username.value|default_if_none:''}}" class="form-control" id="username" placeholder="Nome de usuário">
                 {% for error in errors %}<small>{{error}}</small>{% endfor %}
             </div>
             {% endwith %}
@@ -43,8 +43,8 @@
             {% with errors=form.email.errors %}
             <div class="form-group{{ errors|yesno:' has-error,' }}">
                 <i class="fa fa-envelope" aria-hidden="true"></i>
-                <label for="email" class="sr-only">{% trans "E-mail" %}</label>
-                <input name="email" type="email" id="email" value="{{form.email.value|default_if_none:''}}" class="form-control" placeholder="{% trans 'Your e-mail' %}">
+                <label for="email" class="sr-only">E-mail</label>
+                <input name="email" type="email" id="email" value="{{form.email.value|default_if_none:''}}" class="form-control" placeholder="Seu e-mail">
                 {% for error in errors %}<small>{{error}}</small>{% endfor %}
             </div>
             {% endwith %}
@@ -93,8 +93,8 @@
             {% with errors=form.password1.errors %}
             <div class="form-group{% if errors or form.non_field_errors %} has-error{% endif %}">
                 <i class="fa fa-lock" aria-hidden="true"></i>
-                <label for="password1" class="sr-only">{% trans "Password" %}</label>
-                <input name="password1" type="password" id="password1" class="form-control" placeholder="{% trans 'Really strong password' %}">
+                <label for="password1" class="sr-only">Senha</label>
+                <input name="password1" type="password" id="password1" class="form-control" placeholder="Senha realmente forte">
                 {% for error in errors %}<small>{{error}}</small>{% endfor %}
                 {% for error in form.non_field_errors %}<small>{{error}}</small>{% endfor %}
             </div>
@@ -103,8 +103,8 @@
             {% with errors=form.password2.errors %}
             <div class="form-group{% if errors or form.non_field_errors %} has-error{% endif %}">
                 <i class="fa fa-lock" aria-hidden="true"></i>
-                <label for="password2" class="sr-only">{% trans 'Password confirmation' %}</label>
-                <input name="password2" type="password" id="password2"  class="form-control" placeholder="{% trans 'Password confirmation' %}">
+                <label for="password2" class="sr-only">Confirmação de senha</label>
+                <input name="password2" type="password" id="password2"  class="form-control" placeholder="Confirmação de senha">
             </div>
             {% endwith %}
 
@@ -114,12 +114,12 @@
                   <label for="accept_terms" class="terms">
                       <input name="accept_terms" id="accept_terms" type="checkbox" style="display:inline-block;" {% if form.accept_terms.value %}checked=""{% endif %}>
                       {% url 'flatpage' url='/terms' as terms_url %}
-                      {% blocktrans %}I agree to the <a href="{{ terms_url }}" target="_blank">Terms of Use</a>{% endblocktrans %}
+                      Eu concordo com os <a href="{{ terms_url }}" target="_blank">Termos de Uso</a>
                   </label>
               </div>
               {% endwith %}
             {% endif %}
-            <button class="btn btn-submit">{% trans "Sign Up" %}</button>
+            <button class="btn btn-submit">Cadastre-se</button>
         </fieldset>
         <!-- <p class="info">
             {% load socialaccount %}
